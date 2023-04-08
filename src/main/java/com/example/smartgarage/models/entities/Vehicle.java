@@ -23,9 +23,13 @@ import javax.validation.constraints.Positive;
 public class Vehicle {
 
     @Id
-    @Column(length = 17)
-    @Length(min = 17)
-    // @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long vehicle_id;
+
+
+    @NotNull
+    @Length(min = 17, max = 17)
+    @Column(name = "VIN", length = 17)
     private String VIN;
 
     @NotNull
@@ -52,7 +56,7 @@ public class Vehicle {
 
     @Override
     public String toString() {
-        return "Vehicle{" +
+        return "Vehicle{" + vehicle_id +
                 "VIN=" + VIN +
                 ", license_plate='" + license_plate + '\'' +
                 ", model=" + model + '\'' +
