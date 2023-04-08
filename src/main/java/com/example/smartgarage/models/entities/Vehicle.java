@@ -7,10 +7,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
+
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -64,6 +67,10 @@ public class Vehicle {
                 ", creation_year=" + creation_year +
                 '}';
     }
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<User> id = new ArrayList<>();
+
 }
 
 

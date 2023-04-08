@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "services")
@@ -22,6 +24,9 @@ public class CarService {
     private String username;
     @Column(name = "price")
     private double price;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Vehicle> vehicleId = new ArrayList<>();
 
     @Override
     public String toString() {
