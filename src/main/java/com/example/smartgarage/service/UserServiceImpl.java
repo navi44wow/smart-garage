@@ -83,6 +83,11 @@ public class UserServiceImpl implements UserService {
         );
 
         user.addRole(userRole);
+
+        if (!userServiceModel.getPassword().equals(userServiceModel.getConfirmPassword())){
+            throw new IllegalArgumentException("Password is not confirmed properly!");
+        }
+
         if (alreadyExistsUser(user.getUsername(), user.getPhoneNumber(), user.getEmail())) {
             throw new EntityDuplicateException("User", "username", user.getUsername());
         }
