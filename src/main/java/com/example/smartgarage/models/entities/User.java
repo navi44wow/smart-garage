@@ -18,8 +18,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Type(type = "uuid-char")
     private UUID id;
-
-
     @Column(name = "username")
     private String username;
     @Column(name = "password")

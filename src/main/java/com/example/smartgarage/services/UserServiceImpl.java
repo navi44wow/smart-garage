@@ -7,10 +7,11 @@ import com.example.smartgarage.models.entities.User;
 import com.example.smartgarage.models.entities.UserRoleEntity;
 import com.example.smartgarage.models.enums.UserRole;
 import com.example.smartgarage.models.service_models.UserServiceModel;
+import com.example.smartgarage.models.view_models.UserViewModel;
 import com.example.smartgarage.repositories.UserRepository;
 import com.example.smartgarage.repositories.UserRoleRepository;
-import com.example.smartgarage.services.SmartGarageUserService;
 import com.example.smartgarage.services.contracts.UserService;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -22,9 +23,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.google.gson.Gson;
 
-import java.io.*;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -58,14 +60,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAll() {
-        return userRepository.findAllUsers();
+    public List<UserViewModel> getAll() {
+        List<User> users = userRepository.findAllUsers();
+        List<UserViewModel> userViewModels = new ArrayList<>();
+        users.forEach(user -> userViewModels.add(modelMapper.map(user, UserViewModel.class)));
+
+        return userViewModels;
     }
 
     @Override
-    public User getByUsername(String username) {
-        return userRepository.findByUsername(username).orElseThrow(() ->
+    public UserViewModel getByUsername(String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(() ->
                 new EntityNotFoundException("User with name ", username, " was not found!"));
+
+        return modelMapper.map(user, UserViewModel.class);
     }
 
     @Override
@@ -85,7 +93,7 @@ public class UserServiceImpl implements UserService {
 
         user.addRole(userRole);
 
-        if (!userServiceModel.getPassword().equals(userServiceModel.getConfirmPassword())){
+        if (!userServiceModel.getPassword().equals(userServiceModel.getConfirmPassword())) {
             throw new IllegalArgumentException("Password is not confirmed properly!");
         }
 
@@ -114,17 +122,12 @@ public class UserServiceImpl implements UserService {
                         gson.fromJson(Files.readString(Path.of(usersFile.getURI())), User[].class);
 
                 Arrays.stream(usersEntities)
-                        .forEach(u -> {
-                            u.setPassword(passwordEncoder.encode(u.getPassword()));
-                        });
+                        .forEach(u -> u.setPassword(passwordEncoder.encode(u.getPassword())));
 
                 Arrays.stream(usersEntities)
-                        .forEach(u -> {
-                            u.setRoles(List.of(employeeRole));
-                        });
+                        .forEach(u -> u.setRoles(List.of(employeeRole)));
 
-                Arrays.stream(usersEntities)
-                        .forEach(userRepository::save);
+                userRepository.saveAll(Arrays.asList(usersEntities));
             } catch (Exception e) {
                 throw new IllegalStateException("Cannot seed users");
             }
@@ -132,32 +135,45 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow(() ->
+    public UserViewModel getByEmail(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(() ->
                 new EntityNotFoundException("User with email ", email, " was not found!"));
+
+        return modelMapper.map(user, UserViewModel.class);
     }
 
     @Override
-    public User getByPhoneNumber(String phoneNumber) {
-        return userRepository.findByPhoneNumber(phoneNumber).orElseThrow(() ->
+    public UserViewModel getByPhoneNumber(String phoneNumber) {
+        User user = userRepository.findByPhoneNumber(phoneNumber).orElseThrow(() ->
                 new EntityNotFoundException("User with phone number ", phoneNumber, " was not found!"));
+
+        return modelMapper.map(user, UserViewModel.class);
     }
 
     @Override
-    public User updateUser(User updated, UserDto userDto) {
-        if (!userDto.getPassword().equals(userDto.getConfirmPassword())){
+    public UserViewModel updateUser(UserServiceModel updated, UserDto userDto) {
+        if (!userDto.getPassword().equals(userDto.getConfirmPassword())) {
             throw new IllegalArgumentException("Password is not confirmed properly!");
         }
         updated.setPassword(passwordEncoder.encode(userDto.getPassword()));
         updated.setPhoneNumber(userDto.getPhoneNumber());
         updated.setEmail(userDto.getEmail());
-        userRepository.save(updated);
-        return updated;
+
+        User user = userRepository.findByUsername(updated.getUsername()).orElseThrow(() ->
+                new EntityNotFoundException("User with username ", updated.getUsername(), " was not found!"));
+        user.setPassword(passwordEncoder.encode(updated.getPassword()));
+        user.setPhoneNumber(updated.getPhoneNumber());
+        user.setEmail(updated.getEmail());
+        userRepository.save(user);
+
+        return modelMapper.map(updated, UserViewModel.class);
     }
 
     @Override
-    public User delete(User existingUser) {
-        userRepository.delete(existingUser);
+    public UserViewModel delete(UserViewModel existingUser) {
+        User user = userRepository.findByUsername(existingUser.getUsername()).orElseThrow(() ->
+                new EntityNotFoundException("User with username ", existingUser.getUsername(), " was not found!"));
+        userRepository.delete(user);
         return existingUser;
     }
 

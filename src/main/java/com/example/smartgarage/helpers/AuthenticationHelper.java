@@ -3,10 +3,13 @@ package com.example.smartgarage.helpers;
 import com.example.smartgarage.exceptions.AuthorizationException;
 import com.example.smartgarage.exceptions.EntityNotFoundException;
 import com.example.smartgarage.models.entities.User;
+import com.example.smartgarage.models.view_models.UserViewModel;
 import com.example.smartgarage.services.SmartGarageUserService;
 import com.example.smartgarage.services.contracts.UserService;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,19 +23,20 @@ import org.springframework.web.bind.annotation.RequestHeader;
 public class AuthenticationHelper {
     private static final String AUTHORIZATION_HEADER_NAME = "Authorization";
     private static final String INVALID_AUTHENTICATION_ERROR = "Invalid authentication.";
-    private static final String ERROR_MESSAGE = "Permission denied, only admin is authorized for this operation.";
     private final UserService userService;
     private final SessionFactory sessionFactory;
     private final PasswordEncoder passwordEncoder;
+    private final ModelMapper modelMapper;
 
     private final SmartGarageUserService smartGarageUserService;
 
 
 
-    public AuthenticationHelper(UserService userService, SessionFactory sessionFactory, PasswordEncoder passwordEncoder, SmartGarageUserService smartGarageUserService) {
+    public AuthenticationHelper(UserService userService, SessionFactory sessionFactory, PasswordEncoder passwordEncoder, ModelMapper modelMapper, SmartGarageUserService smartGarageUserService) {
         this.userService = userService;
         this.sessionFactory = sessionFactory;
         this.passwordEncoder = passwordEncoder;
+        this.modelMapper = modelMapper;
         this.smartGarageUserService = smartGarageUserService;
     }
 
@@ -46,13 +50,13 @@ public class AuthenticationHelper {
             String userInfo = headers.getFirst(AUTHORIZATION_HEADER_NAME);
             String username = getUsername(userInfo);
             String password = getPassword(userInfo);
-            User user = userService.getByUsername(username);
+            UserViewModel user = userService.getByUsername(username);
 
             if (!passwordEncoder.matches(password, user.getPassword())) {
                 throw new AuthorizationException(INVALID_AUTHENTICATION_ERROR);
             }
 
-            return user;
+            return modelMapper.map(user, User.class);
         } catch (EntityNotFoundException e) {
             throw new AuthorizationException(INVALID_AUTHENTICATION_ERROR);
         }

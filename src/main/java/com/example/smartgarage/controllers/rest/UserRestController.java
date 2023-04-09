@@ -5,9 +5,9 @@ import com.example.smartgarage.exceptions.EntityDuplicateException;
 import com.example.smartgarage.exceptions.EntityNotFoundException;
 import com.example.smartgarage.helpers.AuthenticationHelper;
 import com.example.smartgarage.models.dtos.UserDto;
-import com.example.smartgarage.models.entities.User;
 import com.example.smartgarage.models.service_models.UserServiceModel;
 
+import com.example.smartgarage.models.view_models.UserViewModel;
 import com.example.smartgarage.services.contracts.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -37,7 +37,7 @@ public class UserRestController {
 
 
     @GetMapping("/all")
-    public List<User> getAllUsers(@RequestHeader("Authorization") HttpHeaders headers){
+    public List<UserViewModel> getAllUsers(@RequestHeader("Authorization") HttpHeaders headers){
         try {
             authenticationHelper.checkAuthorization(headers);
             return userService.getAll();
@@ -51,7 +51,7 @@ public class UserRestController {
 
 
     @GetMapping("/username/{username}")
-    public User getUserByUsername(@PathVariable String username, @RequestHeader("Authorization") HttpHeaders headers) {
+    public UserViewModel getUserByUsername(@PathVariable String username, @RequestHeader("Authorization") HttpHeaders headers) {
         try {
             authenticationHelper.checkAuthorization(headers);
             return userService.getByUsername(username);
@@ -64,7 +64,7 @@ public class UserRestController {
     }
 
     @GetMapping("/email/{email}")
-    public User getUserByEmail(@PathVariable String email, @RequestHeader("Authorization") HttpHeaders headers) {
+    public UserViewModel getUserByEmail(@PathVariable String email, @RequestHeader("Authorization") HttpHeaders headers) {
         try {
             authenticationHelper.checkAuthorization(headers);
             return userService.getByEmail(email);
@@ -77,7 +77,7 @@ public class UserRestController {
     }
 
     @GetMapping("/phoneNumber/{phoneNumber}")
-    public User getUserByPhoneNumber(@PathVariable String phoneNumber, @RequestHeader("Authorization") HttpHeaders headers) {
+    public UserViewModel getUserByPhoneNumber(@PathVariable String phoneNumber, @RequestHeader("Authorization") HttpHeaders headers) {
         try {
             authenticationHelper.checkAuthorization(headers);
             return userService.getByPhoneNumber(phoneNumber);
@@ -90,8 +90,8 @@ public class UserRestController {
     }
 
     @PostMapping("/create")
-    public User createUser(@RequestHeader("Authorization") HttpHeaders headers,
-                           @Valid @RequestBody UserDto userDto){
+    public UserViewModel createUser(@RequestHeader("Authorization") HttpHeaders headers,
+                                    @Valid @RequestBody UserDto userDto){
         UserServiceModel userServiceModel;
         try {
             authenticationHelper.checkAuthorization(headers);
@@ -108,13 +108,16 @@ public class UserRestController {
     }
 
     @PutMapping("/update/{username}")
-    public User updateUser(@PathVariable String username, @RequestHeader HttpHeaders headers,
-                           @Valid @RequestBody UserDto userDto){
-        User existingUser;
+    public UserViewModel updateUser(@PathVariable String username, @RequestHeader HttpHeaders headers,
+                                    @Valid @RequestBody UserDto userDto){
+
+        UserServiceModel userServiceModel;
         try {
             authenticationHelper.checkAuthorization(headers);
-            existingUser = userService.getByUsername(username);
-            return userService.updateUser(existingUser, userDto);
+            UserViewModel userViewModel = userService.getByUsername(username);
+            userServiceModel = modelMapper.map(userViewModel, UserServiceModel.class);
+            userService.updateUser(userServiceModel, userDto);
+            return modelMapper.map(userServiceModel, UserViewModel.class);
         } catch (AuthorizationException e){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         } catch (EntityNotFoundException e){
@@ -125,8 +128,8 @@ public class UserRestController {
     }
 
     @DeleteMapping("/delete/{username}")
-    public User deleteUser(@PathVariable String username, @RequestHeader HttpHeaders headers){
-        User existingUser;
+    public UserViewModel deleteUser(@PathVariable String username, @RequestHeader HttpHeaders headers){
+        UserViewModel existingUser;
         try {
             authenticationHelper.checkAuthorization(headers);
             existingUser = userService.getByUsername(username);

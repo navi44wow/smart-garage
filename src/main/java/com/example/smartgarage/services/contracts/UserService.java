@@ -3,14 +3,15 @@ package com.example.smartgarage.services.contracts;
 import com.example.smartgarage.models.dtos.UserDto;
 import com.example.smartgarage.models.entities.User;
 import com.example.smartgarage.models.service_models.UserServiceModel;
+import com.example.smartgarage.models.view_models.UserViewModel;
 
 import java.util.List;
 
 public interface UserService {
-    List<User> getAll();
+    List<UserViewModel> getAll();
 
 
-    User getByUsername(String username);
+    UserViewModel getByUsername(String username);
 
     User getById(Long id);
 
@@ -18,11 +19,11 @@ public interface UserService {
 
     void seedUsers();
 
-    User getByEmail(String email);
+    UserViewModel getByEmail(String email);
 
-    User getByPhoneNumber(String phoneNumber);
+    UserViewModel getByPhoneNumber(String phoneNumber);
 
-    User updateUser(User user, UserDto userDto);
+    UserViewModel updateUser(UserServiceModel user, UserDto userDto);
 
-    User delete(User existingUser);
+    UserViewModel delete(UserViewModel userViewModel);
 }
