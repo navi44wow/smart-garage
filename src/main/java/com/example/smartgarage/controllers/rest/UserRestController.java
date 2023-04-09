@@ -8,7 +8,7 @@ import com.example.smartgarage.models.dtos.UserDto;
 import com.example.smartgarage.models.entities.User;
 import com.example.smartgarage.models.service_models.UserServiceModel;
 
-import com.example.smartgarage.service.contracts.UserService;
+import com.example.smartgarage.services.contracts.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 

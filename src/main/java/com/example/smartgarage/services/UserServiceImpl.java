@@ -1,4 +1,4 @@
-package com.example.smartgarage.service;
+package com.example.smartgarage.services;
 
 import com.example.smartgarage.exceptions.EntityDuplicateException;
 import com.example.smartgarage.exceptions.EntityNotFoundException;
@@ -9,7 +9,8 @@ import com.example.smartgarage.models.enums.UserRole;
 import com.example.smartgarage.models.service_models.UserServiceModel;
 import com.example.smartgarage.repositories.UserRepository;
 import com.example.smartgarage.repositories.UserRoleRepository;
-import com.example.smartgarage.service.contracts.UserService;
+import com.example.smartgarage.services.SmartGarageUserService;
+import com.example.smartgarage.services.contracts.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;

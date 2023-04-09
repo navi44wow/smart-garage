@@ -1,7 +1,7 @@
 package com.example.smartgarage.db_init;
 
 import com.example.smartgarage.service.contracts.UserRoleService;
-import com.example.smartgarage.service.contracts.UserService;
+import com.example.smartgarage.services.contracts.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 

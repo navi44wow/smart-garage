@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "services")
@@ -21,18 +19,15 @@ public class CarService {
     private Long id;
 
     @Column(name = "name")
-    private String username;
+    private String name;
     @Column(name = "price")
-    private double price;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    private List<Vehicle> vehicleId = new ArrayList<>();
+    private int price;
 
     @Override
     public String toString() {
         return "CarService{" +
                 "id=" + id +
-                ", username='" + username + '\'' +
+                ", username='" + name + '\'' +
                 ", price=" + price +
                 '}';
     }

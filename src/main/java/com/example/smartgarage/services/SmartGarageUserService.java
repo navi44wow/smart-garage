@@ -1,4 +1,4 @@
-package com.example.smartgarage.service;
+package com.example.smartgarage.services;
 
 import com.example.smartgarage.models.entities.User;
 import com.example.smartgarage.repositories.UserRepository;

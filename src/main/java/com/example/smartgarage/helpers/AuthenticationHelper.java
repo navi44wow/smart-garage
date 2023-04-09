@@ -3,13 +3,11 @@ package com.example.smartgarage.helpers;
 import com.example.smartgarage.exceptions.AuthorizationException;
 import com.example.smartgarage.exceptions.EntityNotFoundException;
 import com.example.smartgarage.models.entities.User;
-import com.example.smartgarage.service.SmartGarageUserService;
-import com.example.smartgarage.service.contracts.UserService;
+import com.example.smartgarage.services.SmartGarageUserService;
+import com.example.smartgarage.services.contracts.UserService;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;

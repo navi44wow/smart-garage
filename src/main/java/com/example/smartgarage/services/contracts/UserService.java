@@ -1,4 +1,4 @@
-package com.example.smartgarage.service.contracts;
+package com.example.smartgarage.services.contracts;
 
 import com.example.smartgarage.models.dtos.UserDto;
 import com.example.smartgarage.models.entities.User;
