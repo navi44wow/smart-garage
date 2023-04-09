@@ -23,7 +23,7 @@ public interface UserService {
 
     UserViewModel getByPhoneNumber(String phoneNumber);
 
-    UserViewModel updateUser(UserServiceModel user, UserDto userDto);
+    UserViewModel updateUser(UserServiceModel user, String username);
 
     UserViewModel delete(UserViewModel userViewModel);
 }

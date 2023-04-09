@@ -151,16 +151,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserViewModel updateUser(UserServiceModel updated, UserDto userDto) {
-        if (!userDto.getPassword().equals(userDto.getConfirmPassword())) {
+    public UserViewModel updateUser(UserServiceModel updated, String username) {
+        if (!updated.getPassword().equals(updated.getConfirmPassword())) {
             throw new IllegalArgumentException("Password is not confirmed properly!");
         }
-        updated.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        updated.setPhoneNumber(userDto.getPhoneNumber());
-        updated.setEmail(userDto.getEmail());
 
-        User user = userRepository.findByUsername(updated.getUsername()).orElseThrow(() ->
+        User user = userRepository.findByUsername(username).orElseThrow(() ->
                 new EntityNotFoundException("User with username ", updated.getUsername(), " was not found!"));
+        user.setUsername(updated.getUsername());
         user.setPassword(passwordEncoder.encode(updated.getPassword()));
         user.setPhoneNumber(updated.getPhoneNumber());
         user.setEmail(updated.getEmail());
