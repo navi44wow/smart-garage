@@ -1,11 +1,13 @@
 package com.example.smartgarage.models.entities;
 
-
+import com.example.smartgarage.models.entities.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.lang.NonNull;
 
 
 import javax.persistence.*;
@@ -14,6 +16,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 @Entity
@@ -21,13 +24,19 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
+
 
 public class Vehicle {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long vehicle_id;
+    private Long vehicleId;
+
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonIgnore
+    @JoinColumn(name = "userId", referencedColumnName = "id")
+    private User user;
 
 
     @NotNull
@@ -59,7 +68,7 @@ public class Vehicle {
 
     @Override
     public String toString() {
-        return "Vehicle{" + vehicle_id +
+        return "Vehicle{" + vehicleId +
                 "VIN=" + VIN +
                 ", license_plate='" + license_plate + '\'' +
                 ", model=" + model + '\'' +
@@ -68,9 +77,84 @@ public class Vehicle {
                 '}';
     }
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private List<User> id = new ArrayList<>();
+    public Vehicle() {
+    }
 
+    public Long getVehicleId() {
+        return vehicleId;
+    }
+
+    public void setVehicleId(@NotNull Long vehicleId) {
+        this.vehicleId = vehicleId;
+    }
+
+    public User getUserId() {
+        return user;
+    }
+
+    public void setUserId(@NotNull User user) {
+        this.user = user;
+    }
+
+    @NonNull
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(@NonNull User user) {
+        this.user = user;
+    }
+
+    public String getVIN() {
+        return VIN;
+    }
+
+    public void setVIN(@NotNull String VIN) {
+        this.VIN = VIN;
+    }
+
+    public String getLicense_plate() {
+        return license_plate;
+    }
+
+    public void setLicense_plate(@NotNull String license_plate) {
+        this.license_plate = license_plate;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(@NotNull String model) {
+        this.model = model;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(@NotNull String brand) {
+        this.brand = brand;
+    }
+
+    public Long getCreation_year() {
+        return creation_year;
+    }
+
+    public void setCreation_year(@NotNull Long creation_year) {
+        this.creation_year = creation_year;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Vehicle vehicle = (Vehicle) o;
+        return vehicleId == vehicle.vehicleId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(vehicleId);
+    }
 }
-
-
