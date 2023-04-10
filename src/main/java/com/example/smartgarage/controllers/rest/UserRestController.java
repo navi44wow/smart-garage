@@ -115,8 +115,7 @@ public class UserRestController {
         try {
             authenticationHelper.checkAuthorization(headers);
             userServiceModel = modelMapper.map(userDto, UserServiceModel.class);
-            userService.updateUser(userServiceModel, username);
-            return modelMapper.map(userServiceModel, UserViewModel.class);
+            return userService.updateUser(userServiceModel, username);
         } catch (AuthorizationException e){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         } catch (EntityNotFoundException e){

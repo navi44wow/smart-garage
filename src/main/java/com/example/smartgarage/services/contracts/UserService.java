@@ -1,6 +1,5 @@
 package com.example.smartgarage.services.contracts;
 
-import com.example.smartgarage.models.dtos.UserDto;
 import com.example.smartgarage.models.entities.User;
 import com.example.smartgarage.models.service_models.UserServiceModel;
 import com.example.smartgarage.models.view_models.UserViewModel;
