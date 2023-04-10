@@ -3,13 +3,12 @@ package com.example.smartgarage.controllers.rest;
 import com.example.smartgarage.exceptions.AuthorizationException;
 import com.example.smartgarage.exceptions.EntityDuplicateException;
 import com.example.smartgarage.exceptions.EntityNotFoundException;
+import com.example.smartgarage.exceptions.InvalidRequestException;
 import com.example.smartgarage.helpers.AuthenticationHelper;
 import com.example.smartgarage.models.dtos.CarServiceDto;
 import com.example.smartgarage.models.entities.CarService;
-import com.example.smartgarage.models.entities.User;
-import com.example.smartgarage.models.service_models.CarServiceModel;
-import com.example.smartgarage.models.service_models.UserServiceModel;
-import com.example.smartgarage.services.CarServiceImpl;
+import com.example.smartgarage.repositories.CarServiceRepository;
+import com.example.smartgarage.services.contracts.CarServizService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -24,14 +23,14 @@ import java.util.Optional;
 @RequestMapping("/api/services")
 public class CarServiceRestController {
 
-    private final CarServiceImpl carService;
+    private final CarServizService carService;
 
     private final ModelMapper modelMapper;
 
     private final AuthenticationHelper authenticationHelper;
 
 
-    public CarServiceRestController(CarServiceImpl carService, ModelMapper modelMapper, AuthenticationHelper authenticationHelper) {
+    public CarServiceRestController(CarServizService carService, ModelMapper modelMapper, AuthenticationHelper authenticationHelper) {
         this.carService = carService;
         this.modelMapper = modelMapper;
         this.authenticationHelper = authenticationHelper;
@@ -42,6 +41,20 @@ public class CarServiceRestController {
     public List<CarService> getAll() {
         return carService.getAll();
     }
+
+    @GetMapping("/filter")
+    public List<CarService> getAll(@RequestParam(required = false) Optional<String> name,
+                                 @RequestParam(required = false) Optional<Integer> priceMinimum,
+                                 @RequestParam(required = false) Optional<Integer> priceMaximum,
+                                 @RequestParam(required = false) Optional<String> sortBy,
+                                 @RequestParam(required = false) Optional<String> sortOrder) {
+        try {
+            return carService.getAll(name, priceMinimum, priceMaximum, sortBy, sortOrder);
+        } catch (InvalidRequestException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+    }
+
 
 
     @GetMapping("/{id}")
