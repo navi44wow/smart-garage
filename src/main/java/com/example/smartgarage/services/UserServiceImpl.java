@@ -2,7 +2,6 @@ package com.example.smartgarage.services;
 
 import com.example.smartgarage.exceptions.EntityDuplicateException;
 import com.example.smartgarage.exceptions.EntityNotFoundException;
-import com.example.smartgarage.models.dtos.UserDto;
 import com.example.smartgarage.models.entities.User;
 import com.example.smartgarage.models.entities.UserRoleEntity;
 import com.example.smartgarage.models.enums.UserRole;
@@ -173,19 +172,14 @@ public class UserServiceImpl implements UserService {
         return modelMapper.map(existingUser, UserViewModel.class);
     }
 
-    private boolean alreadyExistsUser(String username, String phoneNumber, String email) {
-        boolean exists = false;
-        try {
-            if (userRepository.findByUsername(username).isPresent()) {
-                throw new EntityDuplicateException("User", "username", username);
-            } else if (userRepository.findByPhoneNumber(phoneNumber).isPresent()) {
-                throw new EntityDuplicateException("User", "phone number", phoneNumber);
-            } else if (userRepository.findByEmail(email).isPresent()) {
-                throw new EntityDuplicateException("User", "email", email);
-            }
-        } catch (EntityDuplicateException e) {
-            exists = true;
+    private void alreadyExistsUser(String username, String phoneNumber, String email) {
+        if (userRepository.findByUsername(username).isPresent()) {
+            throw new EntityDuplicateException("User", "username", username);
+        } else if (userRepository.findByPhoneNumber(phoneNumber).isPresent()) {
+            throw new EntityDuplicateException("User", "phone number", phoneNumber);
+        } else if (userRepository.findByEmail(email).isPresent()) {
+            throw new EntityDuplicateException("User", "email", email);
         }
-        return exists;
+
     }
 }
