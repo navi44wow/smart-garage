@@ -25,5 +25,5 @@ public interface UserService {
 
     UserViewModel updateUser(UserServiceModel user, String username);
 
-    UserViewModel delete(UserViewModel userViewModel);
+    UserViewModel delete(UserServiceModel userViewModel);
 }

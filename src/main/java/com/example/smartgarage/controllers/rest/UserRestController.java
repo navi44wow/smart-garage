@@ -128,10 +128,11 @@ public class UserRestController {
 
     @DeleteMapping("/delete/{username}")
     public UserViewModel deleteUser(@PathVariable String username, @RequestHeader HttpHeaders headers){
-        UserViewModel existingUser;
+        UserServiceModel existingUser;
         try {
             authenticationHelper.checkAuthorization(headers);
-            existingUser = userService.getByUsername(username);
+            UserViewModel userViewModel = userService.getByUsername(username);
+            existingUser = modelMapper.map(userViewModel, UserServiceModel.class);
             return userService.delete(existingUser);
         } catch (AuthorizationException e){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());

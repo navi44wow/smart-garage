@@ -97,9 +97,7 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("Password is not confirmed properly!");
         }
 
-        if (alreadyExistsUser(user.getUsername(), user.getPhoneNumber(), user.getEmail())) {
-            throw new EntityDuplicateException("User", "username", user.getUsername());
-        }
+        alreadyExistsUser(user.getUsername(), user.getPhoneNumber(), user.getEmail());
         user = userRepository.save(user);
 
         UserDetails userDetails = smartGarageUserService.loadUserByUsername(user.getUsername());
@@ -168,11 +166,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserViewModel delete(UserViewModel existingUser) {
+    public UserViewModel delete(UserServiceModel existingUser) {
         User user = userRepository.findByUsername(existingUser.getUsername()).orElseThrow(() ->
                 new EntityNotFoundException("User with username ", existingUser.getUsername(), " was not found!"));
         userRepository.delete(user);
-        return existingUser;
+        return modelMapper.map(existingUser, UserViewModel.class);
     }
 
     private boolean alreadyExistsUser(String username, String phoneNumber, String email) {
