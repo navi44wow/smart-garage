@@ -78,7 +78,7 @@ Customers must be able to see the list of all their services.
 ### Roadmap:
 - [x] Create a README file.
 - [x] Create classes: User, Vehicle, CarService, Visit.
-- [ ] CRUD operations for User. **<ins>Important**
+- [x] CRUD operations for User. **<ins>Important**
 - [ ] CRUD operations for Vehicle. **<ins>Important**
 - [ ] CRUD operations for CarService. **<ins>Important**
 - [ ] CRUD operations for Visit. **<ins>Important**

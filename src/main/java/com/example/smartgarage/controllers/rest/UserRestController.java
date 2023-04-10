@@ -3,6 +3,7 @@ package com.example.smartgarage.controllers.rest;
 import com.example.smartgarage.exceptions.AuthorizationException;
 import com.example.smartgarage.exceptions.EntityDuplicateException;
 import com.example.smartgarage.exceptions.EntityNotFoundException;
+import com.example.smartgarage.exceptions.NotValidPasswordException;
 import com.example.smartgarage.helpers.AuthenticationHelper;
 import com.example.smartgarage.models.dtos.UserDto;
 import com.example.smartgarage.models.service_models.UserServiceModel;
@@ -98,7 +99,9 @@ public class UserRestController {
             userServiceModel = modelMapper.map(userDto, UserServiceModel.class);
             userService.createUser(userServiceModel);
             return userService.getByUsername(userServiceModel.getUsername());
-        } catch (AuthorizationException e){
+        } catch (NotValidPasswordException e){
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, e.getMessage());
+        }catch (AuthorizationException e){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         } catch (EntityNotFoundException e){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
