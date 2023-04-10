@@ -4,5 +4,12 @@
     "password": "12345",
     "email": "iliyan02@abv.bg",
     "phoneNumber": "0894053050"
+  },
+  {
+    "username": "admin",
+    "password": "98765",
+    "email": "arcturus1986@abv.bg",
+    "phoneNumber": "0894053055"
   }
+
 ]
