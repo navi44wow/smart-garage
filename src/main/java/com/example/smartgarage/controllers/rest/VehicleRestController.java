@@ -81,6 +81,11 @@ public class VehicleRestController {
         return vehicleService.searchAllByCreationYear(creationYear);
     }
 
+    @GetMapping("getAll/{VIN}")
+    public List<Vehicle> searchAllByVIN(@PathVariable String VIN) {
+        return vehicleService.searchAllByVIN(VIN);
+    }
+
 
     @GetMapping("/{vehicleId}")
     public Vehicle getById(@PathVariable Long vehicleId) {

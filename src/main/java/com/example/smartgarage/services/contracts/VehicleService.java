@@ -12,6 +12,7 @@ public interface VehicleService {
 
     Vehicle getById(Long vehicleId);
 
+
     void save(Vehicle vehicle);
 
     public Vehicle update(Vehicle vehicle, VehicleDto vehicleDto);
@@ -31,4 +32,5 @@ public interface VehicleService {
 
     List<Vehicle> searchAllByCreationYear(Long creationYear);
 
+    List<Vehicle> searchAllByVIN(String VIN);
 }

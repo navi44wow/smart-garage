@@ -1,20 +1,14 @@
 package com.example.smartgarage.services;
 
 import com.example.smartgarage.exceptions.EntityNotFoundException;
-import com.example.smartgarage.models.dtos.CarServiceDto;
 import com.example.smartgarage.models.dtos.VehicleDto;
-import com.example.smartgarage.models.entities.CarService;
-import com.example.smartgarage.models.entities.User;
 import com.example.smartgarage.models.entities.Vehicle;
-import com.example.smartgarage.repositories.CarServiceRepository;
 import com.example.smartgarage.repositories.VehicleRepository;
 import com.example.smartgarage.services.contracts.VehicleService;
 import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class VehicleServiceImpl implements VehicleService {
@@ -57,6 +51,11 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     public List<Vehicle> searchAllByCreationYear(Long creationYear) {
         return vehicleRepository.searchAllByCreationYear(creationYear);
+    }
+
+    @Override
+    public List<Vehicle> searchAllByVIN(String VIN) {
+        return vehicleRepository.searchAllByVIN(VIN);
     }
 
     public void save(Vehicle vehicle) {
