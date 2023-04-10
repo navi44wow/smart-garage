@@ -1,5 +1,7 @@
 package com.example.smartgarage.models.entities;
 
+import com.example.smartgarage.models.view_models.UserViewModel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,11 +23,13 @@ public class Visit {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    //@JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    //@JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "vehicle_id")
     private Vehicle vehicle;
 
@@ -38,6 +42,18 @@ public class Visit {
 
     @Column(name = "end_date")
     private LocalDate endDate;
+
+    @Override
+    public String toString() {
+        return "Visit{" +
+                "id=" + id +
+                ", user=" + user +
+                ", vehicle=" + vehicle +
+                ", status=" + status.toString() +
+                ", startDate=" + startDate.toString() +
+                ", endDate=" + endDate.toString() +
+                '}';
+    }
 }
 
 

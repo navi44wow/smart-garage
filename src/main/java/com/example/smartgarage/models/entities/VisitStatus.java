@@ -23,10 +23,11 @@ public class VisitStatus {
     @Column(name = "name")
     private String name;
 
-    /*
-    id 1 - not started.
-    id 2 - in progress.
-    id 3 - ready for pick_up.
-     */
-
+    @Override
+    public String toString() {
+        return "VisitStatus{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }
