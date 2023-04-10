@@ -21,7 +21,7 @@ VALUES ('Change filter', 25),
        ('Wheel alignment', 80);
 
 
-INSERT INTO vehicles (VIN, brand, creation_year, license_plate, model, userId)
+INSERT INTO vehicles (VIN, brand, creationYear, licensePlate, model, userId)
 VALUES ('dlaksjdlak9089809', 'audi', 2000, 'CB1000AA', 'a4', 'ae7c2dc0-1375-4f7b-8943-36016bdc7015'),
        ('dlaksjdlak9089810', 'bmw', 2001, 'CB1001AA', '320d', 'ae7c2dc0-1375-4f7b-8943-36016bdc7015'),
        ('dlaksjdlak9089811', 'mercedes', 2002, 'CB1002AA', 'eclass', 'ae7c2dc0-1375-4f7b-8943-36016bdc7015'),
