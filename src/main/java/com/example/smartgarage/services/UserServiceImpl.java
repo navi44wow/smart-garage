@@ -2,6 +2,7 @@ package com.example.smartgarage.services;
 
 import com.example.smartgarage.exceptions.EntityDuplicateException;
 import com.example.smartgarage.exceptions.EntityNotFoundException;
+import com.example.smartgarage.exceptions.NotValidPasswordException;
 import com.example.smartgarage.models.entities.User;
 import com.example.smartgarage.models.entities.UserRoleEntity;
 import com.example.smartgarage.models.enums.UserRole;
@@ -84,6 +85,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void createUser(UserServiceModel userServiceModel) {
         User user = modelMapper.map(userServiceModel, User.class);
+        checkPassword(userServiceModel.getPassword());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         UserRoleEntity userRole = userRoleRepository.findByRole(UserRole.CUSTOMER).orElseThrow(
@@ -108,6 +110,33 @@ public class UserServiceImpl implements UserService {
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
+
+    private void checkPassword(String password) {
+        try {
+            if (password.length() < 8) {
+                throw new NotValidPasswordException("Password must be at least 8 characters long");
+            }
+            boolean hasCapital = false;
+            boolean hasDigit = false;
+            boolean hasSpecial = false;
+            for (int i = 0; i < password.length(); i++) {
+                char c = password.charAt(i);
+                if (Character.isUpperCase(c)) {
+                    hasCapital = true;
+                } else if (Character.isDigit(c)) {
+                    hasDigit = true;
+                } else if (!Character.isLetterOrDigit(c)) {
+                    hasSpecial = true;
+                }
+            }
+
+            if (!hasCapital || !hasDigit || !hasSpecial) {
+                throw new NotValidPasswordException("Password must contain at least one capital letter, one digit, and one special symbol");
+            }
+        } catch (NotValidPasswordException e){
+            throw new NotValidPasswordException(e.getMessage());
+        }
     }
 
     @Override
