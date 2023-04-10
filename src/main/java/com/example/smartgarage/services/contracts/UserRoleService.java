@@ -1,4 +1,4 @@
-package com.example.smartgarage.service.contracts;
+package com.example.smartgarage.services.contracts;
 
 public interface UserRoleService {
     void seedRoles();

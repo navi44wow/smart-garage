@@ -1,9 +1,9 @@
-package com.example.smartgarage.service;
+package com.example.smartgarage.services;
 
 import com.example.smartgarage.models.entities.UserRoleEntity;
 import com.example.smartgarage.models.enums.UserRole;
 import com.example.smartgarage.repositories.UserRoleRepository;
-import com.example.smartgarage.service.contracts.UserRoleService;
+import com.example.smartgarage.services.contracts.UserRoleService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
