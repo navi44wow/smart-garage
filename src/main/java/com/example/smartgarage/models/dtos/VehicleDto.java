@@ -26,12 +26,12 @@ public class VehicleDto {
 
     @NotNull(message = "license plate cannot be empty")
     @Size(min = 8, max = 8, message = "license plate has to be 8 symbols!")
-    private String license_plate;
+    private String licensePlate;
 
     @NotNull(message = "creation year plate cannot be empty")
     @Positive
     @Min(1886)
-    private Long creation_year;
+    private Long creationYear;
 
     private User user;
 
@@ -75,20 +75,20 @@ public class VehicleDto {
         this.model = model;
     }
 
-    public String getLicense_plate() {
-        return license_plate;
+    public String getLicensePlate() {
+        return licensePlate;
     }
 
-    public void setLicense_plate(String license_plate) {
-        this.license_plate = license_plate;
+    public void setLicensePlate(String licensePlate) {
+        this.licensePlate = licensePlate;
     }
 
-    public Long getCreation_year() {
-        return creation_year;
+    public Long getCreationYear() {
+        return creationYear;
     }
 
-    public void setCreation_year(Long creation_year) {
-        this.creation_year = creation_year;
+    public void setCreationYear(Long creationYear) {
+        this.creationYear = creationYear;
     }
 
 

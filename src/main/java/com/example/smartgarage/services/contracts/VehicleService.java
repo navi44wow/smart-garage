@@ -22,4 +22,13 @@ public interface VehicleService {
 
     int getVehiclesCount();
 
+    List<Vehicle> searchAllByModel(String model);
+
+    List<Vehicle> searchAllByBrand(String brand);
+
+
+    List<Vehicle> findByLicensePlate(String licensePlate);
+
+    List<Vehicle> searchAllByCreationYear(Long creationYear);
+
 }

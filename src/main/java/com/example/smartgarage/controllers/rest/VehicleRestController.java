@@ -60,6 +60,28 @@ public class VehicleRestController {
         return vehicleService.getAll();
     }
 
+    @GetMapping("/search/{model}")
+    public List<Vehicle> searchAllByModel(@PathVariable String model) {
+        return vehicleService.searchAllByModel(model);
+    }
+
+    @GetMapping("/find/{brand}")
+    public List<Vehicle> searchAllByBrand(@PathVariable String brand) {
+        return vehicleService.searchAllByBrand(brand);
+    }
+
+
+    @GetMapping("/findBy/{licensePlate}")
+    public List<Vehicle> findByLicensePlate(@PathVariable String licensePlate) {
+        return vehicleService.findByLicensePlate(licensePlate);
+    }
+
+    @GetMapping("getBy/{creationYear}")
+    public List<Vehicle> searchAllByCreationYear(@PathVariable Long creationYear) {
+        return vehicleService.searchAllByCreationYear(creationYear);
+    }
+
+
     @GetMapping("/{vehicleId}")
     public Vehicle getById(@PathVariable Long vehicleId) {
         try {

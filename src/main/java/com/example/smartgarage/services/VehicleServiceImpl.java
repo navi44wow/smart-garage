@@ -39,6 +39,26 @@ public class VehicleServiceImpl implements VehicleService {
         return 0;
     }
 
+    @Override
+    public List<Vehicle> searchAllByModel(String model) {
+        return vehicleRepository.searchAllByModel(model);
+    }
+
+    @Override
+    public List<Vehicle> searchAllByBrand(String brand) {
+        return vehicleRepository.searchAllByBrand(brand);
+    }
+
+    @Override
+    public List<Vehicle> findByLicensePlate(String licensePlate) {
+        return vehicleRepository.findByLicensePlate(licensePlate);
+    }
+
+    @Override
+    public List<Vehicle> searchAllByCreationYear(Long creationYear) {
+        return vehicleRepository.searchAllByCreationYear(creationYear);
+    }
+
     public void save(Vehicle vehicle) {
         vehicleRepository.save(vehicle);
     }
@@ -47,8 +67,8 @@ public class VehicleServiceImpl implements VehicleService {
         vehicle.setVIN(vehicle.getVIN());
         vehicle.setBrand(vehicleDto.getBrand());
         vehicle.setModel(vehicleDto.getModel());
-        vehicle.setCreation_year(vehicleDto.getCreation_year());
-        vehicle.setLicense_plate(vehicleDto.getLicense_plate());
+        vehicle.setCreationYear(vehicleDto.getCreationYear());
+        vehicle.setLicensePlate(vehicleDto.getLicensePlate());
         vehicleRepository.save(vehicle);
         return vehicle;
     }

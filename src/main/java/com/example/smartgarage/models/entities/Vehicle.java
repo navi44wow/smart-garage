@@ -46,8 +46,8 @@ public class Vehicle {
     private String VIN;
 
     @NotNull
-    @Column(name = "license_plate", length = 8)
-    private String license_plate;
+    @Column(name = "licensePlate", length = 8)
+    private String licensePlate;
 
 
     @NotNull
@@ -63,18 +63,18 @@ public class Vehicle {
     @NotNull
     @Positive
     @Min(1886)
-    @Column(name = "creation_year", length = 4)
-    private Long creation_year;
+    @Column(name = "creationYear", length = 4)
+    private Long creationYear;
 
 
     @Override
     public String toString() {
         return "Vehicle{" + vehicleId +
                 "VIN=" + VIN +
-                ", license_plate='" + license_plate + '\'' +
+                ", license plate='" + licensePlate + '\'' +
                 ", model=" + model + '\'' +
                 ", brand=" + brand + '\'' +
-                ", creation_year=" + creation_year +
+                ", creation year=" + creationYear +
                 '}';
     }
 
@@ -114,12 +114,12 @@ public class Vehicle {
         this.VIN = VIN;
     }
 
-    public String getLicense_plate() {
-        return license_plate;
+    public String getLicensePlate() {
+        return licensePlate;
     }
 
-    public void setLicense_plate(@NotNull String license_plate) {
-        this.license_plate = license_plate;
+    public void setLicensePlate(@NotNull String licensePlate) {
+        this.licensePlate = licensePlate;
     }
 
     public String getModel() {
@@ -138,12 +138,12 @@ public class Vehicle {
         this.brand = brand;
     }
 
-    public Long getCreation_year() {
-        return creation_year;
+    public Long getCreationYear() {
+        return creationYear;
     }
 
-    public void setCreation_year(@NotNull Long creation_year) {
-        this.creation_year = creation_year;
+    public void setCreationYear(@NotNull Long creationYear) {
+        this.creationYear = creationYear;
     }
 
     @Override
