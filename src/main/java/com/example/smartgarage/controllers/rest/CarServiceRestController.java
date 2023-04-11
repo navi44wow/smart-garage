@@ -69,12 +69,12 @@ public class CarServiceRestController {
     @PostMapping("/new")
     public Optional<CarService> create(@Valid @RequestBody CarServiceDto serviceDto,
                                        @RequestHeader("Authorization") HttpHeaders headers) {
-        CarService car;
+        CarService service;
         try {
             authenticationHelper.checkAuthorization(headers);
-            car = modelMapper.map(serviceDto, CarService.class);
-            carService.save(car);
-            return carService.findById(car.getId());
+            service = modelMapper.map(serviceDto, CarService.class);
+            carService.save(service);
+            return carService.findById(service.getId());
         } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         } catch (EntityNotFoundException e) {

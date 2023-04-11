@@ -7,14 +7,16 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import javax.servlet.http.HttpSession;
 
 @Controller
-public class HomeController {
+public class CustomerController {
+
     @ModelAttribute("isAuthenticated")
     public boolean populateIsAuthenticated(HttpSession session) {
         return session.getAttribute("currentUser") != null;
     }
 
-    @GetMapping("/")
+    @GetMapping("/customer")
     public String home() {
-        return "home";
+        return "customer-dashboard";
     }
+
 }
