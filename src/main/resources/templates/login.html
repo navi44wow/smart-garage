@@ -11,11 +11,14 @@
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-6 mx-auto">
-            <form th:action="@{/login}" method="POST" class="border rounded px-4 py-3">
+            <div th:if="${bad_credentials}" class="alert alert-danger" role="alert">
+                This username and password combination does not exist.
+            </div>
+            <form th:action="@{/users/login}" method="POST" class="border rounded px-4 py-3">
                 <h2 class="text-center mb-3">Login Form</h2>
                 <div class="form-group">
                     <label for="username">Username:</label>
-                    <input type="text" class="form-control" id="username" name="username" required>
+                    <input th:value="${username}" type="text" class="form-control" id="username" name="username" required>
                 </div>
                 <div class="form-group">
                     <label for="password">Password:</label>
