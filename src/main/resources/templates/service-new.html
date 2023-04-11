@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>New Service</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css}">
+</head>
+<body>
+<div class="container mt-5">
+    <h2>New Service</h2>
+    <form th:action="@{/service-new}" method="post">
+        <div class="form-group">
+            <label for="name">Name of Service</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="price">Price</label>
+            <input type="number" class="form-control" id="price" name="price" required>
+        </div>
+        <button type="submit" class="btn btn-primary mr-2">Add</button>
+        <a th:href="@{/employee}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+
+<!-- Bootstrap JS -->
+<script th:src="@{https://code.jquery.com/jquery-3.2.1.slim.min.js}"></script>
+<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js}"></script>
+<script th:src="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js}"></script>
+</body>
+</html>
