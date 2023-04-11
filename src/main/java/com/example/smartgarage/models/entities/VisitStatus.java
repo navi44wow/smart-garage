@@ -25,9 +25,6 @@ public class VisitStatus {
 
     @Override
     public String toString() {
-        return "VisitStatus{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
+        return name;
     }
 }

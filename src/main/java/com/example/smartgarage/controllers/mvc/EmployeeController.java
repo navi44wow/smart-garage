@@ -16,12 +16,6 @@ import java.util.List;
 @RequestMapping("/employee")
 public class EmployeeController {
 
-    private final UserService userService;
-
-    public EmployeeController(UserService userService) {
-        this.userService = userService;
-    }
-
     @ModelAttribute("isAuthenticated")
     public boolean populateIsAuthenticated(HttpSession session) {
         return session.getAttribute("currentUser") != null;
@@ -31,12 +25,4 @@ public class EmployeeController {
     public String home() {
         return "employee-dashboard";
     }
-
-//    @GetMapping()
-//    public String getAll(Model model) {
-//        List<UserViewModel> users = userService.getAll();
-//        model.addAttribute("all", users);
-//        return "/users";
-//    }
-
 }
