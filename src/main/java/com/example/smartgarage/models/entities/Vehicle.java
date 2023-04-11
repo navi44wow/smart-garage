@@ -70,11 +70,11 @@ public class Vehicle {
     @Override
     public String toString() {
         return "Vehicle{" + vehicleId +
-                "VIN=" + VIN +
-                ", license plate='" + licensePlate + '\'' +
-                ", model=" + model + '\'' +
-                ", brand=" + brand + '\'' +
-                ", creation year=" + creationYear +
+                "VIN: " + VIN +
+                ", license plate: '" + licensePlate + '\'' +
+                ", model: " + model + '\'' +
+                ", brand: " + brand + '\'' +
+                ", creation year: " + creationYear +
                 '}';
     }
 

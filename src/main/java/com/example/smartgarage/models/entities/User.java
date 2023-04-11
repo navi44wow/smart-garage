@@ -84,4 +84,9 @@ public class User {
     public List<UserRoleEntity> getRoles() {
         return roles;
     }
+
+    @Override
+    public String toString() {
+        return "username: " + username;
+    }
 }
