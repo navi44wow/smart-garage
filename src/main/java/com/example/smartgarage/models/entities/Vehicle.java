@@ -31,12 +31,15 @@ public class Vehicle {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "vehicle_id")
     private Long vehicleId;
 
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnore
-    @JoinColumn(name = "userId", referencedColumnName = "id")
+    @JoinTable(name = "users_vehicles",
+            joinColumns = @JoinColumn(name = "vehicle_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
     private User user;
 
 
