@@ -46,7 +46,7 @@ public class Vehicle {
     private String VIN;
 
     @NotNull
-    @Column(name = "licensePlate", length = 8)
+    @Column(name = "license_plate", length = 8)
     private String licensePlate;
 
 
@@ -63,7 +63,7 @@ public class Vehicle {
     @NotNull
     @Positive
     @Min(1886)
-    @Column(name = "creationYear", length = 4)
+    @Column(name = "creation_year", length = 4)
     private Long creationYear;
 
 
