@@ -36,10 +36,7 @@ public class Vehicle {
 
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JsonIgnore
-    @JoinTable(name = "users_vehicles",
-            joinColumns = @JoinColumn(name = "vehicle_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @JoinColumn(name = "user_id")
     private User user;
 
 

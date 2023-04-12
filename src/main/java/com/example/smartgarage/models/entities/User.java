@@ -28,7 +28,8 @@ public class User {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
     private Set<Vehicle> vehicles;
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
