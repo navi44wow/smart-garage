@@ -1,22 +1,15 @@
 package com.example.smartgarage.models.entities;
 
-import com.example.smartgarage.models.entities.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.lang.NonNull;
-
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 
@@ -25,8 +18,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @AllArgsConstructor
-
-
+@NoArgsConstructor
 public class Vehicle {
 
     @Id
@@ -76,74 +68,6 @@ public class Vehicle {
                 ", brand: " + brand + '\'' +
                 ", creation year: " + creationYear +
                 '}';
-    }
-
-    public Vehicle() {
-    }
-
-    public Long getVehicleId() {
-        return vehicleId;
-    }
-
-    public void setVehicleId(@NotNull Long vehicleId) {
-        this.vehicleId = vehicleId;
-    }
-
-    public User getUserId() {
-        return user;
-    }
-
-    public void setUserId(@NotNull User user) {
-        this.user = user;
-    }
-
-    @NonNull
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(@NonNull User user) {
-        this.user = user;
-    }
-
-    public String getVIN() {
-        return VIN;
-    }
-
-    public void setVIN(@NotNull String VIN) {
-        this.VIN = VIN;
-    }
-
-    public String getLicensePlate() {
-        return licensePlate;
-    }
-
-    public void setLicensePlate(@NotNull String licensePlate) {
-        this.licensePlate = licensePlate;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
-    public void setModel(@NotNull String model) {
-        this.model = model;
-    }
-
-    public String getBrand() {
-        return brand;
-    }
-
-    public void setBrand(@NotNull String brand) {
-        this.brand = brand;
-    }
-
-    public Long getCreationYear() {
-        return creationYear;
-    }
-
-    public void setCreationYear(@NotNull Long creationYear) {
-        this.creationYear = creationYear;
     }
 
     @Override

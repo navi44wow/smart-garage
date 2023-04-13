@@ -4,37 +4,21 @@ import com.example.smartgarage.exceptions.AuthorizationException;
 import com.example.smartgarage.exceptions.EntityDuplicateException;
 import com.example.smartgarage.exceptions.EntityNotFoundException;
 import com.example.smartgarage.helpers.AuthenticationHelper;
-
-import com.example.smartgarage.models.dtos.CarServiceDto;
-import com.example.smartgarage.models.entities.CarService;
-import com.example.smartgarage.models.entities.User;
+import com.example.smartgarage.models.dtos.VehicleDto;
 import com.example.smartgarage.models.entities.Vehicle;
+import com.example.smartgarage.services.contracts.VehicleService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-
-import com.example.smartgarage.models.dtos.VehicleDto;
-
-import com.example.smartgarage.services.contracts.VehicleService;
-
-
-import org.springframework.beans.factory.annotation.Autowired;
-
-import org.springframework.web.bind.annotation.*;
-
-
-import java.util.List;
-import java.util.Optional;
-
-
-import org.springframework.http.HttpStatus;
-
 import javax.validation.Valid;
+import java.util.List;
 
 
 @RestController
-@RequestMapping("api/vehicles")
+@RequestMapping("/api/vehicles")
 
 
 public class VehicleRestController {
@@ -55,7 +39,7 @@ public class VehicleRestController {
     }
 
 
-    @GetMapping
+    @GetMapping()
     public List<Vehicle> getAll() {
         return vehicleService.getAll();
     }
