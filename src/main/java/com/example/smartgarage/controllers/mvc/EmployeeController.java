@@ -25,4 +25,10 @@ public class EmployeeController {
     public String home() {
         return "employee-dashboard";
     }
+
+@GetMapping("/reset_password")
+public String forgotPassword() {
+    return "/reset_password";
+}
+
 }
