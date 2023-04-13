@@ -1,5 +1,7 @@
 package com.example.smartgarage.models.entities;
 
+import org.hibernate.annotations.Type;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +12,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 
@@ -38,7 +41,8 @@ public class Vehicle {
     private String VIN;
 
     @NotNull
-    @Column(name = "license_plate", length = 8)
+    @Column(name = "license_plate")
+    @Size(min = 7, max = 8, message = "license plate has to be between 7 and 8 symbols!")
     private String licensePlate;
 
 
