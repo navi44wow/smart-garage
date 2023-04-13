@@ -33,4 +33,11 @@ public interface VehicleService {
     List<Vehicle> searchAllByCreationYear(Long creationYear);
 
     List<Vehicle> searchAllByVIN(String VIN);
+
+    List<Vehicle> getAll(Optional<String> brand,
+                         Optional<String> model,
+                         Optional<Integer> creationYearMin,
+                         Optional<Integer> creationYearMax,
+                         Optional<String> sortBy,
+                         Optional<String> sortOrder);
 }

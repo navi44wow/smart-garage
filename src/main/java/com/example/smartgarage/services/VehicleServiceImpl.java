@@ -5,10 +5,15 @@ import com.example.smartgarage.models.dtos.VehicleDto;
 import com.example.smartgarage.models.entities.Vehicle;
 import com.example.smartgarage.repositories.VehicleRepository;
 import com.example.smartgarage.services.contracts.VehicleService;
+import com.example.smartgarage.services.queries.*;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class VehicleServiceImpl implements VehicleService {
@@ -63,7 +68,7 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     public Vehicle update(Vehicle vehicle, VehicleDto vehicleDto) {
-        vehicle.setVIN(vehicle.getVIN());
+        vehicle.setVIN(vehicleDto.getVIN());
         vehicle.setBrand(vehicleDto.getBrand());
         vehicle.setModel(vehicleDto.getModel());
         vehicle.setCreationYear(vehicleDto.getCreationYear());
@@ -79,5 +84,27 @@ public class VehicleServiceImpl implements VehicleService {
     public Vehicle getById(Long vehicleId) {
         return vehicleRepository.findById(vehicleId).orElseThrow(() ->
                 new EntityNotFoundException("Vehicle with id ", vehicleId.toString(), " was not found!"));
+    }
+
+
+    @Override
+    public List<Vehicle> getAll(Optional<String> brand,
+                                Optional<String> model,
+                                Optional<Integer> creationYearMin,
+                                Optional<Integer> creationYearMax,
+                                Optional<String> sortBy,
+                                Optional<String> sortOrder) {
+
+        try (Session session = sessionFactory.openSession()) {
+
+            VehiclesQueryMaker queryMaker = new VehiclesQueryMaker();
+            String query = queryMaker.buildHQLSearchAndSortQueryVehicles(brand, model, creationYearMin, creationYearMax, sortBy, sortOrder);
+            HashMap<String, Object> propertiesMap = queryMaker.getProperties();
+
+            Query<Vehicle> request = session.createQuery(query, Vehicle.class);
+            request.setProperties(propertiesMap);
+
+            return request.list();
+        }
     }
 }
