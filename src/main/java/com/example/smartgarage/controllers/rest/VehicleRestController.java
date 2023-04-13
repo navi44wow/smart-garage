@@ -3,18 +3,34 @@ package com.example.smartgarage.controllers.rest;
 import com.example.smartgarage.exceptions.AuthorizationException;
 import com.example.smartgarage.exceptions.EntityDuplicateException;
 import com.example.smartgarage.exceptions.EntityNotFoundException;
+import com.example.smartgarage.exceptions.InvalidRequestException;
 import com.example.smartgarage.helpers.AuthenticationHelper;
-import com.example.smartgarage.models.dtos.VehicleDto;
+
+import com.example.smartgarage.models.entities.User;
 import com.example.smartgarage.models.entities.Vehicle;
-import com.example.smartgarage.services.contracts.VehicleService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.validation.Valid;
+
+import com.example.smartgarage.models.dtos.VehicleDto;
+
+import com.example.smartgarage.services.contracts.VehicleService;
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.web.bind.annotation.*;
+
+
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+
+import org.springframework.http.HttpStatus;
+
+import javax.validation.Valid;
 
 
 @RestController
@@ -40,32 +56,39 @@ public class VehicleRestController {
 
 
     @GetMapping()
-    public List<Vehicle> getAll() {
-        return vehicleService.getAll();
+    public List<Vehicle> getAll(@RequestHeader("Authorization") HttpHeaders headers) {
+        try {
+            authenticationHelper.checkAuthorization(headers);
+            return vehicleService.getAll();
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
     }
 
-    @GetMapping("/search/{model}")
+    @GetMapping("/model/{model}")
     public List<Vehicle> searchAllByModel(@PathVariable String model) {
         return vehicleService.searchAllByModel(model);
     }
 
-    @GetMapping("/find/{brand}")
+    @GetMapping("/brand/{brand}")
     public List<Vehicle> searchAllByBrand(@PathVariable String brand) {
         return vehicleService.searchAllByBrand(brand);
     }
 
 
-    @GetMapping("/findBy/{licensePlate}")
+    @GetMapping("/licensePlate/{licensePlate}")
     public List<Vehicle> findByLicensePlate(@PathVariable String licensePlate) {
         return vehicleService.findByLicensePlate(licensePlate);
     }
 
-    @GetMapping("getBy/{creationYear}")
+    @GetMapping("/creationYear/{creationYear}")
     public List<Vehicle> searchAllByCreationYear(@PathVariable Long creationYear) {
         return vehicleService.searchAllByCreationYear(creationYear);
     }
 
-    @GetMapping("getAll/{VIN}")
+    @GetMapping("/VIN/{VIN}")
     public List<Vehicle> searchAllByVIN(@PathVariable String VIN) {
         return vehicleService.searchAllByVIN(VIN);
     }
@@ -131,6 +154,21 @@ public class VehicleRestController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        }
+    }
+
+
+    @GetMapping("/filter")
+    public List<Vehicle> getAll(@RequestParam(required = false) Optional<String> brand,
+                                @RequestParam(required = false) Optional<String> model,
+                                @RequestParam(required = false) Optional<Integer> creationYearMin,
+                                @RequestParam(required = false) Optional<Integer> creationYearMax,
+                                @RequestParam(required = false) Optional<String> sortBy,
+                                @RequestParam(required = false) Optional<String> sortOrder) {
+        try {
+            return vehicleService.getAll(brand, model, creationYearMin, creationYearMax, sortBy, sortOrder);
+        } catch (InvalidRequestException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
 }
