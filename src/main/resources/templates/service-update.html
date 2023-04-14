@@ -1,10 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+  <title>Service Details</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css}">
 </head>
 <body>
+<div class="container mt-5">
+  <h2>Service Details</h2>
+  <form th:action="@{/services/service-update/{id}(id=${service.id})}" method="post">
+    <div class="form-group">
+      <label for="name">Name of Service</label>
+      <input type="text" class="form-control" id="name" name="name" th:value="${service.name}" readonly>
+      <button type="button" class="btn btn-primary ml-2" onclick="editName()">Edit Name</button>
+    </div>
+    <div class="form-group">
+      <label for="price">Price</label>
+      <input type="number" class="form-control" id="price" name="price" th:value="${service.price}" readonly>
+      <button type="button" class="btn btn-primary ml-2" onclick="editPrice()">Edit Price</button>
+    </div>
+    <input type="hidden" id="id" name="id" th:value="${service.id}">
+    <button type="submit" class="btn btn-primary mr-2" id="saveBtn" style="display: none;">Save</button>
+    <button type="button" class="btn btn-secondary" onclick="cancel()">Cancel</button>
+  </form>
+</div>
 
+<!-- Bootstrap JS -->
+<script th:src="@{https://code.jquery.com/jquery-3.2.1.slim.min.js}"></script>
+<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js}"></script>
+<script th:src="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js}"></script>
+<script>
+  function editName() {
+    $('#name').prop('readonly', false);
+    $('#name').focus();
+    $('#name').addClass('bg-light');
+    $('#saveBtn').show();
+  }
+
+  function editPrice() {
+    $('#price').prop('readonly', false);
+    $('#price').focus();
+    $('#price').addClass('bg-light');
+    $('#saveBtn').show();
+  }
+  function cancel() {
+    window.history.back();
+  }
+</script>
 </body>
 </html>

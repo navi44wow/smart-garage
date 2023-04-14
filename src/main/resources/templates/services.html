@@ -10,6 +10,7 @@
 <body>
 <div class="container mt-5">
     <h2>Car Services</h2>
+    <a th:href="@{/employee/}" class="btn btn-primary mb-2">Dashboard</a>
     <a th:href="@{/services/service-new}" class="btn btn-primary mb-2">New Service</a>
     <table class="table table-hover">
         <thead>
@@ -22,6 +23,10 @@
         <tr th:each="service : ${all}">
             <td th:text="${service.name}"></td>
             <td th:text="${service.price}"></td>
+            <td>
+                <a class="h6 m-3" th:href="@{'/services/service-update/' + ${service.id}}">Edit</a>
+                <a class="h6" th:href="@{'/services/delete/' + ${service.id}}">Delete</a>
+            </td>
         </tr>
         </tbody>
     </table>
