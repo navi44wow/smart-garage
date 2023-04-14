@@ -8,15 +8,12 @@ import com.example.smartgarage.services.SmartGarageUserService;
 import com.example.smartgarage.services.contracts.UserService;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestHeader;
-
-
 
 
 @Component
@@ -105,5 +102,4 @@ public class AuthenticationHelper {
             throw new EntityNotFoundException("User", "username", tryGetUser(headers).getUsername());
         }
     }
-
 }

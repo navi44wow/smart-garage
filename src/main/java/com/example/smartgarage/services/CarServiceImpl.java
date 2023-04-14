@@ -1,6 +1,7 @@
 package com.example.smartgarage.services;
 
 import com.example.smartgarage.exceptions.EntityNotFoundException;
+import com.example.smartgarage.helpers.AuthenticationHelper;
 import com.example.smartgarage.models.dtos.CarServiceDto;
 import com.example.smartgarage.models.entities.CarService;
 import com.example.smartgarage.repositories.CarServiceRepository;
@@ -24,6 +25,9 @@ public class CarServiceImpl implements CarServizService {
 
     @Autowired
     SessionFactory sessionFactory;
+
+    @Autowired
+    private AuthenticationHelper authenticationHelper;
 
 
     public List<CarService> getAll() {
