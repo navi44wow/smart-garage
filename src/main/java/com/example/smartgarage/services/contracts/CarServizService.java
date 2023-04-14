@@ -21,10 +21,14 @@ public interface CarServizService {
 
     void save(CarService car);
 
+    List<CarService> getAll(String name, int priceMinimum, int priceMaximum, String sortBy, String sortOrder);
+
     List<CarService> getAll(Optional<String> name,
                             Optional<Integer> priceMinimum,
                             Optional<Integer> priceMaximum,
                             Optional<String> sortBy,
                             Optional<String> sortOrder);
+
+    <T> List<CarService> getAllGeneric(Optional<T> name, Optional<T> sortBy, Optional<T> sortOrder);
 
 }

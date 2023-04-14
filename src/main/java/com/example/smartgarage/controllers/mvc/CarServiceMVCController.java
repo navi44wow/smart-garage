@@ -3,8 +3,10 @@ package com.example.smartgarage.controllers.mvc;
 import com.example.smartgarage.exceptions.AuthorizationException;
 import com.example.smartgarage.exceptions.EntityDuplicateException;
 import com.example.smartgarage.exceptions.EntityNotFoundException;
+import com.example.smartgarage.exceptions.InvalidRequestException;
 import com.example.smartgarage.helpers.AuthenticationHelper;
 import com.example.smartgarage.models.dtos.CarServiceDto;
+import com.example.smartgarage.models.dtos.CarServizFilterDto;
 import com.example.smartgarage.models.entities.CarService;
 import com.example.smartgarage.services.contracts.CarServizService;
 import org.modelmapper.ModelMapper;
@@ -20,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/services")
@@ -37,11 +40,33 @@ public class CarServiceMVCController {
     }
 
     @GetMapping()
-    public String getAll(Model model) {
-        List<CarService> services = carServizService.getAll();
-        model.addAttribute("all", services);
+    public String getAllGeneric(Model model) {
+        List<CarService> servicezList = carServizService.getAllGeneric(
+                Optional.empty(),
+                Optional.of("id"),
+                Optional.empty()
+        );
+        model.addAttribute("services", servicezList);
+
+        CarServizFilterDto filterDTO = new CarServizFilterDto();
+        model.addAttribute("filterDTO", filterDTO);
+
         return "services";
     }
+
+    @PostMapping()
+    public String filterServices(@ModelAttribute("filterDTO") CarServizFilterDto filterDTO, Model model) {
+        List<CarService> servicezList = carServizService.getAllGeneric(
+                Optional.ofNullable(filterDTO.getName()),
+                Optional.ofNullable(filterDTO.getSortBy()),
+                Optional.ofNullable(filterDTO.getSortOrder())
+        );
+        model.addAttribute("services", servicezList);
+        model.addAttribute("filterDTO", filterDTO);
+
+        return "services";
+    }
+
 
     @GetMapping("/service-new")
     public String create(Model model) {
