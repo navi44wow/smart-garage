@@ -22,12 +22,10 @@ import javax.persistence.Id;
 
 public class Brand {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "brand_id")
-    private Long brandId;
-
+    private Long id;
 
     @NotNull
     @Length(min = 2, max = 32)

@@ -30,9 +30,9 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public Brand getById(Long brandId) {
-        return brandRepository.findById(brandId).orElseThrow(() ->
-                new EntityNotFoundException("Brand with id ", brandId.toString(), " was not found!"));
+    public Brand getById(Long id) {
+        return brandRepository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException("Brand with id ", id.toString(), " was not found!"));
     }
 
     @Override
@@ -54,8 +54,8 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public void deleteBrandById(Long brandId) {
-        brandRepository.deleteById(brandId);
+    public void deleteBrandById(Long id) {
+        brandRepository.deleteById(id);
     }
 
     @Override

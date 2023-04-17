@@ -44,12 +44,11 @@ public class BrandRestController {
         }
     }
 
-    @GetMapping("/{brandId}")
-    public Brand getById(@RequestHeader("Authorization") HttpHeaders headers, @PathVariable Long brandId, BrandDto brandDto) {
+    @GetMapping("/id/{id}")
+    public Brand getById(@RequestHeader("Authorization") HttpHeaders headers, @PathVariable Long id) {
         try {
             authenticationHelper.checkAuthorization(headers);
-            brandDto.setBrandId(brandId);
-            return brandService.getById(brandDto.getBrandId());
+            return brandService.getById(id);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
@@ -75,7 +74,7 @@ public class BrandRestController {
             authenticationHelper.checkAuthorization(headers);
             brand = modelMapper.map(brandDto, Brand.class);
             brandService.save(brand);
-            return brandService.getById(brand.getBrandId());
+            return brandService.getById(brand.getId());
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (EntityDuplicateException e) {
