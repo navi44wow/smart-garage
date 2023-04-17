@@ -3,21 +3,17 @@ package com.example.smartgarage.controllers.rest;
 import com.example.smartgarage.exceptions.AuthorizationException;
 import com.example.smartgarage.exceptions.EntityDuplicateException;
 import com.example.smartgarage.exceptions.EntityNotFoundException;
-
 import com.example.smartgarage.helpers.AuthenticationHelper;
 
 import com.example.smartgarage.models.entities.Model;
-
+import com.example.smartgarage.models.entities.User;
 import com.example.smartgarage.models.entities.Vehicle;
 import org.modelmapper.ModelMapper;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.example.smartgarage.models.dtos.VehicleDto;
-
 import com.example.smartgarage.services.contracts.VehicleService;
-
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,13 +22,10 @@ import org.springframework.http.HttpStatus;
 
 import javax.validation.Valid;
 
-
 @RestController
 @RequestMapping("/api/vehicles")
 
-
 public class VehicleRestController {
-
 
     private final VehicleService vehicleService;
 
@@ -48,7 +41,6 @@ public class VehicleRestController {
         this.authenticationHelper = authenticationHelper;
     }
 
-
     @GetMapping()
     public List<Vehicle> getAll(@RequestHeader("Authorization") HttpHeaders headers) {
         try {
@@ -61,11 +53,19 @@ public class VehicleRestController {
         }
     }
 
-    @GetMapping("/{vehicleId}")
-    public Vehicle getById(@PathVariable Long vehicleId, VehicleDto vehicleDto) {
+    @GetMapping("/vehicleId/{id}")
+    public Vehicle getById(@PathVariable Long id) {
         try {
-            vehicleDto.setVehicleId(vehicleId);
-            return vehicleService.getById(vehicleDto.getVehicleId());
+            return vehicleService.getById(id);
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
+    @GetMapping("/userId/{user}")
+    public List<Vehicle> getByUserId(@PathVariable User user) {
+        try {
+            return vehicleService.getByUserId(user);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
@@ -98,7 +98,7 @@ public class VehicleRestController {
             authenticationHelper.checkAuthorization(headers);
             vehicle = modelMapper.map(vehicleDto, Vehicle.class);
             vehicleService.save(vehicle);
-            return vehicleService.getById(vehicle.getVehicleId());
+            return vehicleService.getById(vehicle.getId());
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (EntityDuplicateException e) {
@@ -126,7 +126,6 @@ public class VehicleRestController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
     }
-
     @DeleteMapping("/{vehicleId}")
     public void deleteVehicle(@PathVariable Long vehicleId,
                               @RequestHeader("Authorization") HttpHeaders headers) {

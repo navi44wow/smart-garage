@@ -1,17 +1,13 @@
 package com.example.smartgarage.models.dtos;
 
-
 import com.example.smartgarage.models.entities.Model;
 import com.example.smartgarage.models.entities.User;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
-import javax.persistence.*;
 import javax.validation.constraints.*;
 
 
@@ -20,9 +16,6 @@ import javax.validation.constraints.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class VehicleDto {
-
-    @Column(name = "vehicle_id")
-    private Long vehicleId;
 
 
     @NotNull(message = "VIN cannot be empty")
@@ -41,12 +34,8 @@ public class VehicleDto {
     private Long creationYear;
 
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JsonView
-    @JoinColumn(name = "user_id")
-    private User userId;
+    private User user;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "model_id")
+
     private Model modelId;
 }

@@ -1,6 +1,5 @@
 package com.example.smartgarage.models.entities;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,7 +23,7 @@ public class Vehicle {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "vehicle_id")
-    private Long vehicleId;
+    private Long id;
 
 
     @NotNull
@@ -47,7 +46,7 @@ public class Vehicle {
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnore
     @JoinColumn(name = "user_id")
-    private User userId;
+    private User user;
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "model_id")
@@ -56,9 +55,9 @@ public class Vehicle {
 
     @Override
     public String toString() {
-        return "Vehicle{" + vehicleId +
+        return "Vehicle{" + id +
                 "VIN: " + VIN +
-                ", user id: '" + userId + '\'' +
+                ", user id: '" + user + '\'' +
                 ", license plate: '" + licensePlate + '\'' +
                 ", model: '" + modelId + '\'' +
                 ", creation year: " + creationYear +
@@ -70,11 +69,11 @@ public class Vehicle {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Vehicle vehicle = (Vehicle) o;
-        return vehicleId == vehicle.vehicleId;
+        return id == vehicle.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(vehicleId);
+        return Objects.hash(id);
     }
 }
