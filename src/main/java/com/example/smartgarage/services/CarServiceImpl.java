@@ -1,6 +1,7 @@
 package com.example.smartgarage.services;
 
 import com.example.smartgarage.exceptions.EntityNotFoundException;
+import com.example.smartgarage.helpers.AuthenticationHelper;
 import com.example.smartgarage.models.dtos.CarServiceDto;
 import com.example.smartgarage.models.entities.CarService;
 import com.example.smartgarage.repositories.CarServiceRepository;
@@ -10,6 +11,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -25,6 +27,9 @@ public class CarServiceImpl implements CarServizService {
     @Autowired
     SessionFactory sessionFactory;
 
+    @Autowired
+    private AuthenticationHelper authenticationHelper;
+
 
     public List<CarService> getAll() {
         return carServiceRepository.findAll();
@@ -38,6 +43,51 @@ public class CarServiceImpl implements CarServizService {
         carServiceRepository.save(carService);
     }
 
+    @Override
+    public List<CarService> getAll(String name, int priceMinimum, int priceMaximum, String sortBy, String sortOrder) {
+        List<CarService> carServices;
+        if (name != null && !name.isBlank()) {
+            carServices = carServiceRepository.findByNameContainingIgnoreCase(name);
+        } else {
+            carServices = carServiceRepository.findAll();
+        }
+
+        if (sortBy != null && !sortBy.isBlank()) {
+            Sort.Direction sortDirection = Sort.Direction.ASC;
+            if (sortOrder != null && sortOrder.equalsIgnoreCase("desc")) {
+                sortDirection = Sort.Direction.DESC;
+            }
+            Sort sort = Sort.by(sortDirection, sortBy);
+            carServices = carServiceRepository.findAll(sort);
+        }
+
+        return carServices;
+    }
+
+    @Override
+    public <T> List<CarService> getAllGeneric(Optional<T> name, Optional<T> sortBy, Optional<T> sortOrder) {
+        List<CarService> carServices;
+        if (name.isPresent() && !name.get().toString().isBlank()) {
+            carServices = carServiceRepository.findByNameContainingIgnoreCase(name.get().toString());
+        } else {
+            carServices = carServiceRepository.findAll();
+        }
+
+        if (sortBy.isPresent() && !sortBy.get().toString().isBlank()) {
+            String sortByValue = sortBy.get().toString();
+            Sort.Direction sortDirection = Sort.Direction.ASC;
+            if (sortOrder.isPresent() && sortOrder.get().toString().equalsIgnoreCase("desc")) {
+                sortDirection = Sort.Direction.DESC;
+            }
+            Sort sort = Sort.by(sortDirection, sortByValue);
+            carServices = carServiceRepository.findAll(sort);
+        }
+
+        return carServices;
+    }
+
+
+    //For Rest Api
     @Override
     public List<CarService> getAll(Optional<String> name,
                                    Optional<Integer> priceMinimum,
@@ -57,6 +107,7 @@ public class CarServiceImpl implements CarServizService {
                 return request.list();
             }
         }
+
 
     public void delete(Long id) {
         carServiceRepository.deleteById(id);

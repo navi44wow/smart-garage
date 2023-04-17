@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -17,5 +18,5 @@ public interface CarServiceRepository extends JpaRepository<CarService, Long> {
     @Query("delete from CarService c where c.id = :id")
     void deleteById(Long id);
 
-
+    List<CarService> findByNameContainingIgnoreCase(String name);
 }
