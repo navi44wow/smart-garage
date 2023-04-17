@@ -3,30 +3,24 @@ package com.example.smartgarage.controllers.rest;
 import com.example.smartgarage.exceptions.AuthorizationException;
 import com.example.smartgarage.exceptions.EntityDuplicateException;
 import com.example.smartgarage.exceptions.EntityNotFoundException;
-import com.example.smartgarage.exceptions.InvalidRequestException;
+
 import com.example.smartgarage.helpers.AuthenticationHelper;
 
-import com.example.smartgarage.models.entities.User;
+import com.example.smartgarage.models.entities.Model;
+
 import com.example.smartgarage.models.entities.Vehicle;
 import org.modelmapper.ModelMapper;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.server.ResponseStatusException;
-
 
 import com.example.smartgarage.models.dtos.VehicleDto;
 
 import com.example.smartgarage.services.contracts.VehicleService;
 
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.web.bind.annotation.*;
 
-
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
 
 import org.springframework.http.HttpStatus;
 
@@ -67,16 +61,15 @@ public class VehicleRestController {
         }
     }
 
-    @GetMapping("/model/{model}")
-    public List<Vehicle> searchAllByModel(@PathVariable String model) {
-        return vehicleService.searchAllByModel(model);
+    @GetMapping("/{vehicleId}")
+    public Vehicle getById(@PathVariable Long vehicleId, VehicleDto vehicleDto) {
+        try {
+            vehicleDto.setVehicleId(vehicleId);
+            return vehicleService.getById(vehicleDto.getVehicleId());
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
     }
-
-    @GetMapping("/brand/{brand}")
-    public List<Vehicle> searchAllByBrand(@PathVariable String brand) {
-        return vehicleService.searchAllByBrand(brand);
-    }
-
 
     @GetMapping("/licensePlate/{licensePlate}")
     public List<Vehicle> findByLicensePlate(@PathVariable String licensePlate) {
@@ -94,18 +87,10 @@ public class VehicleRestController {
     }
 
 
-    @GetMapping("/{vehicleId}")
-    public Vehicle getById(@PathVariable Long vehicleId) {
-        try {
-            return vehicleService.getById(vehicleId);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
-    }
-
     @PostMapping("/new")
     public Vehicle createVehicle(
             @RequestHeader("Authorization") HttpHeaders headers,
+
             @Valid @RequestBody VehicleDto vehicleDto
     ) {
         Vehicle vehicle;
@@ -127,12 +112,12 @@ public class VehicleRestController {
     @PutMapping("/{vehicleId}/update")
     public Vehicle updateVehicle(@PathVariable Long vehicleId,
                                  @Valid @RequestBody VehicleDto vehicleDto,
-                                 @RequestHeader("Authorization") HttpHeaders headers) {
+                                 @RequestHeader("Authorization") HttpHeaders headers, Model model) {
         Vehicle existingVehicle;
         try {
             authenticationHelper.checkAuthorization(headers);
             existingVehicle = vehicleService.getById(vehicleId);
-            return vehicleService.update(existingVehicle, vehicleDto);
+            return vehicleService.update(existingVehicle, vehicleDto, model);
         } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         } catch (EntityNotFoundException e) {
@@ -154,21 +139,6 @@ public class VehicleRestController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
-        }
-    }
-
-
-    @GetMapping("/filter")
-    public List<Vehicle> getAll(@RequestParam(required = false) Optional<String> brand,
-                                @RequestParam(required = false) Optional<String> model,
-                                @RequestParam(required = false) Optional<Integer> creationYearMin,
-                                @RequestParam(required = false) Optional<Integer> creationYearMax,
-                                @RequestParam(required = false) Optional<String> sortBy,
-                                @RequestParam(required = false) Optional<String> sortOrder) {
-        try {
-            return vehicleService.getAll(brand, model, creationYearMin, creationYearMax, sortBy, sortOrder);
-        } catch (InvalidRequestException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.example.smartgarage.models.entities;
 
-import org.hibernate.annotations.Type;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,10 +9,7 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.Objects;
 
 
@@ -30,11 +27,6 @@ public class Vehicle {
     private Long vehicleId;
 
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private User user;
-
-
     @NotNull
     @Length(min = 17, max = 17)
     @Column(name = "VIN", length = 17)
@@ -45,31 +37,30 @@ public class Vehicle {
     @Size(min = 7, max = 8, message = "license plate has to be between 7 and 8 symbols!")
     private String licensePlate;
 
-
-    @NotNull
-    @Length(min = 2, max = 32)
-    @Column(name = "model")
-    private String model;
-
-    @NotNull
-    @Length(min = 2, max = 32)
-    @Column(name = "brand")
-    private String brand;
-
     @NotNull
     @Positive
     @Min(1886)
+    @Max(9999)
     @Column(name = "creation_year", length = 4)
     private Long creationYear;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonIgnore
+    @JoinColumn(name = "user_id")
+    private User userId;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "model_id")
+    private Model modelId;
 
 
     @Override
     public String toString() {
         return "Vehicle{" + vehicleId +
                 "VIN: " + VIN +
+                ", user id: '" + userId + '\'' +
                 ", license plate: '" + licensePlate + '\'' +
-                ", model: " + model + '\'' +
-                ", brand: " + brand + '\'' +
+                ", model: '" + modelId + '\'' +
                 ", creation year: " + creationYear +
                 '}';
     }
