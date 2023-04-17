@@ -5,7 +5,6 @@ import com.example.smartgarage.exceptions.EntityDuplicateException;
 import com.example.smartgarage.exceptions.EntityNotFoundException;
 import com.example.smartgarage.helpers.AuthenticationHelper;
 import com.example.smartgarage.models.dtos.ModelDto;
-
 import com.example.smartgarage.models.entities.Model;
 import com.example.smartgarage.services.contracts.ModelService;
 import org.modelmapper.ModelMapper;
@@ -48,23 +47,41 @@ public class ModelRestController {
         }
     }
 
-    @GetMapping("/{modelId}")
-    public Model getById(@RequestHeader("Authorization") HttpHeaders headers, @PathVariable Long modelId, ModelDto modelDto) {
+    @GetMapping("/{id}")
+    public Model getById(@RequestHeader("Authorization") HttpHeaders headers, @PathVariable Long id) {
         try {
             authenticationHelper.checkAuthorization(headers);
-            modelDto.setModelId(modelId);
-            return modelService.getById(modelDto.getModelId());
+            return modelService.getById(id);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 
     @GetMapping("/name/{modelName}")
-    public Model getByModelName(@RequestHeader("Authorization") HttpHeaders headers, @PathVariable String modelName, ModelDto modelDto) {
+    public Model getByModelName(@RequestHeader("Authorization") HttpHeaders headers, @PathVariable String modelName) {
         try {
             authenticationHelper.checkAuthorization(headers);
-            modelDto.setModelName(modelName);
-            return modelService.getByName(modelDto.getModelName());
+            return modelService.getByName(modelName);
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
+    @GetMapping("/brandName/{brandName}")
+    public List<Model> getAllByBrandName(@RequestHeader("Authorization") HttpHeaders headers, @PathVariable String brandName) {
+        try {
+            authenticationHelper.checkAuthorization(headers);
+            return modelService.getByBrandName(brandName);
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
+    @GetMapping("/brandId/{brandId}")
+    public List<Model> getAllByBrandId(@RequestHeader("Authorization") HttpHeaders headers, @PathVariable Long brandId) {
+        try {
+            authenticationHelper.checkAuthorization(headers);
+            return modelService.getByBrandId(brandId);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
@@ -79,7 +96,7 @@ public class ModelRestController {
             authenticationHelper.checkAuthorization(headers);
             model = modelMapper.map(modelDto, Model.class);
             modelService.save(model);
-            return modelService.getById(model.getModelId());
+            return modelService.getById(model.getId());
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (EntityDuplicateException e) {

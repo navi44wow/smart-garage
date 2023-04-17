@@ -13,6 +13,11 @@ public interface ModelService {
 
     Model getByName(String modelName);
 
+    List<Model> getByBrandName(String brandName);
+
+    List<Model> getByBrandId(Long brandId);
+
+
     void save(Model model);
 
     public Model update(Model model, ModelDto modelDto);

@@ -7,9 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.*;
 import javax.validation.constraints.*;
-
 
 @Getter
 @Setter
@@ -17,15 +15,9 @@ import javax.validation.constraints.*;
 @AllArgsConstructor
 public class ModelDto {
 
-    @Column(name = "model_id")
-    private Long modelId;
-
     @NotNull
     @Length(min = 2, max = 32)
-    @Column(name = "model_name")
     private String modelName;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "brand_id")
-    private Brand brandId;
+    private Brand brand;
 }

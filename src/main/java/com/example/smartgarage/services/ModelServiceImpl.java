@@ -1,22 +1,18 @@
 package com.example.smartgarage.services;
 
 import com.example.smartgarage.models.dtos.ModelDto;
+
 import com.example.smartgarage.models.entities.Model;
 import com.example.smartgarage.repositories.BrandRepository;
 import com.example.smartgarage.repositories.ModelRepository;
 import com.example.smartgarage.services.contracts.ModelService;
 
-import java.util.HashMap;
 import java.util.List;
-
 
 import com.example.smartgarage.exceptions.EntityNotFoundException;
 
-import com.example.smartgarage.services.queries.BrandModelQueryMaker;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import org.hibernate.query.Query;
 import org.springframework.stereotype.Service;
 
 
@@ -53,14 +49,25 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
+    public List<Model> getByBrandName(String brandName) {
+        return modelRepository.searchAllByBrand_BrandName(brandName);
+    }
+
+    @Override
+    public List<Model> getByBrandId(Long brandId) {
+        return modelRepository.findAllByBrandId(brandId);
+    }
+
+    @Override
     public void save(Model model) {
         modelRepository.save(model);
+
     }
 
     @Override
     public Model update(Model model, ModelDto modelDto) {
         model.setModelName(modelDto.getModelName());
-        model.setBrandId(modelDto.getBrandId());
+        model.setBrand(modelDto.getBrand());
         modelRepository.save(model);
         return model;
     }

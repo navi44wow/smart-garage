@@ -20,14 +20,12 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @NoArgsConstructor
 
-
 public class Model {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "model_id")
-    private Long modelId;
+    private Long id;
 
     @NotNull
     @Length(min = 2, max = 32)
@@ -36,5 +34,5 @@ public class Model {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "brand_id")
-    private Brand brandId;
+    private Brand brand;
 }
