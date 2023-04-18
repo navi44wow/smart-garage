@@ -1,10 +1,69 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <title>Vehicles</title>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css}">
 </head>
 <body>
+<div class="container mt-5">
+    <h2>Vehicles</h2>
+    <a th:href="@{/employee/}" class="btn btn-primary mb-2">Dashboard</a>
+    <a th:href="@{/vehicles/vehicle-new}" class="btn btn-primary mb-2">New Vehicle</a>
+    <form method="post" th:action="@{/vehicles/}" class="form-inline mb-3">
+        <label for="sortBy">Sort By:</label>
+        <select id="sortBy" model="sortBy" class="form-control mx-2">
+            <option value="model">model</option>
+            <option value="brand">brand</option>
+        </select>
+        <label for="sortOrder">Sort Order:</label>
+        <select id="sortOrder" model="sortOrder" class="form-control mx-2">
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+        </select>
+        <button type="submit" class="btn btn-primary mx-2">Filter</button>
+    </form>
+    <form method="post" th:action="@{/vehicles/}" class="form-inline mb-3">
+        <label for="model">model:</label>
+        <input type="text" id="model" model="model" class="form-control mx-2">
+        <button type="submit" class="btn btn-primary mx-2">Search</button>
 
+        <label for="brand">brand:</label>
+        <input type="text" id="brand" brand="brand" class="form-control mx-2">
+        <button type="submit" class="btn btn-primary mx-2">Search</button>
+
+        <label for="creationYear">creationYear:</label>
+        <input type="text" id="creationYear" creationYear="creationYear" class="form-control mx-2">
+        <button type="submit" class="btn btn-primary mx-2">Search</button>
+
+    </form>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>License plate</th>
+            <th>Brand</th>
+            <th>Model</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="vehicle : ${vehicles}">
+            <td th:text="${vehicle.getLicensePlate()}"></td>
+            <td th:text="${vehicle.getModelId().getBrand()}"></td>
+            <td th:text="${vehicle.getModelId().getModelName()}"></td>
+            <td>
+                <a class="h6 m-3" th:href="@{'/vehicles/vehicle-update/' + ${vehicle.id}}">Edit</a>
+                <a class="h6" th:href="@{'/vehicles/delete/' + ${vehicle.id}}">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Bootstrap JS -->
+<script th:src="@{https://code.jquery.com/jquery-3.2.1.slim.min.js}"></script>
+<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js}"></script>
+<script th:src="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js}"></script>
 </body>
 </html>
