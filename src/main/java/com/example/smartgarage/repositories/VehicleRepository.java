@@ -1,6 +1,6 @@
 package com.example.smartgarage.repositories;
 
-import com.example.smartgarage.models.entities.User;
+import com.example.smartgarage.models.entities.Model;
 import com.example.smartgarage.models.entities.Vehicle;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 
 @Repository
@@ -19,7 +20,9 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
 
     List<Vehicle> searchAllByVIN(String VIN);
 
-    List<Vehicle> findAllByUserId(User user);
+    List<Vehicle> findAllByModelId(Model model);
+
+    List<Vehicle> findAllByUserId(UUID user);
 
     Optional<Vehicle> findById(Long vehicleId);
 }

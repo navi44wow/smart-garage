@@ -51,6 +51,10 @@ public class VehicleServiceImpl implements VehicleService {
         return vehicleRepository.searchAllByVIN(VIN);
     }
 
+    @Override
+    public List<Vehicle> searchAllByModelId(Model model) {
+        return vehicleRepository.findAllByModelId(model);
+    }
 
     public void save(Vehicle vehicle) {
         vehicleRepository.save(vehicle);
@@ -76,8 +80,13 @@ public class VehicleServiceImpl implements VehicleService {
                 new EntityNotFoundException("Vehicle with id ", vehicleId.toString(), " was not found!"));
     }
 
+    @Override
+    public List<Vehicle> findAllByModelId(Model model) {
+        return vehicleRepository.findAllByModelId(model);
+    }
+
     public List<Vehicle> getByUserId(User user) {
-        return vehicleRepository.findAllByUserId(user);
+        return vehicleRepository.findAllByUserId(user.getId());
     }
 
 }

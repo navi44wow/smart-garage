@@ -12,8 +12,11 @@ public interface VehicleService {
 
     Vehicle getById(Long vehicleId);
 
+    List<Vehicle> findAllByModelId(Model model);
+
     List<Vehicle> getByUserId(User userId);
 
+    List<Vehicle> searchAllByModelId(Model model);
 
     void save(Vehicle vehicle);
 
