@@ -4,6 +4,7 @@ import com.example.smartgarage.models.dtos.ModelDto;
 import com.example.smartgarage.models.entities.Model;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ModelService {
 
@@ -17,7 +18,6 @@ public interface ModelService {
 
     List<Model> getByBrandId(Long brandId);
 
-
     void save(Model model);
 
     public Model update(Model model, ModelDto modelDto);
@@ -26,5 +26,5 @@ public interface ModelService {
 
     int getModelsCount();
 
-
+    Optional<Model> findByModelName(String modelName);
 }

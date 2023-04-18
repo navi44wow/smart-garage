@@ -7,6 +7,7 @@ import com.example.smartgarage.repositories.BrandRepository;
 import com.example.smartgarage.services.contracts.BrandService;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Service;
@@ -61,5 +62,10 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public int getBrandsCount() {
         return 0;
+    }
+
+    @Override
+    public Optional<Brand> findByBrandName(String brandName) {
+        return brandRepository.findByBrandName(brandName);
     }
 }

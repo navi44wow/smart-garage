@@ -8,6 +8,7 @@ import com.example.smartgarage.repositories.ModelRepository;
 import com.example.smartgarage.services.contracts.ModelService;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.example.smartgarage.exceptions.EntityNotFoundException;
 
@@ -80,5 +81,10 @@ public class ModelServiceImpl implements ModelService {
     @Override
     public int getModelsCount() {
         return 0;
+    }
+
+    @Override
+    public Optional<Model> findByModelName(String modelName) {
+        return modelRepository.findByModelName(modelName);
     }
 }

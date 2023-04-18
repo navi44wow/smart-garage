@@ -5,6 +5,7 @@ import com.example.smartgarage.models.entities.Brand;
 
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BrandService {
 
@@ -23,5 +24,5 @@ public interface BrandService {
 
     int getBrandsCount();
 
-
+    Optional<Brand> findByBrandName(String brandName);
 }
