@@ -59,8 +59,8 @@ public class VehicleServiceImpl implements VehicleService {
     public Vehicle update(Vehicle vehicle, VehicleDto vehicleDto, Model model) {
         vehicle.setVIN(vehicleDto.getVIN());
         vehicle.setUser(vehicle.getUser());
-        vehicle.setModelId(vehicleDto.getModelId());
-        model.setBrand(vehicleDto.getModelId().getBrand());
+        vehicle.setModelId(vehicleDto.getModel());
+        model.setBrand(vehicleDto.getModel().getBrand());
         vehicle.setCreationYear(vehicleDto.getCreationYear());
         vehicle.setLicensePlate(vehicleDto.getLicensePlate());
         vehicleRepository.save(vehicle);

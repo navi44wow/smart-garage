@@ -8,6 +8,7 @@ import com.example.smartgarage.helpers.AuthenticationHelper;
 import com.example.smartgarage.models.entities.Model;
 import com.example.smartgarage.models.entities.User;
 import com.example.smartgarage.models.entities.Vehicle;
+import com.example.smartgarage.services.contracts.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.server.ResponseStatusException;
@@ -33,12 +34,15 @@ public class VehicleRestController {
 
     private final AuthenticationHelper authenticationHelper;
 
+    private final UserService userService;
+
     public VehicleRestController(VehicleService vehicleService, ModelMapper modelMapper
-            , AuthenticationHelper authenticationHelper
-    ) {
+            , AuthenticationHelper authenticationHelper,
+                                 UserService userService) {
         this.vehicleService = vehicleService;
         this.modelMapper = modelMapper;
         this.authenticationHelper = authenticationHelper;
+        this.userService = userService;
     }
 
     @GetMapping()
@@ -96,9 +100,10 @@ public class VehicleRestController {
         Vehicle vehicle;
         try {
             authenticationHelper.checkAuthorization(headers);
+            User user = userService.getById(vehicleDto.getUser().getId());
             vehicle = modelMapper.map(vehicleDto, Vehicle.class);
             vehicleService.save(vehicle);
-            return vehicleService.getById(vehicle.getId());
+            return vehicleService.getById(vehicle.getVehicleId());
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (EntityDuplicateException e) {

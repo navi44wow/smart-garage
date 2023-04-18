@@ -96,7 +96,7 @@ public class ModelRestController {
             authenticationHelper.checkAuthorization(headers);
             model = modelMapper.map(modelDto, Model.class);
             modelService.save(model);
-            return modelService.getById(model.getId());
+            return modelService.getById(model.getModelId());
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (EntityDuplicateException e) {

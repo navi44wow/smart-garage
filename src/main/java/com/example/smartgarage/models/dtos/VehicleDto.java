@@ -37,5 +37,5 @@ public class VehicleDto {
     private User user;
 
 
-    private Model modelId;
+    private Model model;
 }

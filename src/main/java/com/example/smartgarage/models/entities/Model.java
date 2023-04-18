@@ -25,7 +25,7 @@ public class Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "model_id")
-    private Long id;
+    private Long modelId;
 
     @NotNull
     @Length(min = 2, max = 32)

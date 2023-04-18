@@ -23,7 +23,7 @@ public class Vehicle {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "vehicle_id")
-    private Long id;
+    private Long vehicleId;
 
 
     @NotNull
@@ -55,7 +55,7 @@ public class Vehicle {
 
     @Override
     public String toString() {
-        return "Vehicle{" + id +
+        return "Vehicle{" + vehicleId +
                 "VIN: " + VIN +
                 ", user id: '" + user + '\'' +
                 ", license plate: '" + licensePlate + '\'' +
@@ -69,11 +69,11 @@ public class Vehicle {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Vehicle vehicle = (Vehicle) o;
-        return id == vehicle.id;
+        return vehicleId == vehicle.vehicleId;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(vehicleId);
     }
 }
