@@ -27,6 +27,8 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
 
     List<Vehicle> findAllByUserId(UUID user);
 
+    List<Vehicle>getAllByUserUsername(String username);
+
     Optional<Vehicle> findById(Long vehicleId);
     @Query("SELECT v FROM Vehicle v WHERE v.user = :user")
     List<Vehicle> getByOwner(@Param("user") UserViewModel user);
