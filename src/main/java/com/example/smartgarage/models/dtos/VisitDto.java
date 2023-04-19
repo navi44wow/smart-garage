@@ -1,15 +1,13 @@
 package com.example.smartgarage.models.dtos;
 
-import com.example.smartgarage.models.entities.User;
-import com.example.smartgarage.models.entities.Vehicle;
-import com.example.smartgarage.models.entities.VisitStatus;
-import com.example.smartgarage.models.view_models.UserViewModel;
+import com.example.smartgarage.models.entities.ListOfServices;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @AllArgsConstructor
 @Getter
@@ -17,21 +15,9 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class VisitDto {
 
-    private Long id;
-    private User user;
-    private Vehicle vehicle;
-   private VisitStatus status;
+    private Long vehicleId;
+    private Long statusId;
     private LocalDate startDate;
     private LocalDate endDate;
-
-    @Override
-    public String toString() {
-        return "VisitDto{" +
-                "user=" + user.toString() +
-                ", vehicle=" + vehicle +
-                ", visitStatus=" + status +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                '}';
-    }
+    private Set<ListOfServices> services;
 }

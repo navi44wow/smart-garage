@@ -7,6 +7,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "visits")
@@ -18,13 +20,8 @@ public class Visit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "visit_id")
     private Long id;
-
-   // @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private User user;
 
    // @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
@@ -41,11 +38,35 @@ public class Visit {
     @Column(name = "end_date")
     private LocalDate endDate;
 
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "visit_id")
+    private Set<ListOfServices> services;
+
+    public int displaySum() {
+        int sum = services.stream()
+                .mapToInt(ListOfServices::getServicePrice)
+                .sum();
+        return sum;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Visit visit = (Visit) o;
+        return id == visit.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+
     @Override
     public String toString() {
         return "Visit{" +
                 "id=" + id +
-                ", user=" + user +
                 ", vehicle=" + vehicle +
                 ", status=" + status.toString() +
                 ", startDate=" + startDate.toString() +
@@ -53,5 +74,3 @@ public class Visit {
                 '}';
     }
 }
-
-
