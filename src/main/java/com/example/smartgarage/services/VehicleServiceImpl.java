@@ -85,8 +85,12 @@ public class VehicleServiceImpl implements VehicleService {
         return vehicleRepository.findAllByModelId(model);
     }
 
-    public List<Vehicle> getByUserId(User user) {
-        return vehicleRepository.findAllByUserId(user.getId());
+    public List<Vehicle> getByUserId(User userId) {
+        return vehicleRepository.findAllByUserId(userId.getId());
     }
 
+    @Override
+    public List<Vehicle> getByUsername(String username) {
+        return vehicleRepository.getAllByUserUsername((username));
+    }
 }
