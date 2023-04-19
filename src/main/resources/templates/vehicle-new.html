@@ -1,10 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <title>New Vehicle</title>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css}">
 </head>
 <body>
+<div class="container mt-5">
+    <h2>New Vehicle</h2>
+    <form th:action="@{/vehicles/new}" method="post">
+        <div class="form-group">
+            <label for="model">Model of Vehicle</label>
+            <input type="text" class="form-control" id="model" model="model" required>
+        </div>
+        <div class="form-group">
+            <label for="brand">Brand</label>
+            <input type="text" class="form-control" id="brand" name="brand" required>
+        </div>
+        <div class="form-group">
+            <label for="user">Owner</label>
+            <input type="text" class="form-control" id="user" name="user" required>
+        </div>
+        <div class="form-group">
+            <label for="licensePlate">License plate</label>
+            <input type="text" class="form-control" id="licensePlate" name="licensePlate" required>
+        </div>
+        <div class="form-group">
+            <label for="creationYear">Creation year</label>
+            <input type="text" class="form-control" id="creationYear" name="creationYear" required>
+        </div>
+        <div class="form-group">
+            <label for="VIN">VIN</label>
+            <input type="text" class="form-control" id="VIN" name="VIN" required>
+        </div>
 
+        <button type="submit" class="btn btn-primary mr-2">Add</button>
+        <a th:href="@{/vehicles}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+
+<!-- Bootstrap JS -->
+<script th:src="@{https://code.jquery.com/jquery-3.2.1.slim.min.js}"></script>
+<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js}"></script>
+<script th:src="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js}"></script>
 </body>
 </html>

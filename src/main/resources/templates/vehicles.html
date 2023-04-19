@@ -11,21 +11,23 @@
 <div class="container mt-5">
     <h2>Vehicles</h2>
     <a th:href="@{/employee/}" class="btn btn-primary mb-2">Dashboard</a>
-    <a th:href="@{/vehicles/vehicle-new}" class="btn btn-primary mb-2">New Vehicle</a>
+    <a th:href="@{/vehicles/new}" class="btn btn-primary mb-2">New Vehicle</a>
     <form method="post" th:action="@{/vehicles/}" class="form-inline mb-3">
         <label for="sortBy">Sort By:</label>
         <select id="sortBy" model="sortBy" class="form-control mx-2">
             <option value="model">model</option>
             <option value="brand">brand</option>
+            <option value="brand">creation year</option>
         </select>
         <label for="sortOrder">Sort Order:</label>
         <select id="sortOrder" model="sortOrder" class="form-control mx-2">
             <option value="asc">Ascending</option>
             <option value="desc">Descending</option>
         </select>
-        <button type="submit" class="btn btn-primary mx-2">Filter</button>
+        <button type="submit" class="btn btn-primary mx-2">Sort</button>
     </form>
     <form method="post" th:action="@{/vehicles/}" class="form-inline mb-3">
+
         <label for="model">model:</label>
         <input type="text" id="model" model="model" class="form-control mx-2">
         <button type="submit" class="btn btn-primary mx-2">Search</button>
@@ -42,19 +44,25 @@
     <table class="table table-hover">
         <thead>
         <tr>
-            <th>License plate</th>
             <th>Brand</th>
             <th>Model</th>
+            <th>License plate</th>
+            <th>owner</th>
+            <th>VIN</th>
+            <th>Creation year</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="vehicle : ${vehicles}">
-            <td th:text="${vehicle.getLicensePlate()}"></td>
-            <td th:text="${vehicle.getModelId().getBrand()}"></td>
-            <td th:text="${vehicle.getModelId().getModelName()}"></td>
+            <td th:text="${vehicle.getModelId().getBrand().getBrandName()}">brand</td>
+            <td th:text="${vehicle.getModelId().getModelName()}">model</td>
+            <td th:text="${vehicle.getLicensePlate()}">license plate</td>
+            <td th:text="${vehicle.getUser().getUsername()}">owner</td>
+            <td th:text="${vehicle.getVIN()}">VIN</td>
+            <td th:text="${vehicle.getCreationYear()}">Creation year</td>
             <td>
-                <a class="h6 m-3" th:href="@{'/vehicles/vehicle-update/' + ${vehicle.id}}">Edit</a>
-                <a class="h6" th:href="@{'/vehicles/delete/' + ${vehicle.id}}">Delete</a>
+                <a class="h6 m-3" th:href="@{'/vehicles/vehicle-update/' + ${vehicle.vehicleId}}">Edit</a>
+                <a class="h6" th:href="@{'/vehicles/delete/' + ${vehicle.vehicleId}}">Delete</a>
             </td>
         </tr>
         </tbody>
