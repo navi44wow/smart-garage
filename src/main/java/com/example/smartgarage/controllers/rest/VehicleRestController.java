@@ -9,6 +9,8 @@ import com.example.smartgarage.models.entities.Brand;
 import com.example.smartgarage.models.entities.Model;
 import com.example.smartgarage.models.entities.User;
 import com.example.smartgarage.models.entities.Vehicle;
+import com.example.smartgarage.models.view_models.UserViewModel;
+import com.example.smartgarage.services.VehicleMapper;
 import com.example.smartgarage.services.contracts.BrandService;
 import com.example.smartgarage.services.contracts.ModelService;
 import com.example.smartgarage.services.contracts.UserService;
@@ -38,17 +40,19 @@ public class VehicleRestController {
     private final ModelService modelService;
     private final ModelMapper modelMapper;
 
+    private final VehicleMapper vehicleMapper;
     private final AuthenticationHelper authenticationHelper;
 
     private final UserService userService;
 
     public VehicleRestController(VehicleService vehicleService, BrandService brandService, ModelService modelService, ModelMapper modelMapper
-            , AuthenticationHelper authenticationHelper,
+            , VehicleMapper vehicleMapper, AuthenticationHelper authenticationHelper,
                                  UserService userService) {
         this.vehicleService = vehicleService;
         this.brandService = brandService;
         this.modelService = modelService;
         this.modelMapper = modelMapper;
+        this.vehicleMapper = vehicleMapper;
         this.authenticationHelper = authenticationHelper;
         this.userService = userService;
     }
@@ -74,11 +78,11 @@ public class VehicleRestController {
         }
     }
 
-    @GetMapping("/userId/{user}")
-    public List<Vehicle> getByUserId(@PathVariable User user, @RequestHeader("Authorization") HttpHeaders headers) {
+    @GetMapping("/userId/{userId}")
+    public List<Vehicle> getByUserId(@PathVariable User userId, @RequestHeader("Authorization") HttpHeaders headers) {
         try {
             authenticationHelper.checkAuthorization(headers);
-            return vehicleService.getByUserId(user);
+            return vehicleService.getByUserId(userId);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
@@ -88,19 +92,18 @@ public class VehicleRestController {
     public List<Vehicle> getByUsername(@PathVariable String username, @RequestHeader("Authorization") HttpHeaders headers) {
         try {
             authenticationHelper.checkAuthorization(headers);
-            Optional<User> user = userService.getByUsername(username);
-            return vehicleService.getByUserId(userService.getById(user.get().getId()));
+            return vehicleService.getByUsername(username);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 
     @GetMapping("/phone/{phone}")
-    public List<Vehicle> getByPhone(@PathVariable String phone, @RequestHeader("Authorization") HttpHeaders headers) {
+    public List<Vehicle> getByUserPhoneNumber(@PathVariable String phone, @RequestHeader("Authorization") HttpHeaders headers) {
         try {
             authenticationHelper.checkAuthorization(headers);
-            Optional<User> user = userService.getByPhoneNumber(phone);
-            return vehicleService.getByUserId(userService.getById(user.get().getId()));
+            UserViewModel user = userService.getByPhoneNumber(phone);
+            return vehicleService.getByUsername((user.getUsername()));
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
@@ -163,6 +166,7 @@ public class VehicleRestController {
             authenticationHelper.checkAuthorization(headers);
             User user = userService.getById(vehicleDto.getUser().getId());
             vehicle = modelMapper.map(vehicleDto, Vehicle.class);
+            //vehicle = vehicleMapper.createDtoToObject(vehicleDto, user);
             vehicleService.save(vehicle);
             return vehicleService.getById(vehicle.getVehicleId());
         } catch (EntityNotFoundException e) {
