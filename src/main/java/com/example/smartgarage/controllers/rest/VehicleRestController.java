@@ -88,7 +88,7 @@ public class VehicleRestController {
     public List<Vehicle> getByUsername(@PathVariable String username, @RequestHeader("Authorization") HttpHeaders headers) {
         try {
             authenticationHelper.checkAuthorization(headers);
-            Optional<User> user = userService.findByUsername(username);
+            Optional<User> user = userService.getByUsername(username);
             return vehicleService.getByUserId(userService.getById(user.get().getId()));
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -99,7 +99,7 @@ public class VehicleRestController {
     public List<Vehicle> getByPhone(@PathVariable String phone, @RequestHeader("Authorization") HttpHeaders headers) {
         try {
             authenticationHelper.checkAuthorization(headers);
-            Optional<User> user = userService.findByPhoneNumber(phone);
+            Optional<User> user = userService.getByPhoneNumber(phone);
             return vehicleService.getByUserId(userService.getById(user.get().getId()));
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
