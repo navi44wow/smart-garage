@@ -1,6 +1,7 @@
 package com.example.smartgarage.services.contracts;
 
 import com.example.smartgarage.models.entities.Visit;
+import com.example.smartgarage.models.entities.VisitStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,4 +16,6 @@ public interface VisitService {
     void save(Visit visit);
 
     List<Visit> getAllByUsername(String username);
+
+    List<VisitStatus> findAllStatuses();
 }

@@ -1,5 +1,6 @@
 package com.example.smartgarage.models.entities;
 
+import com.example.smartgarage.models.enums.StatusCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,15 @@ public class VisitStatus {
 
     @Column(name = "name")
     private String name;
+
+    public static VisitStatus valueOf(String name) {
+        for (StatusCode statusCode : StatusCode.values()) {
+            if (statusCode.getStatus().getName().equalsIgnoreCase(name)) {
+                return statusCode.getStatus();
+            }
+        }
+        throw new IllegalArgumentException("No matching constant for [" + name + "]");
+    }
 
     @Override
     public String toString() {
