@@ -39,8 +39,24 @@ public class CarServiceImpl implements CarServizService {
         return carServiceRepository.findById(id);
     }
 
+    public CarService getById(Long id) {
+        return carServiceRepository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException("User with id ", id.toString(), " was not found!"));
+    }
+
     public void save(CarService carService) {
         carServiceRepository.save(carService);
+    }
+
+    public CarService update(CarService carService, CarServiceDto carServiceDto) {
+        carService.setName(carServiceDto.getName());
+        carService.setPrice(carServiceDto.getPrice());
+        carServiceRepository.save(carService);
+        return carService;
+    }
+
+    public void delete(Long id) {
+        carServiceRepository.deleteById(id);
     }
 
     @Override
@@ -86,7 +102,6 @@ public class CarServiceImpl implements CarServizService {
         return carServices;
     }
 
-
     //For Rest Api
     @Override
     public List<CarService> getAll(Optional<String> name,
@@ -97,31 +112,14 @@ public class CarServiceImpl implements CarServizService {
 
         try (Session session = sessionFactory.openSession()) {
 
-                ServicesQueryMaker queryMaker = new ServicesQueryMaker();
-                String query = queryMaker.buildHQLSearchAndSortQuery(name, priceMinimum, priceMaximum, sortBy, sortOrder);
-                HashMap<String, Object> propertiesMap = queryMaker.getProperties();
+            ServicesQueryMaker queryMaker = new ServicesQueryMaker();
+            String query = queryMaker.buildHQLSearchAndSortQuery(name, priceMinimum, priceMaximum, sortBy, sortOrder);
+            HashMap<String, Object> propertiesMap = queryMaker.getProperties();
 
-                Query<CarService> request = session.createQuery(query, CarService.class);
-                request.setProperties(propertiesMap);
+            Query<CarService> request = session.createQuery(query, CarService.class);
+            request.setProperties(propertiesMap);
 
-                return request.list();
-            }
+            return request.list();
         }
-
-
-    public void delete(Long id) {
-        carServiceRepository.deleteById(id);
-    }
-
-    public CarService update(CarService carService, CarServiceDto carServiceDto) {
-        carService.setName(carServiceDto.getName());
-        carService.setPrice(carServiceDto.getPrice());
-        carServiceRepository.save(carService);
-        return carService;
-    }
-
-    public CarService getById(Long id) {
-        return carServiceRepository.findById(id).orElseThrow(() ->
-                new EntityNotFoundException("User with id ", id.toString(), " was not found!"));
     }
 }

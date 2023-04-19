@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "services")
@@ -16,6 +17,7 @@ import javax.persistence.*;
 public class CarService {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "service_id")
     private Long id;
 
     @Column(name = "name")
@@ -25,10 +27,7 @@ public class CarService {
 
     @Override
     public String toString() {
-        return "CarService{" +
-                "id=" + id +
-                ", username='" + name + '\'' +
-                ", price=" + price +
-                '}';
+        return name + ": " +
+                price+" BGN";
     }
 }

@@ -33,26 +33,28 @@ public class CarServiceMVCController {
     private final ModelMapper modelMapper;
 
     @Autowired
-    public CarServiceMVCController(CarServizService carServizService, AuthenticationHelper authenticationHelper, ModelMapper modelMapper) {
+    public CarServiceMVCController(CarServizService carServizService,
+                                   AuthenticationHelper authenticationHelper,
+                                   ModelMapper modelMapper) {
         this.carServizService = carServizService;
         this.authenticationHelper = authenticationHelper;
         this.modelMapper = modelMapper;
     }
 
     @GetMapping()
-    public String getAllGeneric(Model model) {
-        List<CarService> servicezList = carServizService.getAllGeneric(
-                Optional.empty(),
-                Optional.of("id"),
-                Optional.empty()
-        );
-        model.addAttribute("services", servicezList);
+    public String getAll(Model model) {
+            List<CarService> servicezList = carServizService.getAllGeneric(
+                    Optional.empty(),
+                    Optional.of("id"),
+                    Optional.empty());
 
-        CarServizFilterDto filterDTO = new CarServizFilterDto();
-        model.addAttribute("filterDTO", filterDTO);
+            model.addAttribute("services", servicezList);
+            CarServizFilterDto filterDTO = new CarServizFilterDto();
+            model.addAttribute("filterDTO", filterDTO);
 
-        return "services";
-    }
+            return "services";
+        }
+
 
     @PostMapping()
     public String filterServices(@ModelAttribute("filterDTO") CarServizFilterDto filterDTO, Model model) {
@@ -101,7 +103,8 @@ public class CarServiceMVCController {
 
     @GetMapping("/service-update/{id}")
     public String showUpdateForm(@PathVariable("id") Long id, Model model) {
-        CarService service = carServizService.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid service Id:" + id));
+        CarService service = carServizService.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("Invalid service Id:" + id));
         model.addAttribute("service", service);
         model.addAttribute("id", id);
         return "service-update";
@@ -115,7 +118,8 @@ public class CarServiceMVCController {
         }
 
         try {
-            CarService service = carServizService.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid service Id:" + id));
+            CarService service = carServizService.findById(id).orElseThrow(() ->
+                    new IllegalArgumentException("Invalid service Id:" + id));
             modelMapper.map(serviceDto, service);
             carServizService.save(service);
             redirectAttributes.addAttribute("id", id);
