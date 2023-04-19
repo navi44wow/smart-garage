@@ -33,4 +33,7 @@ public interface UserService {
     void generateUser(GenerateUserDto generateUserDto);
 
     void prepareForPasswordReset(UserServiceModel userServiceModel);
+
+    void updatePassword(UserServiceModel user);
+
 }

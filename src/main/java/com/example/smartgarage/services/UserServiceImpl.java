@@ -151,10 +151,37 @@ public class UserServiceImpl implements UserService {
                 () -> new NotFoundRoleException("CUSTOMER role not found. Please seed the roles.")
         );
 
-        user.setRoles(new ArrayList<>(Collections.singletonList(userRole)));
+        user.addRole(userRole);
         user.setPassword(passwordEncoder.encode(generateUser.getPassword()));
 
         userRepository.save(user);
+
+    }
+
+    @Override
+    public void updatePassword(UserServiceModel userServiceModel) {
+        checkPassword(userServiceModel.getPassword());
+        if (!userServiceModel.getPassword().equals(userServiceModel.getConfirmPassword())) {
+            throw new PasswordConfirmationException("Password is not confirmed properly!");
+        }
+        User user = userRepository.findByUsername(userServiceModel.getUsername()).orElseThrow(() ->
+                new EntityNotFoundException("User with username ", userServiceModel.getUsername(), " was not found!"));
+
+        UserRoleEntity customerUserRole = userRoleRepository.findByRole(UserRole.CUSTOMER).orElseThrow(
+                () -> new NotFoundRoleException("CUSTOMER role not found. Please seed the roles."));
+
+        UserRoleEntity employeeUserRole = userRoleRepository.findByRole(UserRole.EMPLOYEE).orElseThrow(
+                () -> new NotFoundRoleException("CUSTOMER role not found. Please seed the roles.")
+        );
+        if (user.getRoles().contains(employeeUserRole)){
+            user.setRoles(new ArrayList<>(Collections.singletonList(employeeUserRole)));
+        } else {
+            user.setRoles(new ArrayList<>(Collections.singletonList(customerUserRole)));
+        }
+
+        user.setPassword(passwordEncoder.encode(userServiceModel.getPassword()));
+        userRepository.save(user);
+
 
     }
 
@@ -195,11 +222,13 @@ public class UserServiceImpl implements UserService {
         return modelMapper.map(user, UserViewModel.class);
     }
 
+
+
     @Override
     public UserViewModel updateUser(UserServiceModel updated, String username) {
         checkPassword(updated.getPassword());
         if (!updated.getPassword().equals(updated.getConfirmPassword())) {
-            throw new IllegalArgumentException("Password is not confirmed properly!");
+            throw new PasswordConfirmationException("Password is not confirmed properly!");
         }
 
         UserRoleEntity userRole = userRoleRepository.findByRole(UserRole.CUSTOMER).orElseThrow(
