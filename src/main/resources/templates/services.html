@@ -12,7 +12,7 @@
     <h2>Car Services</h2>
     <a th:href="@{/employee/}" class="btn btn-primary mb-2">Dashboard</a>
     <a th:href="@{/services/service-new}" class="btn btn-primary mb-2">New Service</a>
-    <form method="post" th:action="@{/services/}" class="form-inline mb-3">
+    <form method="post" th:action="@{/services/}" th:object="${filterDTO}" class="form-inline mb-3">
         <label for="sortBy">Sort By:</label>
         <select id="sortBy" name="sortBy" class="form-control mx-2">
             <option value="name">Name</option>
@@ -25,9 +25,13 @@
         </select>
         <button type="submit" class="btn btn-primary mx-2">Filter</button>
     </form>
-    <form method="post" th:action="@{/services/}" class="form-inline mb-3">
+    <form method="post" th:action="@{/services/}" th:object="${filterDTO}" class="form-inline mb-3">
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" class="form-control mx-2">
+        <label for="minPrice">Minimum Price:</label>
+        <input type="number" id="minPrice" name="minPrice" class="form-control mx-2">
+        <label for="maxPrice">Maximum Price:</label>
+        <input type="number" id="maxPrice" name="maxPrice" class="form-control mx-2">
         <button type="submit" class="btn btn-primary mx-2">Search</button>
     </form>
     <table class="table table-hover">

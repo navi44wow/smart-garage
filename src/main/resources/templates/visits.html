@@ -10,6 +10,7 @@
 <body>
 <div class="container mt-5">
     <h2>Visits</h2>
+    <a th:href="@{/employee/}" class="btn btn-primary mb-2">Dashboard</a>
     <a th:href="@{/visits/visit-new}" class="btn btn-primary mb-2">New Visit</a>
     <table class="table table-hover">
         <thead>
@@ -20,16 +21,24 @@
             <th>Start Date</th>
             <th>End Date</th>
             <th>Status</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="visit : ${all}">
-            <td th:text="${visit.id}"></td>
-            <td th:text="${visit.vehicle}"></td>
-            <td th:text="${visit.user}"></td>
+            <td><a th:href="@{/visits/visit-view/{id}(id=${visit.getId()})}">[[${visit.id}]]</a></td>
+            <td th:text="${visit.vehicle.getModelId().getBrand().getBrandName()+' | '
+            +visit.vehicle.getModelId().getModelName()+' | '
+            +visit.vehicle.getLicensePlate()}"></td>
+            <td th:text="${visit.getVehicle().getUser().username}"></td>
             <td th:text="${visit.startDate}"></td>
             <td th:text="${visit.endDate}"></td>
             <td th:text="${visit.status}"></td>
+            <td>
+                <a class="h6 m-3" th:href="@{'/visits/visit-update/' + ${visit.id}}">Modify</a>
+                <a class="h6 m-3" th:href="@{'/visits/visit-update/' + ${visit.id}}">Facture</a>
+                <a class="h6 m-3" th:href="@{'/visits/visit-update/' + ${visit.id}}">Archive</a>
+            </td>
         </tr>
         </tbody>
     </table>

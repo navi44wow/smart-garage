@@ -23,7 +23,7 @@
     </div>
     <input type="hidden" id="id" name="id" th:value="${service.id}">
     <button type="submit" class="btn btn-primary mr-2" id="saveBtn" style="display: none;">Save</button>
-    <button type="button" class="btn btn-secondary" onclick="cancel()">Cancel</button>
+    <a class="btn btn-secondary" th:href="@{/services/}">Cancel</a>
   </form>
 </div>
 
@@ -44,9 +44,6 @@
     $('#price').focus();
     $('#price').addClass('bg-light');
     $('#saveBtn').show();
-  }
-  function cancel() {
-    window.history.back();
   }
 </script>
 </body>
