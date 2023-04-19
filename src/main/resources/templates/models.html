@@ -1,0 +1,64 @@
+    <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Brands and models</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css}">
+</head>
+<body>
+<div class="container mt-5">
+    <h2>Brands and models</h2>
+    <a th:href="@{/employee/}" class="btn btn-primary mb-2">Dashboard</a>
+    <a th:href="@{/models/new}" class="btn btn-primary mb-2">New Brand/Model</a>
+    <form method="post" th:action="@{/models/}" class="form-inline mb-3">
+        <label for="sortBy">Sort By:</label>
+        <select id="sortBy" th:name="sortBy" class="form-control mx-2">
+            <option value="model">model</option>
+            <option value="brand">brand</option>
+        </select>
+        <label for="sortOrder">Sort Order:</label>
+        <select id="sortOrder" th:name="sortOrder" class="form-control mx-2">
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+        </select>
+        <button type="submit" class="btn btn-primary mx-2">Sort</button>
+    </form>
+    <form method="post" th:action="@{/models/}" class="form-inline mb-3">
+
+        <label for="model">model:</label>
+        <input type="text" id="model" th:name="model" class="form-control mx-2">
+        <button type="submit" class="btn btn-primary mx-2">Search</button>
+
+        <label for="brand">brand:</label>
+        <input type="text" id="brand" th:name="brand" class="form-control mx-2">
+        <button type="submit" class="btn btn-primary mx-2">Search</button>
+
+    </form>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Brand</th>
+            <th>Model</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="model : ${models}">
+            <td th:text="${model.getBrand().getBrandName()}">brand</td>
+            <td th:text="${model.getModelName()}">model</td>
+            <td>
+                <a class="h6 m-3" th:href="@{'/models/model-update/' + ${model.modelId}}">Edit</a>
+                <a class="h6" th:href="@{'/models/delete/' + ${model.modelId}}">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Bootstrap JS -->
+<script th:src="@{https://code.jquery.com/jquery-3.2.1.slim.min.js}"></script>
+<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js}"></script>
+<script th:src="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js}"></script>
+</body>
+</html>
