@@ -164,10 +164,10 @@ public class VehicleRestController {
         Vehicle vehicle;
         try {
             authenticationHelper.checkAuthorization(headers);
-            User user = userService.getById(vehicleDto.getUser().getId());
             vehicle = modelMapper.map(vehicleDto, Vehicle.class);
-            //vehicle = vehicleMapper.createDtoToObject(vehicleDto, user);
             vehicleService.save(vehicle);
+            vehicle.setUser(userService.getById(vehicleDto.getUser()));
+            vehicle.setModelId(modelService.getById(vehicleDto.getModel()));
             return vehicleService.getById(vehicle.getVehicleId());
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -183,11 +183,16 @@ public class VehicleRestController {
     public Vehicle updateVehicle(@PathVariable Long vehicleId,
                                  @Valid @RequestBody VehicleDto vehicleDto,
                                  @RequestHeader("Authorization") HttpHeaders headers, Model model) {
-        Vehicle existingVehicle;
+        Vehicle existingVehicle = vehicleService.getById(vehicleId);
         try {
             authenticationHelper.checkAuthorization(headers);
-            existingVehicle = vehicleService.getById(vehicleId);
-            return vehicleService.update(existingVehicle, vehicleDto, model);
+            vehicleService.save(existingVehicle);
+            existingVehicle.setVIN(vehicleDto.getVIN());
+            existingVehicle.setCreationYear(vehicleDto.getCreationYear());
+            existingVehicle.setLicensePlate(vehicleDto.getLicensePlate());
+            existingVehicle.setUser(userService.getById(vehicleDto.getUser()));
+            existingVehicle.setModelId(modelService.getById(vehicleDto.getModel()));
+            return existingVehicle;
         } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         } catch (EntityNotFoundException e) {

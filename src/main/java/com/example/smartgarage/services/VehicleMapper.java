@@ -23,8 +23,8 @@ public class VehicleMapper {
 
     public Vehicle createDtoToObject(VehicleDto vehicleDto,User user) {
         Vehicle vehicle = new Vehicle();
-        vehicle.setUser(vehicleDto.getUser());
-        vehicle.setModelId(vehicleDto.getModel());
+        //vehicle.setUser(vehicleDto.getUser());
+     //   vehicle.setModelId(vehicleDto.getModel());
         vehicle.setVIN(vehicleDto.getVIN());
         vehicle.setCreationYear(vehicleDto.getCreationYear());
         vehicle.setLicensePlate(vehicleDto.getLicensePlate());

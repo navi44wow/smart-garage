@@ -1,14 +1,12 @@
 package com.example.smartgarage.models.dtos;
 
-import com.example.smartgarage.models.entities.Model;
-import com.example.smartgarage.models.entities.User;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.*;
+import java.util.UUID;
 
 
 @Getter
@@ -33,9 +31,7 @@ public class VehicleDto {
 
     private Long creationYear;
 
+    private UUID user;
 
-    private User user;
-
-
-    private Model model;
+    private Long model;
 }
