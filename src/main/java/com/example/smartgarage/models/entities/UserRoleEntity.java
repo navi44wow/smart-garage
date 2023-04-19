@@ -24,7 +24,7 @@ public class UserRoleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Type(type = "uuid-char")
-    @Column(name = "user_id")
+    @Column(name = "role_id")
     private UUID id;
 
     @Column(name = "role_name")

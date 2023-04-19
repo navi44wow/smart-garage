@@ -1,8 +1,7 @@
 package com.example.smartgarage.services;
 
-import com.example.smartgarage.exceptions.EntityDuplicateException;
-import com.example.smartgarage.exceptions.EntityNotFoundException;
-import com.example.smartgarage.exceptions.NotValidPasswordException;
+import com.example.smartgarage.exceptions.*;
+import com.example.smartgarage.models.dtos.GenerateUserDto;
 import com.example.smartgarage.models.entities.User;
 import com.example.smartgarage.models.entities.UserRoleEntity;
 import com.example.smartgarage.models.enums.UserRole;
@@ -26,9 +25,7 @@ import com.google.gson.Gson;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -77,7 +74,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getById(Long id) {
+    public User getById(UUID id) {
         return userRepository.findById(id).orElseThrow(() ->
                 new EntityNotFoundException("User with id ", id.toString(), " was not found!"));
     }
@@ -89,13 +86,13 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         UserRoleEntity userRole = userRoleRepository.findByRole(UserRole.CUSTOMER).orElseThrow(
-                () -> new IllegalStateException("CUSTOMER role not found. Please seed the roles.")
+                () -> new NotFoundRoleException("CUSTOMER role not found. Please seed the roles.")
         );
 
         user.addRole(userRole);
 
         if (!userServiceModel.getPassword().equals(userServiceModel.getConfirmPassword())) {
-            throw new IllegalArgumentException("Password is not confirmed properly!");
+            throw new PasswordConfirmationException("Passwords are not identical!");
         }
 
         alreadyExistsUser(user.getUsername(), user.getPhoneNumber(), user.getEmail());
@@ -112,31 +109,53 @@ public class UserServiceImpl implements UserService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
-    private void checkPassword(String password) {
-        try {
-            if (password.length() < 8) {
-                throw new NotValidPasswordException("Password must be at least 8 characters long");
-            }
-            boolean hasCapital = false;
-            boolean hasDigit = false;
-            boolean hasSpecial = false;
-            for (int i = 0; i < password.length(); i++) {
-                char c = password.charAt(i);
-                if (Character.isUpperCase(c)) {
-                    hasCapital = true;
-                } else if (Character.isDigit(c)) {
-                    hasDigit = true;
-                } else if (!Character.isLetterOrDigit(c)) {
-                    hasSpecial = true;
-                }
-            }
-
-            if (!hasCapital || !hasDigit || !hasSpecial) {
-                throw new NotValidPasswordException("Password must contain at least one capital letter, one digit, and one special symbol");
-            }
-        } catch (NotValidPasswordException e){
-            throw new NotValidPasswordException(e.getMessage());
+    public void checkPassword(String password) {
+        String passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$";
+        if (!password.matches(passwordPattern)) {
+            throw new NotValidPasswordException("Password must be at least 8 characters long, contain at least one digit, one capital letter, and one special symbol");
         }
+    }
+
+    @Override
+    public void generateUser(GenerateUserDto generateUserDto) {
+        if (userRepository.findByEmail(generateUserDto.getEmail()).isPresent()){
+            throw new EntityDuplicateException("User", "email", generateUserDto.getEmail());
+        }
+        User user = modelMapper.map(generateUserDto, User.class);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        UserRoleEntity userRole = userRoleRepository.findByRole(UserRole.NOT_REGISTERED_CUSTOMER).orElseThrow(
+                () -> new NotFoundRoleException("NOT_REGISTERED_CUSTOMER role not found. Please seed the roles.")
+        );
+
+        user.addRole(userRole);
+        user = userRepository.save(user);
+
+        UserDetails userDetails = smartGarageUserService.loadUserByUsername(user.getUsername());
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                userDetails,
+                user.getPassword(),
+                userDetails.getAuthorities()
+        );
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
+
+    @Override
+    public void prepareForPasswordReset(UserServiceModel generateUser) {
+        User user = userRepository.findByEmail(generateUser.getEmail()).orElseThrow(() ->
+                new EntityNotFoundException("User with email ", generateUser.getEmail(), " was not found!"));
+
+        UserRoleEntity userRole = userRoleRepository.findByRole(UserRole.FORGOT_PASSWORD_CUSTOMER).orElseThrow(
+                () -> new NotFoundRoleException("CUSTOMER role not found. Please seed the roles.")
+        );
+
+        user.setRoles(new ArrayList<>(Collections.singletonList(userRole)));
+        user.setPassword(passwordEncoder.encode(generateUser.getPassword()));
+
+        userRepository.save(user);
+
     }
 
     @Override
@@ -178,16 +197,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserViewModel updateUser(UserServiceModel updated, String username) {
+        checkPassword(updated.getPassword());
         if (!updated.getPassword().equals(updated.getConfirmPassword())) {
             throw new IllegalArgumentException("Password is not confirmed properly!");
         }
 
+        UserRoleEntity userRole = userRoleRepository.findByRole(UserRole.CUSTOMER).orElseThrow(
+                () -> new NotFoundRoleException("CUSTOMER role not found. Please seed the roles.")
+        );
+
         User user = userRepository.findByUsername(username).orElseThrow(() ->
                 new EntityNotFoundException("User with username ", updated.getUsername(), " was not found!"));
+        user.setRoles(new ArrayList<>(Collections.singletonList(userRole)));
         user.setUsername(updated.getUsername());
         user.setPassword(passwordEncoder.encode(updated.getPassword()));
         user.setPhoneNumber(updated.getPhoneNumber());
-        user.setEmail(updated.getEmail());
         userRepository.save(user);
 
         return modelMapper.map(updated, UserViewModel.class);
@@ -210,5 +234,22 @@ public class UserServiceImpl implements UserService {
             throw new EntityDuplicateException("User", "email", email);
         }
 
+    }
+
+    @Override
+    public List<String> checkIfExist(String username, String phoneNumber, String email) {
+        List<String> exists = new ArrayList<>();
+
+        if (userRepository.findByUsername(username).isPresent()) {
+            exists.add("username");
+        }
+        if (userRepository.findByPhoneNumber(phoneNumber).isPresent()) {
+            exists.add("phoneNumber");
+        }
+        if (userRepository.findByEmail(email).isPresent()) {
+            exists.add("email");
+        }
+
+        return exists;
     }
 }

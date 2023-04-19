@@ -1,10 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+  <title>Register a new User</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css}">
 </head>
 <body>
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-6 mx-auto">
+      <form th:action="@{'/users/update/' + ${generatedUsername}}" th:object="${userDto}" method="POST" class="border rounded px-4 py-3">
+        <h2 class="text-center mb-3">Update Form</h2>
+        <div class="form-group">
+          <label for="username">Username:</label>
+          <input th:field="*{username}" type="text" class="form-control" id="username" name="username" required>
+          <small th:if="${usernameExists}"  id="usernameUniqueError"
+                 class="text-light form-text bg-danger rounded">Username is already occupied</small>
+        </div>
+        <div class="form-group">
+          <label for="password">Password:</label>
+          <input type="password" th:field="*{password}" class="form-control" id="password" name="password" required>
+          <small th:if="${invalidPassword}"  id="passwordError"
+                 class="text-light form-text bg-danger rounded" th:text="${exceptionPassMessage}"></small>
+        </div>
+        <div class="form-group">
+          <label for="confirmPassword">Confirm Password:</label>
+          <input type="password" th:field="*{confirmPassword}" class="form-control" id="confirmPassword" name="confirmPassword" required>
+          <small th:if="${notConfirmedPassword}"  id="confirmationError"
+                 class="text-light form-text bg-danger rounded" th:text="${confirmationExcMessage}"></small>
+        </div>
+        <div class="form-group">
+          <label for="phoneNumber">Phone number:</label>
+          <input type="text" th:field="*{phoneNumber}" class="form-control" id="phoneNumber" name="phoneNumber" required>
+          <small th:if="${phoneNumberExists}"  id="phoneNumberUniqueError"
+                 class="text-light form-text bg-danger rounded"> There is already a user with this phoneNumber</small>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Save changes</button>
+      </form>
+    </div>
+  </div>
+</div>
 
+<!-- Bootstrap JS -->
+<script th:src="@{https://code.jquery.com/jquery-3.2.1.slim.min.js}"></script>
+<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js}"></script>
+<script th:src="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js}"></script>
 </body>
 </html>

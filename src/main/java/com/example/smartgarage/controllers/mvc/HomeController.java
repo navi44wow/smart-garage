@@ -25,11 +25,6 @@ public class HomeController {
         return "login";
     }
 
-    @GetMapping("/forgot_password")
-    public String forgotPassword() {
-        return "/forgot_password";
-    }
-
 //    @PostMapping("/forgot_password")
 //    public String forgotPassword(@RequestParam String email){
 //

@@ -39,9 +39,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable();
 
         http.authorizeRequests().
-                requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll().
-                antMatchers("/", "/users/login", "/forgot_password", "/employee/reset_password").permitAll()
-                .antMatchers("/api/users/**","/api/vehicles/**","/api/models/**","/api/brands/**","/api/services/**","/api/visits/**", "/api/send-email**").permitAll().
+                requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                .antMatchers("/", "/users/login", "/forgot_password", "/resetPassword/**").permitAll()
+                .antMatchers("/api/users/**", "/api/vehicles/**", "/api/services/**", "/api/visits/**", "/api/send-email**").permitAll().
                 antMatchers("/employee/**").hasRole("EMPLOYEE").
                 antMatchers("/**").authenticated().
                 and().
@@ -50,10 +50,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 usernameParameter(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY).
                 passwordParameter(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_PASSWORD_KEY).
                 failureForwardUrl("/users/login-error")
-                .successHandler((req, res, auth) -> { // override the default URL for specific roles
-                    if (auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_EMPLOYEE"))) {
+                .successHandler((req, res, auth) -> {// override the default URL for specific roles
+                    if (auth.getAuthorities().stream()
+                            .anyMatch(a -> a.getAuthority().equals("ROLE_NOT_REGISTERED_CUSTOMER"))) {
+                        res.sendRedirect("/users/update/" + auth.getName());
+                    } else if (auth.getAuthorities().stream()
+                            .anyMatch(a -> a.getAuthority().equals("ROLE_FORGOT_PASSWORD_CUSTOMER"))) {
+                        res.sendRedirect("/resetPassword/" + auth.getName());
+                    } else if (auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_EMPLOYEE"))) {
                         res.sendRedirect("/employee");
-                    } else {
+                    } else if (auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_CUSTOMER"))) {
                         res.sendRedirect("/customer");
                     }
                 }).

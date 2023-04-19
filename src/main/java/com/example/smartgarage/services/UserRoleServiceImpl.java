@@ -21,8 +21,11 @@ public class UserRoleServiceImpl implements UserRoleService {
         if(userRoleRepository.count() == 0){
             UserRoleEntity employeeRole = new UserRoleEntity().setRole(UserRole.EMPLOYEE);
             UserRoleEntity customerRole = new UserRoleEntity().setRole(UserRole.CUSTOMER);
+            UserRoleEntity notRegisteredCustomerRole = new UserRoleEntity().setRole(UserRole.NOT_REGISTERED_CUSTOMER);
+            UserRoleEntity forgotPasswordCustomer = new UserRoleEntity().setRole(UserRole.FORGOT_PASSWORD_CUSTOMER);
 
-            userRoleRepository.saveAll(List.of(employeeRole, customerRole));
+            userRoleRepository.saveAll(List.of(employeeRole, customerRole, notRegisteredCustomerRole,
+                    forgotPasswordCustomer));
         }
     }
 }
