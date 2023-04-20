@@ -6,7 +6,10 @@ import com.example.smartgarage.exceptions.NotValidPasswordException;
 import com.example.smartgarage.exceptions.PasswordConfirmationException;
 import com.example.smartgarage.models.dtos.UserDto;
 import com.example.smartgarage.models.dtos.GenerateUserDto;
+import com.example.smartgarage.models.dtos.UserFilterDto;
+import com.example.smartgarage.models.filter_options.UserFilterOptions;
 import com.example.smartgarage.models.service_models.UserServiceModel;
+import com.example.smartgarage.repositories.ModelRepository;
 import com.example.smartgarage.services.contracts.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -29,10 +32,13 @@ public class UserMVCController {
 
     private final UserService userService;
     private final ModelMapper modelMapper;
+    private final ModelRepository modelRepository;
 
-    public UserMVCController(UserService userService, ModelMapper modelMapper) {
+    public UserMVCController(UserService userService, ModelMapper modelMapper,
+                             ModelRepository modelRepository) {
         this.userService = userService;
         this.modelMapper = modelMapper;
+        this.modelRepository = modelRepository;
     }
 
     @ModelAttribute("userDto")
@@ -194,8 +200,22 @@ public class UserMVCController {
 
 
     @GetMapping("/all")
-    public String getAllUsers(Model model){
-        model.addAttribute("allUsers", userService.getAll());
+    public String getAllUsers(@ModelAttribute("filterOptions")UserFilterDto userFilterDto, Model model){
+
+        UserFilterOptions userFilterOptions = new UserFilterOptions(
+                userFilterDto.getUsername(),
+                userFilterDto.getEmail(),
+                userFilterDto.getPhoneNumber(),
+                userFilterDto.getVehicleModel(),
+                userFilterDto.getVehicleBrand(),
+                userFilterDto.getVisitFirstDate(),
+                userFilterDto.getVisitLastDate(),
+                userFilterDto.getVisitDate()
+        );
+
+
+        model.addAttribute("allUsers", userService.get(userFilterOptions));
+        model.addAttribute("filterOptions", userFilterDto);
         return "users-all";
     }
 

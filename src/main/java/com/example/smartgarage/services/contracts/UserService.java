@@ -2,6 +2,7 @@ package com.example.smartgarage.services.contracts;
 
 import com.example.smartgarage.models.dtos.GenerateUserDto;
 import com.example.smartgarage.models.entities.User;
+import com.example.smartgarage.models.filter_options.UserFilterOptions;
 import com.example.smartgarage.models.service_models.UserServiceModel;
 import com.example.smartgarage.models.view_models.UserViewModel;
 
@@ -36,4 +37,5 @@ public interface UserService {
 
     void updatePassword(UserServiceModel user);
 
+    List<UserViewModel> get(UserFilterOptions userFilterOptions);
 }

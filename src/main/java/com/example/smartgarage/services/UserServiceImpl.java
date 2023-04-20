@@ -5,6 +5,7 @@ import com.example.smartgarage.models.dtos.GenerateUserDto;
 import com.example.smartgarage.models.entities.User;
 import com.example.smartgarage.models.entities.UserRoleEntity;
 import com.example.smartgarage.models.enums.UserRole;
+import com.example.smartgarage.models.filter_options.UserFilterOptions;
 import com.example.smartgarage.models.service_models.UserServiceModel;
 import com.example.smartgarage.models.view_models.UserViewModel;
 import com.example.smartgarage.repositories.UserRepository;
@@ -26,6 +27,7 @@ import com.google.gson.Gson;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -183,6 +185,31 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
 
+    }
+
+    @Override
+    public List<UserViewModel> get(UserFilterOptions userFilterOptions) {
+        List<User> users = new ArrayList<>();
+
+        if (userFilterOptions.getUsername().isPresent()){
+            users.addAll(userRepository.findAllByUsername(userFilterOptions.getUsername()));
+        }
+
+        if (userFilterOptions.getEmail().isPresent()){
+            users.addAll(userRepository.findAllByEmail(userFilterOptions.getEmail()));
+        }
+
+        if (userFilterOptions.getPhoneNumber().isPresent()){
+            users.addAll(userRepository.findAllByPhoneNumber(userFilterOptions.getPhoneNumber()));
+        }
+
+        if (users.isEmpty()){
+            users.addAll(userRepository.findAllUsers());
+        }
+
+        return users.stream()
+                .map(user -> modelMapper.map(user, UserViewModel.class))
+                .collect(Collectors.toList());
     }
 
     @Override
