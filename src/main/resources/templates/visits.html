@@ -29,8 +29,8 @@
         <tbody>
         <tr th:each="visit : ${all}">
             <td><a th:href="@{/visits/visit-view/{id}(id=${visit.getId()})}" th:text="${visit.id}">Visit ID</a></td>
-            <td th:text="${visit.vehicle.getModelId().getBrand().getBrandName()+' | '
-                +visit.vehicle.getModelId().getModelName()+' | '
+            <td th:text="${visit.vehicle.getCarModelId().getBrand().getBrandName()+' | '
+                +visit.vehicle.getCarModelId().getModelName()+' | '
                 +visit.vehicle.getLicensePlate()}"></td>
             <td th:text="${visit.getVehicle().getUser().username}"></td>
             <td th:text="${visit.startDate}"></td>

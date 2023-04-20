@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 
 @Getter
 @Setter
@@ -15,6 +17,7 @@ public class VehicleFilterDto {
 
     private String brand;
     private String model;
+    private UUID user;
     private int creationYearMin;
     private int creationYearMax;
     private String sortBy;

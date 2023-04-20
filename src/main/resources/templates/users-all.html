@@ -14,13 +14,13 @@
     <a th:href="@{/users/generateUser}" class="btn btn-primary mb-2">Generate a new user</a>
     <form method="get" th:action="@{/users/all}" th:object="${filterOptions}" class="form-inline mb-3">
         <label for="sortBy">Sort By:</label>
-        <select id="sortBy" model="sortBy" class="form-control mx-2">
+        <select id="sortBy" carModel="sortBy" class="form-control mx-2">
             <option value="none">None</option>
             <option value="username">Username</option>
             <option value="date">Visit Date</option>
         </select>
         <label for="sortOrder">Sort Order:</label>
-        <select id="sortOrder" model="sortOrder" class="form-control mx-2">
+        <select id="sortOrder" carModel="sortOrder" class="form-control mx-2">
             <option value="none">None</option>
             <option value="asc">Ascending</option>
             <option value="desc">Descending</option>
@@ -29,8 +29,8 @@
     </form>
     <form method="get" th:action="@{/users/all}" th:object="${filterOptions}" class="form-inline mb-3">
 
-        <label for="model">Username:</label>
-        <input type="text" th:field="*{username}" id="model" model="model" class="form-control mx-2">
+        <label for="carModel">Username:</label>
+        <input type="text" th:field="*{username}" id="carModel" carModel="carModel" class="form-control mx-2">
 
         <label for="email">Email:</label>
         <input type="text" th:field="*{email}"  id="email" brand="email" class="form-control mx-2">

@@ -14,13 +14,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-@Table(name = "models")
+@Table(name = "car_models")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class Model {
+public class CarModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

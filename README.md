@@ -44,7 +44,7 @@ Customers must be able to see the list of all their services.
 
 - Employees must be able to create a new vehicle for customers.
 
-- If the model/make does not exist in the application’s database, it must be created.
+- If the carModel/make does not exist in the application’s database, it must be created.
 
 - There must be a section in the application, dedicated to the services that the shop offers:
 
@@ -58,9 +58,9 @@ Customers must be able to see the list of all their services.
 
 - Employees must be able to browse, delete, or update a customer’s profile.
 
-- Employees must be able to filter the customers by name, email, phone number, vehicle (model or make) or visits in range (a visit between two dates).
+- Employees must be able to filter the customers by name, email, phone number, vehicle (carModel or make) or visits in range (a visit between two dates).
 
-- Employees must be able to filter the customers by name, email, phone number, vehicle (model or make) and visits in range (a visit between two dates).
+- Employees must be able to filter the customers by name, email, phone number, vehicle (carModel or make) and visits in range (a visit between two dates).
 
 - Employees must be able to sort the customers by name or visit date (latest or oldest on top).
 
@@ -85,7 +85,7 @@ Customers must be able to see the list of all their services.
 - [ ] Search options, by: vehicle or/and date for Customers **<ins>Important**
 - [ ] Create a report view for Visit **<ins>Important**
 - [ ] Filter options for CarServices section, filter by: name or/and price. for Employee dashboard **<ins>Important**
-- [ ] Filter options for Customers section, filter by: name, email, phone, vehicle(model or make) or/and visits in range between two dates for Employee dashboard **<ins>Important**
+- [ ] Filter options for Customers section, filter by: name, email, phone, vehicle(carModel or make) or/and visits in range between two dates for Employee dashboard **<ins>Important**
 - [ ] Implement `password reset` feature **<ins>Important**
 - [ ] Implement `report view` feature to see the details of a visit. **<ins>Important**
 - [ ] Implement `send report to the customer` feature. **<ins>Important**
@@ -121,7 +121,7 @@ Customers must be able to see the list of all their services.
 
 **Scenario 1 - A walk-in customer:**
 
-*New customers walk in the shop. He has never visited before. He explains what the issue with his vehicle is and an employee creates a new personal vehicle (it includes the brand, model, year, vin, and license plate). When the vehicle is created the employee creates a new service order that includes the newly created vehicle, as well as all the service procedures that need to be performed (oil change, brake fluid change…). The customer receives, in the email that he has provided, an automatically generated invoice, containing the total sum that he must pay along with every service procedure that will be performed on his vehicle. He receives another email, that contains information about his automatically generated login information.*
+*New customers walk in the shop. He has never visited before. He explains what the issue with his vehicle is and an employee creates a new personal vehicle (it includes the brand, carModel, year, vin, and license plate). When the vehicle is created the employee creates a new service order that includes the newly created vehicle, as well as all the service procedures that need to be performed (oil change, brake fluid change…). The customer receives, in the email that he has provided, an automatically generated invoice, containing the total sum that he must pay along with every service procedure that will be performed on his vehicle. He receives another email, that contains information about his automatically generated login information.*
 
 **Scenario 2 - Forgotten password:**
 

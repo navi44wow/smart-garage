@@ -64,7 +64,7 @@ VALUES (1, 'audi'),
 
 
 
-INSERT INTO `car-garage`.models (model_id, model_name, brand_id)
+INSERT INTO `car-garage`.car_models (model_id, model_name, brand_id)
 VALUES (17, 'q3', 1),
        (18, 'q5', 1),
        (19, 'q7', 1),

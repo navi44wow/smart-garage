@@ -12,8 +12,8 @@
     <h2>New Vehicle</h2>
     <form th:action="@{/vehicles/new}" method="post">
         <div class="form-group">
-            <label for="model">Model of Vehicle</label>
-            <input type="text" class="form-control" id="model" name="model" required>
+            <label for="carModel">Model of Vehicle</label>
+            <input type="text" class="form-control" id="carModel" name="carModel.getById" required>
         </div>
         <div class="form-group">
             <label for="brand">Brand</label>
@@ -21,7 +21,7 @@
         </div>
         <div class="form-group">
             <label for="user">Owner</label>
-            <input type="text" class="form-control" id="user" name="user" required>
+            <input type="text" class="form-control" id="user" name="user.getById" required>
         </div>
         <div class="form-group">
             <label for="licensePlate">License plate</label>

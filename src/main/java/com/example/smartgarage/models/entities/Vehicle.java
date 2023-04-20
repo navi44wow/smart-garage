@@ -50,7 +50,7 @@ public class Vehicle {
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "model_id")
-    private Model modelId;
+    private CarModel carModelId;
 
 
     @Override
@@ -59,7 +59,7 @@ public class Vehicle {
                 "VIN: " + VIN +
                 ", user id: '" + user + '\'' +
                 ", license plate: '" + licensePlate + '\'' +
-                ", model: '" + modelId + '\'' +
+                ", model: '" + carModelId + '\'' +
                 ", creation year: " + creationYear +
                 '}';
     }
