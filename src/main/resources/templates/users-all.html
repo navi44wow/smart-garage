@@ -8,35 +8,37 @@
     <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css}">
 </head>
 <body>
-<div class="container mt-5">
+<div class="container mt-5" th:style="${'max-width: 1240px;'}">
     <h2>Users</h2>
     <a th:href="@{/employee}" class="btn btn-primary mb-2">Dashboard</a>
     <a th:href="@{/users/generateUser}" class="btn btn-primary mb-2">Generate a new user</a>
-    <form method="post" th:action="@{/users/all}" class="form-inline mb-3">
+    <form method="get" th:action="@{/users/all}" th:object="${filterOptions}" class="form-inline mb-3">
         <label for="sortBy">Sort By:</label>
         <select id="sortBy" model="sortBy" class="form-control mx-2">
-            <option value="model">Username</option>
-            <option value="brand">Email</option>
+            <option value="none">None</option>
+            <option value="username">Username</option>
+            <option value="date">Visit Date</option>
         </select>
         <label for="sortOrder">Sort Order:</label>
         <select id="sortOrder" model="sortOrder" class="form-control mx-2">
+            <option value="none">None</option>
             <option value="asc">Ascending</option>
             <option value="desc">Descending</option>
         </select>
         <button type="submit" class="btn btn-primary mx-2">Sort</button>
     </form>
-    <form method="post" th:action="@{/users/all}" class="form-inline mb-3">
+    <form method="get" th:action="@{/users/all}" th:object="${filterOptions}" class="form-inline mb-3">
 
-        <label for="model">model:</label>
-        <input type="text" id="model" model="model" class="form-control mx-2">
+        <label for="model">Username:</label>
+        <input type="text" th:field="*{username}" id="model" model="model" class="form-control mx-2">
         <button type="submit" class="btn btn-primary mx-2">Search</button>
 
-        <label for="brand">brand:</label>
-        <input type="text" id="brand" brand="brand" class="form-control mx-2">
+        <label for="email">Email:</label>
+        <input type="text" th:field="*{email}"  id="email" brand="email" class="form-control mx-2">
         <button type="submit" class="btn btn-primary mx-2">Search</button>
 
-        <label for="creationYear">creationYear:</label>
-        <input type="text" id="creationYear" creationYear="creationYear" class="form-control mx-2">
+        <label for="phoneNumber">Phone Number:</label>
+        <input type="text" th:field="*{phoneNumber}"  id="phoneNumber" creationYear="phoneNumber" class="form-control mx-2">
         <button type="submit" class="btn btn-primary mx-2">Search</button>
 
     </form>
