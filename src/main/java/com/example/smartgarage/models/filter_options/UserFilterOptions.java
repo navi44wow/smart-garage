@@ -22,9 +22,12 @@ public class UserFilterOptions {
     private Optional<LocalDate> visitLastDate;
     private Optional<LocalDate> visitDate;
 
+    private Optional<String> sortBy;
+    private Optional<String> sortOrder;
+
     public UserFilterOptions(String username, String email, String phoneNumber,
                              String vehicleModel, String vehicleBrand, LocalDate visitFirstDate,
-                             LocalDate visitLastDate, LocalDate visitDate) {
+                             LocalDate visitLastDate, LocalDate visitDate, String sortBy, String sortOrder) {
         this.username = Optional.ofNullable(username);
         this.email = Optional.ofNullable(email);
         this.phoneNumber = Optional.ofNullable(phoneNumber);
@@ -33,5 +36,7 @@ public class UserFilterOptions {
         this.visitFirstDate = Optional.ofNullable(visitFirstDate);
         this.visitLastDate = Optional.ofNullable(visitLastDate);
         this.visitDate = Optional.ofNullable(visitDate);
+        this.sortBy = Optional.ofNullable(sortBy);
+        this.sortOrder = Optional.ofNullable(sortOrder);
     }
 }

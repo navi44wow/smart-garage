@@ -29,5 +29,9 @@ public class UserFilterDto {
 
     private LocalDate visitDate;
 
+    private String sortBy;
+
+    private String sortOrder;
+
 
 }

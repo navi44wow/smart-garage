@@ -210,7 +210,9 @@ public class UserMVCController {
                 userFilterDto.getVehicleBrand(),
                 userFilterDto.getVisitFirstDate(),
                 userFilterDto.getVisitLastDate(),
-                userFilterDto.getVisitDate()
+                userFilterDto.getVisitDate(),
+                userFilterDto.getSortBy(),
+                userFilterDto.getSortOrder()
         );
 
 

@@ -8,6 +8,8 @@ import com.example.smartgarage.models.service_models.UserServiceModel;
 import com.example.smartgarage.models.view_models.UserViewModel;
 import com.example.smartgarage.services.contracts.UserService;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,6 +32,11 @@ public class CustomerController {
     public CustomerController(UserService userService, ModelMapper modelMapper) {
         this.userService = userService;
         this.modelMapper = modelMapper;
+    }
+
+    @ModelAttribute("loggedInUser")
+    public UserViewModel loggedInUser() {
+        return getLoggedInUser();
     }
 
     @ModelAttribute("generateUserDto")
@@ -117,5 +124,17 @@ public class CustomerController {
 
         return "redirect:/users/login";
     }
+
+
+    private UserViewModel getLoggedInUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null;
+        }
+        return userService.getByUsername(authentication.getName());
+    }
+
+
+
 
 }

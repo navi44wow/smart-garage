@@ -207,6 +207,22 @@ public class UserServiceImpl implements UserService {
             users.addAll(userRepository.findAllUsers());
         }
 
+        if (!userFilterOptions.getSortBy().equals(Optional.of("None"))) {
+            if (userFilterOptions.getSortBy().equals(Optional.of("Username"))) {
+                if (userFilterOptions.getSortOrder().equals(Optional.of("Asc"))) {
+                    users = users.stream()
+                            .sorted(Comparator.comparing(User::getUsername))
+                            .collect(Collectors.toCollection(LinkedHashSet::new));
+                } else {
+                    users = users.stream()
+                            .sorted(Comparator.comparing(User::getUsername).reversed())
+                            .collect(Collectors.toCollection(LinkedHashSet::new));
+                }
+            } else if (userFilterOptions.getSortBy().equals(Optional.of("Visit Date"))) {
+                //TODO
+            }
+        }
+
         return users.stream()
                 .map(user -> modelMapper.map(user, UserViewModel.class))
                 .collect(Collectors.toList());

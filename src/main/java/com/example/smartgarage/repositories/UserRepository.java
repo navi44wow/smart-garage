@@ -32,7 +32,7 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     @Query("select u from User u where u.email like %:email%")
     List<User> findAllByEmail(Optional<String> email);
 
-//    @Query("select u from User u where u.phoneNumber like %:phoneNumber%")
+    @Query("select u from User u where u.phoneNumber like %:phoneNumber%")
     List<User> findAllByPhoneNumber(Optional<String> phoneNumber);
 
 }
