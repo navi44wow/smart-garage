@@ -12,41 +12,68 @@
     <h2>Visits</h2>
     <a th:href="@{/employee/}" class="btn btn-primary mb-2">Dashboard</a>
     <a th:href="@{/visits/visit-new}" class="btn btn-primary mb-2">New Visit</a>
-    <table class="table table-hover">
+    <table class="table table-striped">
         <thead>
         <tr>
-            <th>Id</th>
+            <th>ID</th>
             <th>Vehicle</th>
             <th>User</th>
             <th>Start Date</th>
-            <th>End Date</th>
+            <th>Due Date</th>
             <th>Status</th>
-            <th></th>
+            <th>Actions</th>
+            <th><input type="checkbox" id="showArchived" />
+                <label for="showArchived">Show Archived</label></th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="visit : ${all}">
-            <td><a th:href="@{/visits/visit-view/{id}(id=${visit.getId()})}">[[${visit.id}]]</a></td>
+            <td><a th:href="@{/visits/visit-view/{id}(id=${visit.getId()})}" th:text="${visit.id}">Visit ID</a></td>
             <td th:text="${visit.vehicle.getModelId().getBrand().getBrandName()+' | '
-            +visit.vehicle.getModelId().getModelName()+' | '
-            +visit.vehicle.getLicensePlate()}"></td>
+                +visit.vehicle.getModelId().getModelName()+' | '
+                +visit.vehicle.getLicensePlate()}"></td>
             <td th:text="${visit.getVehicle().getUser().username}"></td>
             <td th:text="${visit.startDate}"></td>
-            <td th:text="${visit.endDate}"></td>
+            <td th:text="${visit.dueDate}"></td>
             <td th:text="${visit.status}"></td>
             <td>
-                <a class="h6 m-3" th:href="@{'/visits/visit-update/' + ${visit.id}}">Modify</a>
+                <a class="h6 m-3" th:href="@{'/visits/visit-update/' + ${visit.id}}" th:if="${!visit.isArchived()}">Modify</a>
                 <a class="h6 m-3" th:href="@{'/visits/visit-update/' + ${visit.id}}">Facture</a>
-                <a class="h6 m-3" th:href="@{'/visits/visit-update/' + ${visit.id}}">Archive</a>
+                <form method="post" th:action="@{/visits}" th:object="${visit}">
+                    <input type="hidden" name="visitId" th:value="${visit.id}" />
+                    <button type="submit" class="h6 m-3" th:text="${visit.isArchived() ? 'Unarchive' : 'Archive'}">Archive</button>
+                    <input type="hidden" name="archived" th:value="${!visit.isArchived()}" />
+                </form>
             </td>
         </tr>
         </tbody>
     </table>
 </div>
-
 <!-- Bootstrap JS -->
 <script th:src="@{https://code.jquery.com/jquery-3.2.1.slim.min.js}"></script>
 <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js}"></script>
 <script th:src="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js}"></script>
+<script>
+    // Retrieve the state of the checkbox from localStorage
+    let showArchived = localStorage.getItem('showArchived');
+    if (showArchived === null) {
+        showArchived = false;
+    } else {
+        showArchived = (showArchived === 'true');
+    }
+
+    // Set the initial state of the checkbox
+    const checkbox = document.getElementById('showArchived');
+    checkbox.checked = showArchived;
+
+    // Add an event listener to the checkbox
+    checkbox.addEventListener('change', function() {
+        // Update the state of the checkbox in localStorage
+        localStorage.setItem('showArchived', this.checked);
+
+        // Reload the page
+        window.location.href = window.location.pathname + '?showArchived=' + this.checked;
+    });
+</script>
 </body>
 </html>

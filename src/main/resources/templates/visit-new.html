@@ -23,16 +23,6 @@
           + ' | ' + vehicle.user.username}"></option>
             </select>
         </div>
-<!--        <div class="form-group">-->
-<!--            <label for="serviceIds">Service:</label>-->
-<!--            <div class="service-list">-->
-<!--                <select class="form-control" name="serviceIds" id="serviceIds" required>-->
-<!--                    <option value="">&#45;&#45; Select Service &#45;&#45;</option>-->
-<!--                    <option th:each="service : ${services}" th:value="${service.id}" th:text="${service.name}"></option>-->
-<!--                </select>-->
-<!--                <a href="#" class="add-service" id="add-service">Add Service</a>-->
-<!--            </div>-->
-<!--        </div>-->
         <button type="submit" class="btn btn-primary">Save</button>
         <a th:href="@{/visits/}" class="btn btn-secondary">Cancel</a>
     </form>
@@ -64,34 +54,5 @@
         }
     }
 </script>
-<!--<script>-->
-<!--    $(document).ready(function() {-->
-<!--        let serviceCount = 1;-->
-
-<!--        $('.add-service').click(function(e) {-->
-<!--            e.preventDefault();-->
-<!--            serviceCount++;-->
-
-<!--            const newService = $('<select class="form-control" name="service' + serviceCount + '" id="service' + serviceCount + '" required>\-->
-<!--                              <option value="">&#45;&#45; Select Service &#45;&#45;</option>\-->
-<!--                            </select>');-->
-<!--            const options = $('.service-list select:first-of-type option').clone();-->
-<!--            newService.append(options);-->
-<!--            $('.service-list').append(newService);-->
-<!--        });-->
-<!--    });-->
-<!--</script>-->
-<!--<script>-->
-<!--    var serviceIds = new Set();-->
-<!--    document.getElementById("add-service").addEventListener("click", function(event) {-->
-<!--        event.preventDefault();-->
-<!--        var selectBox = document.getElementById("service");-->
-<!--        var selectedServiceId = selectBox.options[selectBox.selectedIndex].value;-->
-<!--        if (selectedServiceId) {-->
-<!--            serviceIds.add(selectedServiceId);-->
-<!--            console.log(serviceIds);-->
-<!--        }-->
-<!--    });-->
-<!--</script>-->
 </body>
 </html>
