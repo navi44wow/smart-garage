@@ -24,7 +24,7 @@
                 <a class="nav-link" th:href="@{/models}">Brands/Models</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="@{/users}">Users</a>
+                <a class="nav-link" th:href="@{/users/all}">Users</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/services}">Services</a>
@@ -33,7 +33,7 @@
                 <a class="nav-link" th:href="@{/visits}">Visits</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/employee/reset_password}">Password Reset</a>
+                <a class="nav-link" th:href="@{'/resetPassword/' + ${loggedInUser.getUsername()}}">Password Reset</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Generate a Report</a>

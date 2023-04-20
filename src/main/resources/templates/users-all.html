@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Users</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css}">
+</head>
+<body>
+<div class="container mt-5">
+    <h2>Users</h2>
+    <a th:href="@{/employee}" class="btn btn-primary mb-2">Dashboard</a>
+    <a th:href="@{/users/generateUser}" class="btn btn-primary mb-2">Generate a new user</a>
+    <form method="post" th:action="@{/users/all}" class="form-inline mb-3">
+        <label for="sortBy">Sort By:</label>
+        <select id="sortBy" model="sortBy" class="form-control mx-2">
+            <option value="model">Username</option>
+            <option value="brand">Email</option>
+        </select>
+        <label for="sortOrder">Sort Order:</label>
+        <select id="sortOrder" model="sortOrder" class="form-control mx-2">
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+        </select>
+        <button type="submit" class="btn btn-primary mx-2">Sort</button>
+    </form>
+    <form method="post" th:action="@{/users/all}" class="form-inline mb-3">
+
+        <label for="model">model:</label>
+        <input type="text" id="model" model="model" class="form-control mx-2">
+        <button type="submit" class="btn btn-primary mx-2">Search</button>
+
+        <label for="brand">brand:</label>
+        <input type="text" id="brand" brand="brand" class="form-control mx-2">
+        <button type="submit" class="btn btn-primary mx-2">Search</button>
+
+        <label for="creationYear">creationYear:</label>
+        <input type="text" id="creationYear" creationYear="creationYear" class="form-control mx-2">
+        <button type="submit" class="btn btn-primary mx-2">Search</button>
+
+    </form>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${allUsers}">
+            <td th:text="${user.getUsername()}">Username</td>
+            <td th:text="${user.getEmail()}">Email</td>
+            <td th:text="${user.getPhoneNumber()}">Phone Number</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Bootstrap JS -->
+<script th:src="@{https://code.jquery.com/jquery-3.2.1.slim.min.js}"></script>
+<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js}"></script>
+<script th:src="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js}"></script>
+</body>
+</html>

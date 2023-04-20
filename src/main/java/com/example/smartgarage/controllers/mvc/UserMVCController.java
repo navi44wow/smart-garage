@@ -50,6 +50,19 @@ public class UserMVCController {
         return "login";
     }
 
+    @PostMapping("/login-error")
+    public ModelAndView failedLogin(@ModelAttribute(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY)
+                                    String username) {
+        ModelAndView modelAndView = new ModelAndView();
+
+        modelAndView.addObject("bad_credentials", true);
+        modelAndView.addObject("username", username);
+
+        modelAndView.setViewName("/login");
+
+        return modelAndView;
+    }
+
     @GetMapping("/update/{generatedUsername}")
     public String getUpdate(@PathVariable String generatedUsername, Model model) {
         model.addAttribute("generatedUsername", generatedUsername);
@@ -179,19 +192,12 @@ public class UserMVCController {
 
     }
 
-    @PostMapping("/login-error")
-    public ModelAndView failedLogin(@ModelAttribute(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY)
-                                    String username) {
-        ModelAndView modelAndView = new ModelAndView();
 
-        modelAndView.addObject("bad_credentials", true);
-        modelAndView.addObject("username", username);
-
-        modelAndView.setViewName("/login");
-
-        return modelAndView;
+    @GetMapping("/all")
+    public String getAllUsers(Model model){
+        model.addAttribute("allUsers", userService.getAll());
+        return "users-all";
     }
-
 
     static String generateRandomString(int n) {
         String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "0123456789" + "abcdefghijklmnopqrstuvxyz";
