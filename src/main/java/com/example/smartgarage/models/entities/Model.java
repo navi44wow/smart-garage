@@ -35,4 +35,9 @@ public class Model {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "brand_id")
     private Brand brand;
+
+    @Override
+    public String toString() {
+        return modelName + ": " + brand;
+    }
 }

@@ -32,4 +32,9 @@ public class Brand {
     @Column(name = "brand_name")
     private String brandName;
 
+    @Override
+    public String toString() {
+        return brandName;
+    }
+
 }
