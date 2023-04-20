@@ -18,6 +18,6 @@ public class VisitDto {
     private Long vehicleId;
     private Long statusId;
     private LocalDate startDate;
-    private LocalDate endDate;
+    private LocalDate dueDate;
     private Set<Long> serviceIds;
 }

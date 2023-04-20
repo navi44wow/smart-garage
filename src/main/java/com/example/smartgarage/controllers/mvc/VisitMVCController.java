@@ -43,21 +43,27 @@ public class VisitMVCController {
     }
 
     @GetMapping()
-    public String getAll(Model model) {
-        List<Visit> visits = visitService.getAll();
-        model.addAttribute("all", visits);
+    public String getAllVisits(Model model, @RequestParam(required = false) Boolean showArchived) {
+        List<Visit> allVisits = visitService.getAll();
+        if (showArchived != null && showArchived) {
+            allVisits = allVisits.stream().filter(Visit::isArchived).collect(Collectors.toList());
+        }
+        model.addAttribute("all", allVisits);
         return "visits";
     }
 
-//    @GetMapping("/visit-view/{id}")
-//    public String getVisitById(@PathVariable Long id, Model model) {
-//        Optional<Visit> visit = visitService.getById(id);
-//        if (visit.isEmpty()) {
-//            throw new EntityNotFoundException("Visit", visit.get().getId());
-//        }
-//        model.addAttribute("visit", visit);
-//        return "visit-view";
-//    }
+    @PostMapping()
+    public String archiveVisit(@RequestParam("visitId") Long visitId) {
+        Visit visit = visitService.getVisitById(visitId);
+        if (visit.isArchived()) {
+            visit.setArchived(false);
+        } else {
+            visit.setArchived(true);
+        }
+        visitService.save(visit);
+        return "redirect:/visits";
+    }
+
 
     @GetMapping("/visit-new")
     public String create(Model model) {
@@ -105,5 +111,4 @@ public class VisitMVCController {
         model.addAttribute("visit", visit);
         return "redirect:/visits/visit-view/"+visit.getId();
     }
-
 }

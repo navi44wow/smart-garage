@@ -40,27 +40,12 @@ public class VisitMapper {
     public Visit toObject(VisitDto visitDto) {
         Visit visit = new Visit();
         Vehicle vehicle = vehicleService.getById(visitDto.getVehicleId());
-
-//        Set<CarService> services = visitDto.getServiceIds()
-//                .stream()
-//                .map(carServizService::findById)
-//                .filter(Optional::isPresent)
-//                .map(Optional::get)
-//                .collect(Collectors.toSet());
-//        ListOfServices listOfServices = new ListOfServices();
-//        for (CarService service : services) {
-//            listOfServices.setVisitID(visit.getId());
-//            listOfServices.setServiceID(service.getId());
-//            listOfServices.setServiceName(service.getName());
-//            listOfServices.setServicePrice(service.getPrice());
-//            listOfServicez.save(listOfServices);
-//        }
         LocalDate start = LocalDate.now();
-        LocalDate end = start.plusDays(3);
+        LocalDate due = start.plusDays(3);
         VisitStatus status = new VisitStatus(1L, "Not started");
         visit.setVehicle(vehicle);
         visit.setStartDate(start);
-        visit.setEndDate(end);
+        visit.setDueDate(due);
         visit.setStatus(status);
         return visit;
     }

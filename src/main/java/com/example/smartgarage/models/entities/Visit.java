@@ -35,8 +35,8 @@ public class Visit {
     @Column(name = "start_date")
     private LocalDate startDate;
 
-    @Column(name = "end_date")
-    private LocalDate endDate;
+    @Column(name = "due_date")
+    private LocalDate dueDate;
 
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "visit_id")
@@ -62,6 +62,9 @@ public class Visit {
         return Objects.hash(id);
     }
 
+    @Column(name = "is_archived")
+    private boolean isArchived;
+
 
     @Override
     public String toString() {
@@ -70,7 +73,7 @@ public class Visit {
                 ", vehicle=" + vehicle +
                 ", status=" + status.toString() +
                 ", startDate=" + startDate.toString() +
-                ", endDate=" + endDate.toString() +
+                ", endDate=" + dueDate.toString() +
                 '}';
     }
 }
