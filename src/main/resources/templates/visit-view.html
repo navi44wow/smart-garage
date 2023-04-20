@@ -55,6 +55,21 @@
         </tr>
         </tbody>
     </table>
+    <form method="post" th:action="@{__${#httpServletRequest.requestURI}__}"
+          th:object="${visit}">
+    <div class="form-group">
+        <label for="serviceIds">Service:</label>
+        <div class="service-list">
+            <select class="form-control" name="serviceIds" id="serviceIds" required>
+                <option value="">-- Select Service --</option>
+                <option th:each="service : ${services}" th:value="${service.id}" th:text="${service.name + ' | price: '+service.price}"></option>
+            </select>
+<!--            <a href="#" class="add-service" id="add-service">Add Service</a>-->
+        </div>
+    </div>
+        <button type="submit" class="btn btn-primary">Add</button>
+        <a th:href="@{/visits/}" class="btn btn-secondary">Cancel</a>
+    </form>
 </div>
 <!-- Bootstrap JS -->
 <script th:src="@{https://code.jquery.com/jquery-3.2.1.slim.min.js}"></script>
