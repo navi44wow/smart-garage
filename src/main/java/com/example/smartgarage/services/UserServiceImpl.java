@@ -189,17 +189,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserViewModel> get(UserFilterOptions userFilterOptions) {
-        List<User> users = new ArrayList<>();
+        Set<User> users = new HashSet<>();
 
-        if (userFilterOptions.getUsername().isPresent()){
+        if (!userFilterOptions.getUsername().equals(Optional.of(""))){
             users.addAll(userRepository.findAllByUsername(userFilterOptions.getUsername()));
         }
 
-        if (userFilterOptions.getEmail().isPresent()){
+        if (!userFilterOptions.getEmail().equals(Optional.of(""))){
             users.addAll(userRepository.findAllByEmail(userFilterOptions.getEmail()));
         }
 
-        if (userFilterOptions.getPhoneNumber().isPresent()){
+        if (!userFilterOptions.getPhoneNumber().equals(Optional.of(""))){
             users.addAll(userRepository.findAllByPhoneNumber(userFilterOptions.getPhoneNumber()));
         }
 
