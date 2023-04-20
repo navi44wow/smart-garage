@@ -35,6 +35,12 @@ public class VisitServiceImpl implements VisitService {
     }
 
     @Override
+    public Visit getVisitById(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Visit with id " + id + " not found"));
+    }
+
+    @Override
     public void save(Visit visit) {
         repository.save(visit);
     }

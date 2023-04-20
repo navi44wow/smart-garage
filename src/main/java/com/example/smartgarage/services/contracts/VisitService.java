@@ -13,6 +13,8 @@ public interface VisitService {
 
     Optional<Visit> getById(Long id);
 
+    Visit getVisitById(Long id);
+
     void save(Visit visit);
 
     List<Visit> getAllByUsername(String username);

@@ -19,5 +19,5 @@ public class VisitDto {
     private Long statusId;
     private LocalDate startDate;
     private LocalDate endDate;
-    private Set<ListOfServices> services;
+    private Set<Long> serviceIds;
 }
