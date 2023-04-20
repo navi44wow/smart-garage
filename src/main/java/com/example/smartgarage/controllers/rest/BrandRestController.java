@@ -54,17 +54,6 @@ public class BrandRestController {
         }
     }
 
-    @GetMapping("/name/{brandName}")
-    public Brand getByBrandName(@RequestHeader("Authorization") HttpHeaders headers, @PathVariable String brandName, BrandDto brandDto) {
-        try {
-            authenticationHelper.checkAuthorization(headers);
-            brandDto.setBrandName(brandName);
-            return brandService.getByName(brandDto.getBrandName());
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
-    }
-
     @PostMapping("/new")
     public Brand createBrand(
             @RequestHeader("Authorization") HttpHeaders headers,
@@ -115,6 +104,17 @@ public class BrandRestController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        }
+    }
+
+    @GetMapping("/name/{brandName}")
+    public Brand getByBrandName(@RequestHeader("Authorization") HttpHeaders headers, @PathVariable String brandName, BrandDto brandDto) {
+        try {
+            authenticationHelper.checkAuthorization(headers);
+            brandDto.setBrandName(brandName);
+            return brandService.getByName(brandDto.getBrandName());
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 }

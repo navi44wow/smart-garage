@@ -57,35 +57,6 @@ public class ModelRestController {
         }
     }
 
-    @GetMapping("/name/{modelName}")
-    public Model getByModelName(@RequestHeader("Authorization") HttpHeaders headers, @PathVariable String modelName) {
-        try {
-            authenticationHelper.checkAuthorization(headers);
-            return modelService.getByName(modelName);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
-    }
-
-    @GetMapping("/brandName/{brandName}")
-    public List<Model> getAllByBrandName(@RequestHeader("Authorization") HttpHeaders headers, @PathVariable String brandName) {
-        try {
-            authenticationHelper.checkAuthorization(headers);
-            return modelService.getByBrandName(brandName);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
-    }
-
-    @GetMapping("/brandId/{brandId}")
-    public List<Model> getAllByBrandId(@RequestHeader("Authorization") HttpHeaders headers, @PathVariable Long brandId) {
-        try {
-            authenticationHelper.checkAuthorization(headers);
-            return modelService.getByBrandId(brandId);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
-    }
 
     @PostMapping("/new")
     public Model createModel(
@@ -136,6 +107,36 @@ public class ModelRestController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        }
+    }
+
+    @GetMapping("/name/{modelName}")
+    public Model getByModelName(@RequestHeader("Authorization") HttpHeaders headers, @PathVariable String modelName) {
+        try {
+            authenticationHelper.checkAuthorization(headers);
+            return modelService.getByName(modelName);
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
+    @GetMapping("/brandName/{brandName}")
+    public List<Model> getAllByBrandName(@RequestHeader("Authorization") HttpHeaders headers, @PathVariable String brandName) {
+        try {
+            authenticationHelper.checkAuthorization(headers);
+            return modelService.getByBrandName(brandName);
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
+    @GetMapping("/brandId/{brandId}")
+    public List<Model> getAllByBrandId(@RequestHeader("Authorization") HttpHeaders headers, @PathVariable Long brandId) {
+        try {
+            authenticationHelper.checkAuthorization(headers);
+            return modelService.getByBrandId(brandId);
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 }

@@ -78,6 +78,69 @@ public class VehicleRestController {
         }
     }
 
+
+    @PostMapping("/new")
+    public Vehicle createVehicle(
+            @RequestHeader("Authorization") HttpHeaders headers,
+
+            @Valid @RequestBody VehicleDto vehicleDto
+    ) {
+        Vehicle vehicle;
+        try {
+            authenticationHelper.checkAuthorization(headers);
+            vehicle = modelMapper.map(vehicleDto, Vehicle.class);
+            vehicleService.save(vehicle);
+            vehicle.setUser(userService.getById(vehicleDto.getUser()));
+            vehicle.setModelId(modelService.getById(vehicleDto.getModel()));
+            return vehicleService.getById(vehicle.getVehicleId());
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (EntityDuplicateException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+    }
+
+
+    @PutMapping("/{vehicleId}/update")
+    public Vehicle updateVehicle(@PathVariable Long vehicleId,
+                                 @Valid @RequestBody VehicleDto vehicleDto,
+                                 @RequestHeader("Authorization") HttpHeaders headers, Model model) {
+        Vehicle existingVehicle = vehicleService.getById(vehicleId);
+        try {
+            authenticationHelper.checkAuthorization(headers);
+            vehicleService.save(existingVehicle);
+            existingVehicle.setVIN(vehicleDto.getVIN());
+            existingVehicle.setCreationYear(vehicleDto.getCreationYear());
+            existingVehicle.setLicensePlate(vehicleDto.getLicensePlate());
+            existingVehicle.setUser(userService.getById(vehicleDto.getUser()));
+            existingVehicle.setModelId(modelService.getById(vehicleDto.getModel()));
+            return existingVehicle;
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{vehicleId}")
+    public void deleteVehicle(@PathVariable Long vehicleId,
+                              @RequestHeader("Authorization") HttpHeaders headers) {
+        try {
+            authenticationHelper.checkAuthorization(headers);
+            vehicleService.deleteVehicleById(vehicleId);
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        }
+    }
+
     @GetMapping("/userId/{userId}")
     public List<Vehicle> getByUserId(@PathVariable User userId, @RequestHeader("Authorization") HttpHeaders headers) {
         try {
@@ -155,64 +218,4 @@ public class VehicleRestController {
     }
 
 
-    @PostMapping("/new")
-    public Vehicle createVehicle(
-            @RequestHeader("Authorization") HttpHeaders headers,
-
-            @Valid @RequestBody VehicleDto vehicleDto
-    ) {
-        Vehicle vehicle;
-        try {
-            authenticationHelper.checkAuthorization(headers);
-            vehicle = modelMapper.map(vehicleDto, Vehicle.class);
-            vehicleService.save(vehicle);
-            vehicle.setUser(userService.getById(vehicleDto.getUser()));
-            vehicle.setModelId(modelService.getById(vehicleDto.getModel()));
-            return vehicleService.getById(vehicle.getVehicleId());
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (EntityDuplicateException e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
-        } catch (AuthorizationException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        }
-    }
-
-
-    @PutMapping("/{vehicleId}/update")
-    public Vehicle updateVehicle(@PathVariable Long vehicleId,
-                                 @Valid @RequestBody VehicleDto vehicleDto,
-                                 @RequestHeader("Authorization") HttpHeaders headers, Model model) {
-        Vehicle existingVehicle = vehicleService.getById(vehicleId);
-        try {
-            authenticationHelper.checkAuthorization(headers);
-            vehicleService.save(existingVehicle);
-            existingVehicle.setVIN(vehicleDto.getVIN());
-            existingVehicle.setCreationYear(vehicleDto.getCreationYear());
-            existingVehicle.setLicensePlate(vehicleDto.getLicensePlate());
-            existingVehicle.setUser(userService.getById(vehicleDto.getUser()));
-            existingVehicle.setModelId(modelService.getById(vehicleDto.getModel()));
-            return existingVehicle;
-        } catch (AuthorizationException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (IllegalArgumentException e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
-        }
-    }
-    @DeleteMapping("/{vehicleId}")
-    public void deleteVehicle(@PathVariable Long vehicleId,
-                              @RequestHeader("Authorization") HttpHeaders headers) {
-        try {
-            authenticationHelper.checkAuthorization(headers);
-            vehicleService.deleteVehicleById(vehicleId);
-        } catch (AuthorizationException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (IllegalArgumentException e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
-        }
-    }
 }
