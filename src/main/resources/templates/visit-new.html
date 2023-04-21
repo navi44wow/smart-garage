@@ -30,7 +30,8 @@
 <!-- Bootstrap JS -->
 <script th:src="@{https://code.jquery.com/jquery-3.2.1.slim.min.js}"></script>
 <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js}"></script>
-<script th:src="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/js/bootstrap.min.js" integrity="sha512-kK3qKNRs0tJyVfTgTtTqvTQKXhB0ZM7VBsGz8MBjK1sGB0AdJtVgTtHymT2lhG+JAGYfzfVieTHwkcH8djrh1w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     const vehicles = [[${#httpServletRequest.getAttribute('vehicles')}]];
     function populateVehicles() {

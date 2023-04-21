@@ -1,10 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:util="urn:java.util"
+      xmlns:dates="http://www.thymeleaf.org/extras/dates">
 <head>
+    <title>Update Visit</title>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css}">
 </head>
 <body>
-
+<div class="container mt-5">
+    <h1>Update Visit</h1>
+    <a th:href="@{/employee/}" class="btn btn-primary mb-2">Dashboard</a>
+    <a th:href="@{/visits/}" class="btn btn-primary mb-2">Back</a>
+    <form method="post" th:action="@{/visits/visit-update/{id}(id=${visit.get().id})}" th:object="${visit}">
+        <div class="form-group">
+            <label for="dueDate">Due Date:</label>
+            <input type="date" class="form-control" id="dueDate" name="dueDate"
+                   th:value="${#temporals.format(visit.get().dueDate, 'yyyy-MM-dd')}">
+        </div>
+        <div class="form-group">
+            <label for="status">Status:</label>
+            <select class="form-control" id="status" name="newStatus">
+                <option value="" th:each="status : ${statusList}" th:value="${status}"
+                        th:selected="${visit.get().status == status}">[[${status.name}]]</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <div class="service-list">
+                <ul class="list-group">
+                    <li class="list-group-item" th:each="service : ${visit.get().getServices()}">
+                        <span th:text="${service.getServiceName()}"></span>:
+                        <span th:text="${service.getServicePrice()}+' BGN.'"></span>
+                        <a th:href="@{/visits/visit-update/{id}/remove-service/{serviceId}
+                        (id=${visit.get().id},serviceId=${service.getId()})}"
+                           class="badge badge-danger float-right ml-1">Remove</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+        <a th:href="@{/visits/}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+<!-- Bootstrap JS -->
+<script th:src="@{https://code.jquery.com/jquery-3.2.1.slim.min.js}"></script>
+<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/js/bootstrap.min.js" integrity="sha512-kK3qKNRs0tJyVfTgTtTqvTQKXhB0ZM7VBsGz8MBjK1sGB0AdJtVgTtHymT2lhG+JAGYfzfVieTHwkcH8djrh1w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </body>
 </html>
