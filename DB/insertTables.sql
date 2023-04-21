@@ -22,18 +22,19 @@ VALUES ('Change filter', 25),
 
 
 INSERT INTO vehicles (VIN, creation_year, license_plate, model_id, user_id)
-VALUES ('dlaksjdlak9089809', 2000, 'CB1000AA', 17, '0867f6d6-0d44-45a5-bf70-aab5d569dff5'),
-       ('dlaksjdlak9089810', 2001, 'CB1001AA', 18, '0867f6d6-0d44-45a5-bf70-aab5d569dff5'),
-       ('dlaksjdlak9089811', 2002, 'CB1002AA', 19, '0867f6d6-0d44-45a5-bf70-aab5d569dff5'),
-       ('dlaksjdlak9089812', 2003, 'CB1003AA', 20, '0867f6d6-0d44-45a5-bf70-aab5d569dff5'),
-       ('dlaksjdlak9089813', 2004, 'CB1004AA', 21, '162c199f-74c2-4365-921e-4c8d7c0423e8'),
-       ('dlaksjdlak9089814', 2005, 'CB1005AA', 22, '162c199f-74c2-4365-921e-4c8d7c0423e8'),
-       ('dlaksjdlak9089815', 2006, 'CB1006AA', 23, '162c199f-74c2-4365-921e-4c8d7c0423e8'),
-       ('dlaksjdlak9089816', 2007, 'CB1007AA', 24, '162c199f-74c2-4365-921e-4c8d7c0423e8'),
-       ('dlaksjdlak9089817', 2008, 'CB1008AA', 25, '48f57578-f62d-4b39-ab81-e96cc532420b'),
-       ('dlaksjdlak9089818', 2009, 'CB1009AA', 26, '48f57578-f62d-4b39-ab81-e96cc532420b'),
-       ('dlaksjdlak9089819', 2010, 'CB1010AA', 27, '48f57578-f62d-4b39-ab81-e96cc532420b'),
-       ('dlaksjdlak9089820', 2011, 'CB1011AA', 28, '48f57578-f62d-4b39-ab81-e96cc532420b');
+VALUES ('dlaksjdlak9089809', 2000, 'CB1000AA', 17, '888cf3b3-d25a-40f7-bd47-8b3a9861ee2f'),
+       ('dlaksjdlak9089810', 2001, 'CB1001AA', 18, '888cf3b3-d25a-40f7-bd47-8b3a9861ee2f'),
+       ('dlaksjdlak9089811', 2002, 'CB1002AA', 19, '888cf3b3-d25a-40f7-bd47-8b3a9861ee2f'),
+       ('dlaksjdlak9089812', 2003, 'CB1003AA', 20, '888cf3b3-d25a-40f7-bd47-8b3a9861ee2f'),
+       ('dlaksjdlak9089813', 2004, 'CB1004AA', 21, '888cf3b3-d25a-40f7-bd47-8b3a9861ee2f'),
+       ('dlaksjdlak9089814', 2005, 'CB1005AA', 22, '888cf3b3-d25a-40f7-bd47-8b3a9861ee2f'),
+       ('dlaksjdlak9089815', 2006, 'CB1006AA', 23, '888cf3b3-d25a-40f7-bd47-8b3a9861ee2f'),
+       ('dlaksjdlak9089816', 2007, 'CB1007AA', 24, '888cf3b3-d25a-40f7-bd47-8b3a9861ee2f'),
+       ('dlaksjdlak9089817', 2008, 'CB1008AA', 25, '888cf3b3-d25a-40f7-bd47-8b3a9861ee2f'),
+       ('dlaksjdlak9089818', 2009, 'CB1009AA', 26, '888cf3b3-d25a-40f7-bd47-8b3a9861ee2f'),
+       ('dlaksjdlak9089819', 2010, 'CB1010AA', 27, '888cf3b3-d25a-40f7-bd47-8b3a9861ee2f'),
+       ('dlaksjdlak9089820', 2011, 'CB1011AA', 28, '888cf3b3-d25a-40f7-bd47-8b3a9861ee2f');
+
 
 
 INSERT INTO visit_status(id, name)
@@ -64,7 +65,7 @@ VALUES (1, 'audi'),
 
 
 
-INSERT INTO `car-garage`.models (model_id, model_name, brand_id)
+INSERT INTO `car-garage`.car_models (model_id, model_name, brand_id)
 VALUES (17, 'q3', 1),
        (18, 'q5', 1),
        (19, 'q7', 1),
