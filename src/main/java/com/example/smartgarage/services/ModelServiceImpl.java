@@ -2,7 +2,7 @@ package com.example.smartgarage.services;
 
 import com.example.smartgarage.models.dtos.ModelDto;
 
-import com.example.smartgarage.models.entities.CarModel;
+import com.example.smartgarage.models.entities.Model;
 import com.example.smartgarage.repositories.BrandRepository;
 import com.example.smartgarage.repositories.ModelRepository;
 import com.example.smartgarage.services.contracts.ModelService;
@@ -33,44 +33,44 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
-    public List<CarModel> getAll() {
+    public List<Model> getAll() {
         return modelRepository.findAll();
     }
 
     @Override
-    public CarModel getById(Long modelId) {
+    public Model getById(Long modelId) {
         return modelRepository.findById(modelId).orElseThrow(() ->
                 new EntityNotFoundException("Model with id ", modelId.toString(), " was not found!"));
     }
 
     @Override
-    public CarModel getByName(String modelName) {
+    public Model getByName(String modelName) {
         return modelRepository.findByModelName(modelName).orElseThrow(() ->
                 new EntityNotFoundException("Model with name ", modelName, " was not found!"));
     }
 
     @Override
-    public List<CarModel> getByBrandName(String brandName) {
+    public List<Model> getByBrandName(String brandName) {
         return modelRepository.searchAllByBrand_BrandName(brandName);
     }
 
     @Override
-    public List<CarModel> getByBrandId(Long brandId) {
+    public List<Model> getByBrandId(Long brandId) {
         return modelRepository.findAllByBrandId(brandId);
     }
 
     @Override
-    public void save(CarModel carModel) {
-        modelRepository.save(carModel);
+    public void save(Model model) {
+        modelRepository.save(model);
 
     }
 
     @Override
-    public CarModel update(CarModel carModel, ModelDto modelDto) {
-        carModel.setModelName(modelDto.getModelName());
-        carModel.setBrand(modelDto.getBrand());
-        modelRepository.save(carModel);
-        return carModel;
+    public Model update(Model model, ModelDto modelDto) {
+        model.setModelName(modelDto.getModelName());
+        model.setBrand(modelDto.getBrand());
+        modelRepository.save(model);
+        return model;
     }
 
     @Override
@@ -84,36 +84,7 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
-    public Optional<CarModel> findByModelName(String modelName) {
+    public Optional<Model> findByModelName(String modelName) {
         return modelRepository.findByModelName(modelName);
     }
-
-
-    //@Override
-//    public <T> List<Model> getAllGeneric(Optional<T> brandName, Optional<T> model, Optional<T> sortBy, Optional<T> sortOrder) {
-//        List<Model> models;
-//        if (brandName.isPresent() && !brandName.get().toString().isBlank()) {
-//            models = modelRepository.searchAllByBrand_BrandName(brandName.toString());
-//        } else {
-//            models = modelRepository.findAll();
-//        }
-//
-//        if (model.isPresent() && !model.get().toString().isBlank()) {
-//            models = modelRepository.findByModelName(model.toString()));
-//        } else {
-//            models = modelRepository.findAll();
-//        }
-//
-//        if (sortBy.isPresent() && !sortBy.get().toString().isBlank()) {
-//            String sortByValue = sortBy.get().toString();
-//            Sort.Direction sortDirection = Sort.Direction.ASC;
-//            if (sortOrder.isPresent() && sortOrder.get().toString().equalsIgnoreCase("desc")) {
-//                sortDirection = Sort.Direction.DESC;
-//            }
-//            Sort sort = Sort.by(sortDirection, sortByValue);
-//            carServices = carServiceRepository.findAll(sort);
-//        }
-//
-//        return carServices;
-//    }
 }

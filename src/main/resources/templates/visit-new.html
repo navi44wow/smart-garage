@@ -17,8 +17,8 @@
             <select class="form-control" name="vehicleId" id="vehicle" required>
                 <option value="">-- Select Vehicle --</option>
                 <option th:each="vehicle : ${vehicles}" th:value="${vehicle.vehicleId}"
-                        th:text="${vehicle.getCarModelId().getBrand().getBrandName()
-         + ' | ' + vehicle.getCarModelId().getModelName()
+                        th:text="${vehicle.getModelId().getBrand().getBrandName()
+         + ' | ' + vehicle.getModelId().getModelName()
           + ' | ' + vehicle.licensePlate
           + ' | ' + vehicle.user.username}"></option>
             </select>
@@ -48,7 +48,7 @@
         // Filter vehicles by owner
         for (let i = 0; i < filteredVehicles.length; i++) {
             const option = document.createElement("option");
-            option.text = filteredVehicles[i].carModel;
+            option.text = filteredVehicles[i].model;
             option.value = filteredVehicles[i].id;
             vehicleDropdown.add(option);
         }

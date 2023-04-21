@@ -5,7 +5,7 @@ import com.example.smartgarage.exceptions.EntityDuplicateException;
 import com.example.smartgarage.exceptions.EntityNotFoundException;
 import com.example.smartgarage.helpers.AuthenticationHelper;
 import com.example.smartgarage.models.dtos.ModelDto;
-import com.example.smartgarage.models.entities.CarModel;
+import com.example.smartgarage.models.entities.Model;
 import com.example.smartgarage.services.contracts.ModelService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpHeaders;
@@ -36,7 +36,7 @@ public class ModelRestController {
     }
 
     @GetMapping()
-    public List<CarModel> getAll(@RequestHeader("Authorization") HttpHeaders headers) {
+    public List<Model> getAll(@RequestHeader("Authorization") HttpHeaders headers) {
         try {
             authenticationHelper.checkAuthorization(headers);
             return modelService.getAll();
@@ -48,7 +48,7 @@ public class ModelRestController {
     }
 
     @GetMapping("/{id}")
-    public CarModel getById(@RequestHeader("Authorization") HttpHeaders headers, @PathVariable Long id) {
+    public Model getById(@RequestHeader("Authorization") HttpHeaders headers, @PathVariable Long id) {
         try {
             authenticationHelper.checkAuthorization(headers);
             return modelService.getById(id);
@@ -59,15 +59,15 @@ public class ModelRestController {
 
 
     @PostMapping("/new")
-    public CarModel createModel(
+    public Model createModel(
             @RequestHeader("Authorization") HttpHeaders headers,
             @Valid @RequestBody ModelDto modelDto) {
-        CarModel carModel;
+        Model model;
         try {
             authenticationHelper.checkAuthorization(headers);
-            carModel = modelMapper.map(modelDto, CarModel.class);
-            modelService.save(carModel);
-            return modelService.getById(carModel.getModelId());
+            model = modelMapper.map(modelDto, Model.class);
+            modelService.save(model);
+            return modelService.getById(model.getModelId());
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (EntityDuplicateException e) {
@@ -78,14 +78,14 @@ public class ModelRestController {
     }
 
     @PutMapping("/{modelId}/update")
-    public CarModel updateModel(@PathVariable Long modelId,
-                                @Valid @RequestBody ModelDto modelDto,
-                                @RequestHeader("Authorization") HttpHeaders headers) {
-        CarModel existingCarModel;
+    public Model updateModel(@PathVariable Long modelId,
+                             @Valid @RequestBody ModelDto modelDto,
+                             @RequestHeader("Authorization") HttpHeaders headers) {
+        Model existingModel;
         try {
             authenticationHelper.checkAuthorization(headers);
-            existingCarModel = modelService.getById(modelId);
-            return modelService.update(existingCarModel, modelDto);
+            existingModel = modelService.getById(modelId);
+            return modelService.update(existingModel, modelDto);
         } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         } catch (EntityNotFoundException e) {
@@ -111,7 +111,7 @@ public class ModelRestController {
     }
 
     @GetMapping("/name/{modelName}")
-    public CarModel getByModelName(@RequestHeader("Authorization") HttpHeaders headers, @PathVariable String modelName) {
+    public Model getByModelName(@RequestHeader("Authorization") HttpHeaders headers, @PathVariable String modelName) {
         try {
             authenticationHelper.checkAuthorization(headers);
             return modelService.getByName(modelName);
@@ -121,7 +121,7 @@ public class ModelRestController {
     }
 
     @GetMapping("/brandName/{brandName}")
-    public List<CarModel> getAllByBrandName(@RequestHeader("Authorization") HttpHeaders headers, @PathVariable String brandName) {
+    public List<Model> getAllByBrandName(@RequestHeader("Authorization") HttpHeaders headers, @PathVariable String brandName) {
         try {
             authenticationHelper.checkAuthorization(headers);
             return modelService.getByBrandName(brandName);
@@ -131,7 +131,7 @@ public class ModelRestController {
     }
 
     @GetMapping("/brandId/{brandId}")
-    public List<CarModel> getAllByBrandId(@RequestHeader("Authorization") HttpHeaders headers, @PathVariable Long brandId) {
+    public List<Model> getAllByBrandId(@RequestHeader("Authorization") HttpHeaders headers, @PathVariable Long brandId) {
         try {
             authenticationHelper.checkAuthorization(headers);
             return modelService.getByBrandId(brandId);

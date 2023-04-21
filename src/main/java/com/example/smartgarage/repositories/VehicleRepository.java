@@ -1,6 +1,6 @@
 package com.example.smartgarage.repositories;
 
-import com.example.smartgarage.models.entities.CarModel;
+import com.example.smartgarage.models.entities.Model;
 import com.example.smartgarage.models.entities.Vehicle;
 
 import com.example.smartgarage.models.view_models.UserViewModel;
@@ -23,19 +23,13 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
 
     List<Vehicle> searchAllByVIN(String VIN);
 
-    List<Vehicle> findAllByCarModelId(CarModel carModel);
+    List<Vehicle> findAllByModelId(Model model);
 
     List<Vehicle> findAllByUserId(UUID user);
 
-    List<Vehicle> getAllByUserUsername(String username);
+    List<Vehicle>getAllByUserUsername(String username);
 
     Optional<Vehicle> findById(Long vehicleId);
-
     @Query("SELECT v FROM Vehicle v WHERE v.user = :user")
     List<Vehicle> getByOwner(@Param("user") UserViewModel user);
-
-//    List<Vehicle> findAllByModelId_BrandIgnoreCase(Brand brand);
-//
-//    List<Vehicle> findAllByModelId_IgnoreCase(Model model);
-
 }

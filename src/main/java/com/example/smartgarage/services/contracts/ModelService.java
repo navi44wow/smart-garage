@@ -1,30 +1,30 @@
 package com.example.smartgarage.services.contracts;
 
 import com.example.smartgarage.models.dtos.ModelDto;
-import com.example.smartgarage.models.entities.CarModel;
+import com.example.smartgarage.models.entities.Model;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface ModelService {
 
-    List<CarModel> getAll();
+    List<Model> getAll();
 
-    CarModel getById(Long modelId);
+    Model getById(Long modelId);
 
-    CarModel getByName(String modelName);
+    Model getByName(String modelName);
 
-    List<CarModel> getByBrandName(String brandName);
+    List<Model> getByBrandName(String brandName);
 
-    List<CarModel> getByBrandId(Long brandId);
+    List<Model> getByBrandId(Long brandId);
 
-    void save(CarModel carModel);
+    void save(Model model);
 
-    public CarModel update(CarModel carModel, ModelDto modelDto);
+    public Model update(Model model, ModelDto modelDto);
 
     void deleteModelById(Long modelId);
 
     int getModelsCount();
 
-    Optional<CarModel> findByModelName(String modelName);
+    Optional<Model> findByModelName(String modelName);
 }
