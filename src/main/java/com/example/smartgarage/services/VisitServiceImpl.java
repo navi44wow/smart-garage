@@ -60,12 +60,4 @@ public class VisitServiceImpl implements VisitService {
             return request.list();
         }
     }
-
-//    public List<Visit> getAll(boolean includingArchived) {
-//        if (includingArchived) {
-//            return repository.findAll();
-//        } else {
-//            return repository.findByArchivedFalse();
-//        }
-//    }
 }

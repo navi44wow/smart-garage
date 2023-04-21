@@ -1,10 +1,12 @@
 package com.example.smartgarage.controllers.mvc;
 
-import com.example.smartgarage.exceptions.EntityNotFoundException;
 import com.example.smartgarage.helpers.AuthenticationHelper;
 import com.example.smartgarage.models.dtos.VisitDto;
 import com.example.smartgarage.models.entities.*;
-import com.example.smartgarage.services.contracts.*;
+import com.example.smartgarage.services.contracts.CarServizService;
+import com.example.smartgarage.services.contracts.UserService;
+import com.example.smartgarage.services.contracts.VehicleService;
+import com.example.smartgarage.services.contracts.VisitService;
 import com.example.smartgarage.services.mappers.VisitMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
@@ -47,6 +49,11 @@ public class VisitMVCController {
         List<Visit> allVisits = visitService.getAll();
         if (showArchived != null && showArchived) {
             allVisits = allVisits.stream().filter(Visit::isArchived).collect(Collectors.toList());
+        } else {
+            allVisits = allVisits.stream()
+                    .filter(visit -> !visit.isArchived())
+                    .sorted(Comparator.comparing(Visit::getId).reversed())
+                    .collect(Collectors.toList());
         }
         model.addAttribute("all", allVisits);
         return "visits";
@@ -81,8 +88,6 @@ public class VisitMVCController {
 
     @PostMapping("/visit-new")
     public String createVisit(@ModelAttribute("visitDTO") VisitDto visitDto, Model model) {
-        //Set<Long> serviceIdSet = Arrays.stream(serviceIds).collect(Collectors.toSet());
-        //visitDto.setServiceIds(serviceIdSet);
         Visit visit = visitMapper.toObject(visitDto);
         visitService.save(visit);
         model.addAttribute("visit", visit);
@@ -92,12 +97,26 @@ public class VisitMVCController {
     @GetMapping("/visit-view/{id}")
     public String addServices(@PathVariable("id") Long id, Model model) {
         Optional<Visit> visit = visitService.getById(id);
+        Set<ListOfServices> listOfServices = visit.get().getServices();
         List<CarService> services = carServizService.getAll();
+        List<CarService> filteredServices = new ArrayList<>();
+        for (CarService service : services) {
+            boolean isPresent = false;
+            for (ListOfServices listOfService : listOfServices) {
+                if (listOfService.getServiceID().equals(service.getId())) {
+                    isPresent = true;
+                    break;
+                }
+            }
+            if (!isPresent) {
+                filteredServices.add(service);
+            }
+        }
+
         List<VisitStatus> statusList = visitService.findAllStatuses();
         model.addAttribute("statusList", statusList);
-        model.addAttribute("services", services);
+        model.addAttribute("services", filteredServices);
         model.addAttribute("visit", visit);
-        System.out.println("Services size = "+services.size());
         return "visit-view";
     }
 
@@ -109,6 +128,45 @@ public class VisitMVCController {
         visitMapper.addServices(id, visitDto, serviceIdSet);
         visitService.save(visit);
         model.addAttribute("visit", visit);
-        return "redirect:/visits/visit-view/"+visit.getId();
+        return "redirect:/visits/visit-view/" + visit.getId();
+    }
+
+    @GetMapping("visit-update/{id}")
+    public String update(@PathVariable("id") Long id, Model model) {
+        Optional<Visit> visit = visitService.getById(id);
+        List<VisitStatus> statusList = visitService.findAllStatuses();
+        model.addAttribute("statusList", statusList);
+        model.addAttribute("visit", visit);
+        return "visit-update";
+    }
+
+    @PostMapping("/visit-update/{id}")
+    public String updateVisit(@PathVariable("id") Long id, @ModelAttribute("visit") Visit visit,
+                              @RequestParam("newStatus") String newStatus) {
+        Visit existingVisit = visitService.getVisitById(id);
+        existingVisit.setStatus(VisitStatus.valueOf(newStatus));
+        existingVisit.setDueDate(visit.getDueDate());
+        visitService.save(existingVisit);
+        return "redirect:/visits/visit-view/" + existingVisit.getId();
+    }
+
+    @GetMapping("visit-update/{visitId}/remove-service/{serviceId}")
+    public String removeService(@PathVariable("visitId") Long visitId,
+                                @PathVariable("serviceId") Long serviceId) {
+        Optional<Visit> visitOptional = visitService.getById(visitId);
+        if (visitOptional.isEmpty()) {
+            return "redirect:/error";
+        }
+        Visit visit = visitOptional.get();
+        Optional<ListOfServices> serviceOptional = visit.getServices().stream()
+                .filter(s -> s.getId().equals(serviceId))
+                .findFirst();
+        if (!serviceOptional.isPresent()) {
+            return "redirect:/error";
+        }
+        ListOfServices service = serviceOptional.get();
+        visit.getServices().remove(service);
+        visitService.save(visit);
+        return "redirect:/visits/visit-update/" + visitId;
     }
 }

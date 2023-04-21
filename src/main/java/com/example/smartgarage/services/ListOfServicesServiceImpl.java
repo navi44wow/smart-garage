@@ -6,11 +6,11 @@ import com.example.smartgarage.services.contracts.ListOfServicesService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ListOfServicesImpl implements ListOfServicesService {
+public class ListOfServicesServiceImpl implements ListOfServicesService {
 
     private final ListOfServicesRepository repository;
 
-    public ListOfServicesImpl(ListOfServicesRepository repository) {
+    public ListOfServicesServiceImpl(ListOfServicesRepository repository) {
         this.repository = repository;
     }
 

@@ -1,5 +1,7 @@
 package com.example.smartgarage.services.mappers;
 
+import com.example.smartgarage.exceptions.EntityDuplicateException;
+import com.example.smartgarage.exceptions.EntityNotFoundException;
 import com.example.smartgarage.models.dtos.VisitDto;
 import com.example.smartgarage.models.entities.*;
 import com.example.smartgarage.services.contracts.*;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -51,6 +54,7 @@ public class VisitMapper {
     }
 
     public void addServices(Long id, VisitDto visit, Set<Long> ids) {
+        //checkDuplicatedServices(id, ids);
         Set<CarService> services = visit.getServiceIds()
                 .stream()
                 .map(carServizService::findById)
@@ -66,4 +70,27 @@ public class VisitMapper {
             listOfServicez.save(listOfServices);
         }
     }
+
+//    private void checkDuplicatedServices(Long visitId, Set<Long> ids) {
+//        Optional<Visit> visit = visitService.getById(visitId);
+//        if (visit.isPresent()) {
+//            List<CarService> services = ids.stream()
+//                    .map(carServizService::findById)
+//                    .filter(Optional::isPresent)
+//                    .map(Optional::get)
+//                    .collect(Collectors.toList());
+//
+//            List<Long> duplicateIds = visit.get().getServices()
+//                    .stream()
+//                    .map(ListOfServices::getServiceID)
+//                    .filter(services::contains)
+//                    .map(CarService::getId)
+//                    .collect(Collectors.toList());
+//            if (!duplicateIds.isEmpty()) {
+//                throw new EntityDuplicateException("Service", "Cannot be", " added!");
+//            }
+//        } else {
+//            throw new EntityNotFoundException("Visit with ID ", visitId);
+//        }
+//    }
 }

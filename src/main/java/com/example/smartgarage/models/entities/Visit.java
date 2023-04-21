@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.UniqueElements;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -36,6 +38,7 @@ public class Visit {
     private LocalDate startDate;
 
     @Column(name = "due_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dueDate;
 
     @OneToMany(fetch = FetchType.EAGER)
