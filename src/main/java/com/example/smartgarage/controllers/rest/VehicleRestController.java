@@ -6,13 +6,13 @@ import com.example.smartgarage.exceptions.EntityNotFoundException;
 import com.example.smartgarage.helpers.AuthenticationHelper;
 
 import com.example.smartgarage.models.entities.Brand;
-import com.example.smartgarage.models.entities.Model;
+import com.example.smartgarage.models.entities.CarModel;
 import com.example.smartgarage.models.entities.User;
 import com.example.smartgarage.models.entities.Vehicle;
 import com.example.smartgarage.models.view_models.UserViewModel;
 import com.example.smartgarage.services.VehicleMapper;
 import com.example.smartgarage.services.contracts.BrandService;
-import com.example.smartgarage.services.contracts.ModelService;
+import com.example.smartgarage.services.contracts.CarModelService;
 import com.example.smartgarage.services.contracts.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpHeaders;
@@ -37,7 +37,7 @@ public class VehicleRestController {
 
     private final VehicleService vehicleService;
     private final BrandService brandService;
-    private final ModelService modelService;
+    private final CarModelService carModelService;
     private final ModelMapper modelMapper;
 
     private final VehicleMapper vehicleMapper;
@@ -45,12 +45,12 @@ public class VehicleRestController {
 
     private final UserService userService;
 
-    public VehicleRestController(VehicleService vehicleService, BrandService brandService, ModelService modelService, ModelMapper modelMapper
+    public VehicleRestController(VehicleService vehicleService, BrandService brandService, CarModelService carModelService, ModelMapper modelMapper
             , VehicleMapper vehicleMapper, AuthenticationHelper authenticationHelper,
                                  UserService userService) {
         this.vehicleService = vehicleService;
         this.brandService = brandService;
-        this.modelService = modelService;
+        this.carModelService = carModelService;
         this.modelMapper = modelMapper;
         this.vehicleMapper = vehicleMapper;
         this.authenticationHelper = authenticationHelper;
@@ -91,7 +91,7 @@ public class VehicleRestController {
             vehicle = modelMapper.map(vehicleDto, Vehicle.class);
             vehicleService.save(vehicle);
             vehicle.setUser(userService.getById(vehicleDto.getUser()));
-            vehicle.setModelId(modelService.getById(vehicleDto.getModel()));
+            vehicle.setCarModelId(carModelService.getById(vehicleDto.getModel()));
             return vehicleService.getById(vehicle.getVehicleId());
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -106,7 +106,7 @@ public class VehicleRestController {
     @PutMapping("/{vehicleId}/update")
     public Vehicle updateVehicle(@PathVariable Long vehicleId,
                                  @Valid @RequestBody VehicleDto vehicleDto,
-                                 @RequestHeader("Authorization") HttpHeaders headers, Model model) {
+                                 @RequestHeader("Authorization") HttpHeaders headers, CarModel carModel) {
         Vehicle existingVehicle = vehicleService.getById(vehicleId);
         try {
             authenticationHelper.checkAuthorization(headers);
@@ -115,7 +115,7 @@ public class VehicleRestController {
             existingVehicle.setCreationYear(vehicleDto.getCreationYear());
             existingVehicle.setLicensePlate(vehicleDto.getLicensePlate());
             existingVehicle.setUser(userService.getById(vehicleDto.getUser()));
-            existingVehicle.setModelId(modelService.getById(vehicleDto.getModel()));
+            existingVehicle.setCarModelId(carModelService.getById(vehicleDto.getModel()));
             return existingVehicle;
         } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
@@ -173,12 +173,12 @@ public class VehicleRestController {
     }
 
 
-    @GetMapping("/model/{modelName}")
-    public List<Vehicle> getAllByModelName(@PathVariable String modelName, @RequestHeader("Authorization") HttpHeaders headers) {
+    @GetMapping("/carModel/{carModelName}")
+    public List<Vehicle> getAllByCarModelName(@PathVariable String carModelName, @RequestHeader("Authorization") HttpHeaders headers) {
         try {
             authenticationHelper.checkAuthorization(headers);
-            Optional<Model> model = modelService.findByModelName(modelName);
-            return vehicleService.searchAllByModelId(model.get());
+            Optional<CarModel> carModel = carModelService.findByCarModelName(carModelName);
+            return vehicleService.searchAllByCarModelId(carModel.get());
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
@@ -189,11 +189,11 @@ public class VehicleRestController {
         try {
             authenticationHelper.checkAuthorization(headers);
             Brand brand = brandService.findByBrandName(brandName).orElseThrow(IllegalArgumentException::new);
-            List<Model> models = modelService.getByBrandId(brand.getId());
+            List<CarModel> carModels = carModelService.getByBrandId(brand.getId());
             List<Vehicle> vehiclesNew = new ArrayList<>();
-            for (Model m : models) {
+            for (CarModel m : carModels) {
 
-                vehiclesNew.addAll(vehicleService.findAllByModelId(m));
+                vehiclesNew.addAll(vehicleService.findAllByCarModelId(m));
             }
             return vehiclesNew;
         } catch (EntityNotFoundException e) {

@@ -9,7 +9,7 @@ import com.example.smartgarage.models.dtos.GenerateUserDto;
 import com.example.smartgarage.models.dtos.UserFilterDto;
 import com.example.smartgarage.models.filter_options.UserFilterOptions;
 import com.example.smartgarage.models.service_models.UserServiceModel;
-import com.example.smartgarage.repositories.ModelRepository;
+import com.example.smartgarage.repositories.CarModelRepository;
 import com.example.smartgarage.services.contracts.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -32,13 +32,13 @@ public class UserMVCController {
 
     private final UserService userService;
     private final ModelMapper modelMapper;
-    private final ModelRepository modelRepository;
+    private final CarModelRepository carModelRepository;
 
     public UserMVCController(UserService userService, ModelMapper modelMapper,
-                             ModelRepository modelRepository) {
+                             CarModelRepository carModelRepository) {
         this.userService = userService;
         this.modelMapper = modelMapper;
-        this.modelRepository = modelRepository;
+        this.carModelRepository = carModelRepository;
     }
 
     @ModelAttribute("userDto")

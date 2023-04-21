@@ -9,7 +9,6 @@ import java.util.Optional;
 
 @Service
 public interface VisitService {
-    //List<Visit> getAll(boolean includingArchived);
 
     List<Visit> getAll();
 
