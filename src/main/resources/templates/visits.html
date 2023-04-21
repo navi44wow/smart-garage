@@ -22,18 +22,16 @@
             <th>Due Date</th>
             <th>Status</th>
             <th>Actions</th>
-            <th>Message board</th>
-            <th style="text-align: right;">
-                <input type="checkbox" id="showArchived" />
+            <th><input type="checkbox" id="showArchived" />
                 <label for="showArchived">Show Archived</label></th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="visit : ${all}">
             <td><a th:href="@{/visits/visit-view/{id}(id=${visit.getId()})}" th:text="${visit.id}">Visit ID</a></td>
-            <td th:text="${visit.vehicle.getModelId().getBrand().getBrandName()+' | '
-        +visit.vehicle.getModelId().getModelName()+' | '
-        +visit.vehicle.getLicensePlate()}"></td>
+            <td th:text="${visit.vehicle.getCarModelId().getBrand().getBrandName()+' | '
+                +visit.vehicle.getCarModelId().getModelName()+' | '
+                +visit.vehicle.getLicensePlate()}"></td>
             <td th:text="${visit.getVehicle().getUser().username}"></td>
             <td th:text="${visit.startDate}"></td>
             <td th:text="${visit.dueDate}"></td>
@@ -47,20 +45,6 @@
                     <input type="hidden" name="archived" th:value="${!visit.isArchived()}" />
                 </form>
             </td>
-            <th:block th:if="${visit.services.size() == 0}">
-                <td colspan="6" class="text-danger">This order doesn't have any services, please update the order!</td>
-            </th:block>
-            <th:block th:if="${visit.getStatus().getName() == 'Completed' and visit.isArchived == false}">
-                <td colspan="6" class="text-danger">This order is completed, please archive it!</td>
-            </th:block>
-            <th:block th:if="${visit.isArchived == true}">
-                <td colspan="6" class="text-danger">Archived</td>
-            </th:block>
-            <th:block th:if="${visit.isArchived == false and visit.getStatus().getName() != 'Completed'
-            and visit.services.size() > 0}">
-                <td colspan="6" class="text-success">Active</td>
-            </th:block>
-
         </tr>
         </tbody>
     </table>
@@ -68,8 +52,7 @@
 <!-- Bootstrap JS -->
 <script th:src="@{https://code.jquery.com/jquery-3.2.1.slim.min.js}"></script>
 <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/js/bootstrap.min.js" integrity="sha512-kK3qKNRs0tJyVfTgTtTqvTQKXhB0ZM7VBsGz8MBjK1sGB0AdJtVgTtHymT2lhG+JAGYfzfVieTHwkcH8djrh1w=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script th:src="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js}"></script>
 <script>
     // Retrieve the state of the checkbox from localStorage
     let showArchived = localStorage.getItem('showArchived');

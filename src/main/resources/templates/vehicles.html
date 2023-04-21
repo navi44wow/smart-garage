@@ -14,13 +14,13 @@
     <a th:href="@{/vehicles/new}" class="btn btn-primary mb-2">New Vehicle</a>
     <form method="post" th:action="@{/vehicles/}" class="form-inline mb-3">
         <label for="sortBy">Sort By:</label>
-        <select id="sortBy" model="sortBy" class="form-control mx-2">
-            <option value="model">model</option>
+        <select id="sortBy" name="sortBy" class="form-control mx-2">
+            <option value="carModel">carModel</option>
             <option value="brand">brand</option>
             <option value="brand">creation year</option>
         </select>
         <label for="sortOrder">Sort Order:</label>
-        <select id="sortOrder" model="sortOrder" class="form-control mx-2">
+        <select id="sortOrder" name="sortOrder" class="form-control mx-2">
             <option value="asc">Ascending</option>
             <option value="desc">Descending</option>
         </select>
@@ -28,16 +28,20 @@
     </form>
     <form method="post" th:action="@{/vehicles/}" class="form-inline mb-3">
 
-        <label for="model">model:</label>
-        <input type="text" id="model" model="model" class="form-control mx-2">
+        <label for="user">Owner:</label>
+        <input type="text" id="user" name="user" class="form-control mx-2">
         <button type="submit" class="btn btn-primary mx-2">Search</button>
 
-        <label for="brand">brand:</label>
-        <input type="text" id="brand" brand="brand" class="form-control mx-2">
+        <label for="carModel">Model:</label>
+        <input type="text" id="carModel" name="carModel" class="form-control mx-2">
         <button type="submit" class="btn btn-primary mx-2">Search</button>
 
-        <label for="creationYear">creationYear:</label>
-        <input type="text" id="creationYear" creationYear="creationYear" class="form-control mx-2">
+        <label for="brand">Brand:</label>
+        <input type="text" id="brand" name="brand" class="form-control mx-2">
+        <button type="submit" class="btn btn-primary mx-2">Search</button>
+
+        <label for="creationYear">CreationYear:</label>
+        <input type="text" id="creationYear" name="creationYear" class="form-control mx-2">
         <button type="submit" class="btn btn-primary mx-2">Search</button>
 
     </form>
@@ -54,8 +58,8 @@
         </thead>
         <tbody>
         <tr th:each="vehicle : ${vehicles}">
-            <td th:text="${vehicle.getModelId().getBrand().getBrandName()}">brand</td>
-            <td th:text="${vehicle.getModelId().getModelName()}">model</td>
+            <td th:text="${vehicle.getCarModelId().getBrand().getBrandName()}">brand</td>
+            <td th:text="${vehicle.getCarModelId().getModelName()}">carModel</td>
             <td th:text="${vehicle.getLicensePlate()}">license plate</td>
             <td th:text="${vehicle.getUser().getUsername()}">owner</td>
             <td th:text="${vehicle.getVIN()}">VIN</td>
