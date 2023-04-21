@@ -164,7 +164,7 @@ public class UserMVCController {
         String recipientUsername = userServiceModel.getUsername();
         String recipientPassword = userServiceModel.getPassword();
         String username = "iliantrenchevvvvvv@gmail.com";
-        String password = "dqzxlxerdjcgrbmb";
+        String password = "dgjgepoyqjryqeoz";
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
