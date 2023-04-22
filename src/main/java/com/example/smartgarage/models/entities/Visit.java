@@ -4,13 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "visits")
@@ -50,6 +51,20 @@ public class Visit {
                 .mapToInt(ListOfServices::getServicePrice)
                 .sum();
         return sum;
+    }
+
+    public String displayServices() {
+        List<String> servicesList = this.getServices()
+                .stream()
+                .map(service -> service.getServiceName() + ": " + service.getServicePrice() + " BGN.")
+                .collect(Collectors.toList());
+
+        String servicesString = String.join("\n", servicesList);
+        servicesString = servicesString.replaceAll(",", "");
+        servicesString = servicesString.replaceAll("\\[", "");
+        servicesString = servicesString.replaceAll("\\]", "");
+
+        return servicesString;
     }
 
     @Override

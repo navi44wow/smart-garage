@@ -40,7 +40,7 @@
             <td th:text="${visit.status}"></td>
             <td>
                 <a class="h6 m-3" th:href="@{'/visits/visit-update/' + ${visit.id}}" th:if="${!visit.isArchived()}">Modify</a>
-                <a class="h6 m-3" th:href="@{'/visits/visit-update/' + ${visit.id}}">Facture</a>
+                <a class="h6 m-3" th:href="@{'/visits/visit-invoice/' + ${visit.id}}">Invoice</a>
                 <form method="post" th:action="@{/visits}" th:object="${visit}">
                     <input type="hidden" name="visitId" th:value="${visit.id}" />
                     <button type="submit" class="h6 m-3" th:text="${visit.isArchived() ? 'Unarchive' : 'Archive'}">Archive</button>

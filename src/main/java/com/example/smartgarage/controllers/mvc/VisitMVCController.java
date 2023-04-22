@@ -3,16 +3,17 @@ package com.example.smartgarage.controllers.mvc;
 import com.example.smartgarage.helpers.AuthenticationHelper;
 import com.example.smartgarage.models.dtos.VisitDto;
 import com.example.smartgarage.models.entities.*;
-import com.example.smartgarage.services.contracts.CarServizService;
-import com.example.smartgarage.services.contracts.UserService;
-import com.example.smartgarage.services.contracts.VehicleService;
-import com.example.smartgarage.services.contracts.VisitService;
+import com.example.smartgarage.services.contracts.*;
 import com.example.smartgarage.services.mappers.VisitMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -30,11 +31,12 @@ public class VisitMVCController {
     private final AuthenticationHelper authenticationHelper;
     private final ModelMapper modelMapper;
     private final VisitMapper visitMapper;
+    private final PDFGeneratorService pdfGeneratorService;
 
     public VisitMVCController(VisitService visitService, UserService userService, VehicleService vehicleService,
                               CarServizService carServizService,
                               AuthenticationHelper authenticationHelper,
-                              ModelMapper modelMapper, VisitMapper visitMapper) {
+                              ModelMapper modelMapper, VisitMapper visitMapper, PDFGeneratorService pdfGeneratorService) {
         this.visitService = visitService;
         this.userService = userService;
         this.vehicleService = vehicleService;
@@ -42,6 +44,7 @@ public class VisitMVCController {
         this.authenticationHelper = authenticationHelper;
         this.modelMapper = modelMapper;
         this.visitMapper = visitMapper;
+        this.pdfGeneratorService = pdfGeneratorService;
     }
 
     @GetMapping()
@@ -169,4 +172,31 @@ public class VisitMVCController {
         visitService.save(visit);
         return "redirect:/visits/visit-update/" + visitId;
     }
+
+    @GetMapping("visit-invoice/{id}")
+    public String facture(@PathVariable("id") Long id, Model model) {
+        Optional<Visit> visit = visitService.getById(id);
+        List<VisitStatus> statusList = visitService.findAllStatuses();
+        model.addAttribute("statusList", statusList);
+        model.addAttribute("visit", visit);
+        return "visit-invoice";
+    }
+
+    @GetMapping("/visit-invoice/{id}/pdf/generate")
+    public void generatePDF(HttpServletResponse response, @PathVariable("id") Long visitId) throws IOException {
+        response.setContentType("application/pdf");
+        DateFormat dateFormatter = new SimpleDateFormat("yyy-MM-dd:hh:mm");
+        String currentDateTime = dateFormatter.format(new Date());
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=visit_" + visitId + "_" + currentDateTime + ".pdf";
+        response.setHeader(headerKey, headerValue);
+
+        Optional<Visit> optionalVisit = visitService.getById(visitId);
+        if(optionalVisit.isPresent()) {
+            Visit visit = optionalVisit.get();
+            this.pdfGeneratorService.export(response, visit);
+        }
+    }
+
 }

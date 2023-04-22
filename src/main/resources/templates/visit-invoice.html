@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Visit Invoice</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css}">
+</head>
+<body>
+<div class="container mt-5">
+    <h1>Visit Details</h1>
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <a th:href="@{/employee/}" class="btn btn-primary mb-2">Dashboard</a>
+            <a th:href="@{/visits/}" class="btn btn-primary mb-2">Back</a>
+        </div>
+        <div class="col-md-6 text-md-right">
+            <label for="currency" class="mr-2">Currency:</label>
+            <select class="form-control d-inline-block w-auto" name="currency" id="currency">
+                <option value="BGN" selected>BGN</option>
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+            </select>
+            <a th:href="@{/visits/visit-invoice/{id}/pdf/generate(id=${visit.get().getId()})}" class="btn btn-primary mb-2">Generate PDF</a>
+        </div>
+    </div>
+    <table class="table table-striped">
+        <tbody>
+        <tr>
+            <th>ID:</th>
+            <td th:text="${visit.get().id}"></td>
+        </tr>
+        <tr>
+            <th>Owner:</th>
+            <td th:text="${visit.get().vehicle.getUser().username}"></td>
+        </tr>
+        <tr>
+            <th>Vehicle:</th>
+            <td th:text="${visit.get().vehicle.getCarModelId().getBrand().getBrandName()+' | '
+            +visit.get().vehicle.getCarModelId().getModelName()+' | '
+            +visit.get().vehicle.getLicensePlate()}"></td>
+        </tr>
+        <tr>
+            <th>Services:</th>
+            <td>
+                <ul>
+                    <li th:each="service : ${visit.get().getServices()}" class="price" th:data-bgn-price="${service.getServicePrice()}"
+                        th:text="${service.getServiceName() +': '+service.getServicePrice()}+' BGN.'"></li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <th>Start Date:</th>
+            <td th:text="${visit.get().startDate}"></td>
+        </tr>
+        <tr>
+            <th>Due Date:</th>
+            <td th:text="${visit.get().dueDate}"></td>
+        </tr>
+        <tr>
+            <th>Status:</th>
+            <td th:text="${visit.get().status}"></td>
+        </tr>
+        <tr>
+            <th>Total amount:</th>
+            <td th:text="${visit.get().displaySum() + ' BGN.'}" id="total-amount-bgn" th:data-bgn-total="${visit.get().displaySum()}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/js/bootstrap.min.js"
+        integrity="sha512-kK3qKNRs0tJyVfTgTtTqvTQKXhB0ZM7VBsGz8MBjK1sGB0AdJtVgTtHymT2lhG+JAGYfzfVieTHwkcH8djrh1w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    const convertCurrency = async (currency) => {
+        const response = await axios.get(`https://api.exchangeratesapi.io/latest?base=BGN&symbols=${currency}`);
+        const rate = response.data.rates[currency];
+        return rate;
+    };
+
+    const currencySelect = document.getElementById('currency');
+    const totalAmountElement = document.getElementById('total-amount-bgn');
+
+    currencySelect.addEventListener('change', async (event) => {
+        const selectedCurrency = event.target.value;
+        const rate = await convertCurrency(selectedCurrency);
+        const bgnTotal = totalAmountElement.dataset.bgnTotal;
+        const newAmount = (parseFloat(bgnTotal) * rate).toFixed(2);
+        totalAmountElement.textContent = `${newAmount} ${selectedCurrency}`;
+    });
+    function generatePDF() {
+        const visitId = this.visitId
+        $.ajax({
+            url: "/pdf/generate?visitId=" + visitId,
+            method: "GET",
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function(response) {
+                const blob = new Blob([response], {type: 'application/pdf'});
+                const link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = 'visit_' + visitId + '_' + new Date().toISOString() + '.pdf';
+                link.click();
+            },
+            error: function(xhr, status, error) {
+                console.log('Error generating PDF:', error);
+            }
+        });
+    };
+</script>
+</body>
+</html>
