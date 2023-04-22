@@ -5,19 +5,19 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.*;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class ModelFilterDto {
+@AllArgsConstructor
+public class CarModelDto {
 
+    @NotNull
+    @Length(min = 2, max = 32)
     private String modelName;
 
     private Brand brand;
-
-    private String sortBy;
-
-    private String sortOrder;
 }
