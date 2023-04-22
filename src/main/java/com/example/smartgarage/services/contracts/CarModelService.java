@@ -1,6 +1,6 @@
 package com.example.smartgarage.services.contracts;
 
-import com.example.smartgarage.models.dtos.ModelDto;
+import com.example.smartgarage.models.dtos.CarModelDto;
 import com.example.smartgarage.models.entities.CarModel;
 
 import java.util.List;
@@ -20,7 +20,7 @@ public interface CarModelService {
 
     void save(CarModel carModel);
 
-    public CarModel update(CarModel carModel, ModelDto modelDto);
+    public CarModel update(CarModel carModel, CarModelDto modelDto);
 
     void deleteCarModelById(Long carModelId);
 

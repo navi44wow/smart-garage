@@ -4,7 +4,7 @@ import com.example.smartgarage.exceptions.AuthorizationException;
 import com.example.smartgarage.exceptions.EntityDuplicateException;
 import com.example.smartgarage.exceptions.EntityNotFoundException;
 import com.example.smartgarage.helpers.AuthenticationHelper;
-import com.example.smartgarage.models.dtos.ModelDto;
+import com.example.smartgarage.models.dtos.CarModelDto;
 import com.example.smartgarage.models.entities.CarModel;
 import com.example.smartgarage.services.contracts.CarModelService;
 import org.modelmapper.ModelMapper;
@@ -61,7 +61,7 @@ public class CarModelRestController {
     @PostMapping("/new")
     public CarModel createModel(
             @RequestHeader("Authorization") HttpHeaders headers,
-            @Valid @RequestBody ModelDto modelDto) {
+            @Valid @RequestBody CarModelDto modelDto) {
         CarModel carModel;
         try {
             authenticationHelper.checkAuthorization(headers);
@@ -79,7 +79,7 @@ public class CarModelRestController {
 
     @PutMapping("/{modelId}/update")
     public CarModel updateModel(@PathVariable Long modelId,
-                                @Valid @RequestBody ModelDto modelDto,
+                                @Valid @RequestBody CarModelDto modelDto,
                                 @RequestHeader("Authorization") HttpHeaders headers) {
         CarModel existingCarModel;
         try {

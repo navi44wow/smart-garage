@@ -1,7 +1,7 @@
 package com.example.smartgarage.controllers.mvc;
 
-import com.example.smartgarage.models.dtos.ModelDto;
-import com.example.smartgarage.models.dtos.ModelFilterDto;
+import com.example.smartgarage.models.dtos.CarModelDto;
+import com.example.smartgarage.models.dtos.CarModelFilterDto;
 
 import com.example.smartgarage.models.entities.CarModel;
 import org.springframework.ui.Model;
@@ -50,7 +50,7 @@ public class BrandModelMVCController {
         List<CarModel> carModelList = carModelService.getAll();
         model.addAttribute("models", carModelList);
 
-        ModelFilterDto modelFilterDto = new ModelFilterDto();
+        CarModelFilterDto modelFilterDto = new CarModelFilterDto();
         model.addAttribute("modelFilterDto", modelFilterDto);
 
         return "models";
@@ -65,13 +65,13 @@ public class BrandModelMVCController {
 //        } catch (AuthorizationException e) {
 //            return "redirect:/auth/login";
 //        }
-        model.addAttribute("modelDto", new ModelDto());
+        model.addAttribute("modelDto", new CarModelDto());
         //model.addAttribute("user", user.);
         return "model-new";
     }
 
     @PostMapping("/new")
-    public String createNewModel(@Valid @ModelAttribute("modelDto") ModelDto modelDto, BindingResult bindingResult, HttpSession httpSession) {
+    public String createNewModel(@Valid @ModelAttribute("modelDto") CarModelDto modelDto, BindingResult bindingResult, HttpSession httpSession) {
 //        User user;
 //        try {
 //            user = authenticationHelper.tryGetUser(httpSession);

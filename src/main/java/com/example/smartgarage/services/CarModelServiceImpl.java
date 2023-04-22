@@ -1,6 +1,6 @@
 package com.example.smartgarage.services;
 
-import com.example.smartgarage.models.dtos.ModelDto;
+import com.example.smartgarage.models.dtos.CarModelDto;
 
 import com.example.smartgarage.models.entities.CarModel;
 import com.example.smartgarage.repositories.BrandRepository;
@@ -66,7 +66,7 @@ public class CarModelServiceImpl implements CarModelService {
     }
 
     @Override
-    public CarModel update(CarModel carModel, ModelDto modelDto) {
+    public CarModel update(CarModel carModel, CarModelDto modelDto) {
         carModel.setModelName(modelDto.getModelName());
         carModel.setBrand(modelDto.getBrand());
         carModelRepository.save(carModel);
