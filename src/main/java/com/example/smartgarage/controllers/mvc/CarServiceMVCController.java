@@ -3,7 +3,6 @@ package com.example.smartgarage.controllers.mvc;
 import com.example.smartgarage.exceptions.AuthorizationException;
 import com.example.smartgarage.exceptions.EntityDuplicateException;
 import com.example.smartgarage.exceptions.EntityNotFoundException;
-import com.example.smartgarage.exceptions.InvalidRequestException;
 import com.example.smartgarage.helpers.AuthenticationHelper;
 import com.example.smartgarage.models.dtos.CarServiceDto;
 import com.example.smartgarage.models.dtos.CarServizFilterDto;
@@ -55,7 +54,6 @@ public class CarServiceMVCController {
             return "services";
         }
 
-
     @PostMapping()
     public String filterServices(@ModelAttribute("filterDTO") CarServizFilterDto filterDTO, Model model) {
         List<CarService> servicezList = carServizService.getAllGeneric(
@@ -72,8 +70,6 @@ public class CarServiceMVCController {
 
     @GetMapping("/service-new")
     public String create(Model model) {
-        //TODO gets crushed if checkAuthorization(headers)
-        //authenticationHelper.checkAuthorization(headers);
         model.addAttribute("carServiceDTO", new CarServiceDto());
         return "/service-new";
     }
@@ -86,8 +82,6 @@ public class CarServiceMVCController {
         }
 
         try {
-            //TODO gets crushed if checkAuthorization(headers)
-            //authenticationHelper.checkAuthorization(headers);
             CarService service = modelMapper.map(serviceDto, CarService.class);
             carServizService.save(service);
             redirectAttributes.addAttribute("id", service.getId());

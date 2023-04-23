@@ -28,10 +28,6 @@
     <form method="post" th:action="@{/services/}" th:object="${filterDTO}" class="form-inline mb-3">
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" class="form-control mx-2">
-        <label for="minPrice">Minimum Price:</label>
-        <input type="number" id="minPrice" name="minPrice" class="form-control mx-2">
-        <label for="maxPrice">Maximum Price:</label>
-        <input type="number" id="maxPrice" name="maxPrice" class="form-control mx-2">
         <button type="submit" class="btn btn-primary mx-2">Search</button>
     </form>
     <table class="table table-hover">
@@ -43,7 +39,7 @@
         </thead>
         <tbody>
         <tr th:each="service : ${services}">
-            <td th:text="${service.name}"></td>
+            <td th:text="${service.getName()}"></td>
             <td th:text="${service.price}"></td>
             <td>
                 <a class="h6 m-3" th:href="@{'/services/service-update/' + ${service.id}}">Edit</a>
@@ -53,7 +49,6 @@
         </tbody>
     </table>
 </div>
-
 <!-- Bootstrap JS -->
 <script th:src="@{https://code.jquery.com/jquery-3.2.1.slim.min.js}"></script>
 <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js}"></script>
