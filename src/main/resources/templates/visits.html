@@ -12,6 +12,39 @@
     <h2>Visits</h2>
     <a th:href="@{/employee/}" class="btn btn-primary mb-2">Dashboard</a>
     <a th:href="@{/visits/visit-new}" class="btn btn-primary mb-2">New Visit</a>
+
+    <form method="get" th:action="@{/visits/}" th:object="${filterOptions}" class="form-inline mb-3">
+        <label for="sortBy">Sort By:</label>
+        <select id="sortBy" name="sortBy" class="form-control mx-2" th:value="${filterOptions.sortBy}">
+            <option value="none">None</option>
+            <option value="username">Username</option>
+            <option value="status">Status</option>
+            <option value="createDate">Create Date</option>
+            <option value="dueDate">Due Date</option>
+        </select>
+        <label for="sortOrder">Sort Order:</label>
+        <select id="sortOrder" name="sortOrder" class="form-control mx-2" th:value="${filterOptions.sortOrder}">
+            <option value="none">None</option>
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+        </select>
+        <button type="submit" class="btn btn-primary mx-2">Sort</button>
+    </form>
+
+    <!--    <form method="get" th:action="@{/visits/}" th:object="${filterOptions}" class="form-inline mb-3">-->
+
+<!--        <label for="visitStatus">Username:</label>-->
+<!--        <input type="text" th:field="*{username}" id="visitStatus" visitStatus="visitStatus" class="form-control mx-2">-->
+
+<!--        <label for="email">Status:</label>-->
+<!--        <input type="text" th:field="*{status}"  id="email" brand="email" class="form-control mx-2">-->
+
+<!--        <label for="phoneNumber">Date:</label>-->
+<!--        <input type="text" th:field="*{getVisitFirstDate()}"  id="phoneNumber" creationYear="phoneNumber" class="form-control mx-2">-->
+<!--        <button type="submit" class="btn btn-primary mx-2">Search</button>-->
+
+<!--    </form>-->
+
     <table class="table table-striped">
         <thead>
         <tr>
@@ -24,8 +57,11 @@
             <th>Actions</th>
             <th>Message board</th>
             <th style="text-align: right;">
-                <input type="checkbox" id="showArchived" />
-                <label for="showArchived">Show Archived</label></th>
+                <input type="checkbox" id="onlyArchived" />
+                <label for="onlyArchived">Only Archived</label></th>
+            <th style="text-align: right;">
+                <input type="checkbox" id="includeArchived" />
+                <label for="includeArchived">Including Archived</label></th>
         </tr>
         </thead>
         <tbody>
@@ -70,24 +106,45 @@
 <script th:src="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js}"></script>
 <script>
     // Retrieve the state of the checkbox from localStorage
-    let showArchived = localStorage.getItem('showArchived');
-    if (showArchived === null) {
-        showArchived = false;
+    let onlyArchived = localStorage.getItem('onlyArchived');
+    if (onlyArchived === null) {
+        onlyArchived = false;
     } else {
-        showArchived = (showArchived === 'true');
+        onlyArchived = (onlyArchived === 'true');
     }
 
     // Set the initial state of the checkbox
-    const checkbox = document.getElementById('showArchived');
-    checkbox.checked = showArchived;
+    const checkbox = document.getElementById('onlyArchived');
+    checkbox.checked = onlyArchived;
 
     // Add an event listener to the checkbox
     checkbox.addEventListener('change', function() {
         // Update the state of the checkbox in localStorage
-        localStorage.setItem('showArchived', this.checked);
+        localStorage.setItem('onlyArchived', this.checked);
 
         // Reload the page
-        window.location.href = window.location.pathname + '?showArchived=' + this.checked;
+        window.location.href = window.location.pathname + '?onlyArchived=' + this.checked;
+    });
+</script>
+<script th:inline="javascript">
+    let includeArchived = localStorage.getItem('includeArchived');
+    if (includeArchived === null) {
+        includeArchived = false;
+    } else {
+        includeArchived = (includeArchived === 'true');
+    }
+
+    // Set the initial state of the checkbox
+    const checkbox = document.getElementById('includeArchived');
+    checkbox.checked = includeArchived;
+
+    // Add an event listener to the checkbox
+    checkbox.addEventListener('change', function() {
+        // Update the state of the checkbox in localStorage
+        localStorage.setItem('includeArchived', this.checked);
+
+        // Reload the page
+        window.location.href = window.location.pathname + '?includeArchived=' + this.checked;
     });
 </script>
 </body>

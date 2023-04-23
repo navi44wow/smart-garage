@@ -21,4 +21,6 @@ public interface VisitService {
     List<Visit> getAllByUsername(String username);
 
     List<VisitStatus> findAllStatuses();
+
+    List<Visit> getAllSorted(String sortBy, String sortOrder);
 }

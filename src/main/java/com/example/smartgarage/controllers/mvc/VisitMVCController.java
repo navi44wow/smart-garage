@@ -1,11 +1,13 @@
 package com.example.smartgarage.controllers.mvc;
 
-import com.example.smartgarage.helpers.AuthenticationHelper;
 import com.example.smartgarage.models.dtos.VisitDto;
+import com.example.smartgarage.models.dtos.VisitFilterDto;
 import com.example.smartgarage.models.entities.*;
-import com.example.smartgarage.services.contracts.*;
+import com.example.smartgarage.services.contracts.CarServizService;
+import com.example.smartgarage.services.contracts.PDFGeneratorService;
+import com.example.smartgarage.services.contracts.VehicleService;
+import com.example.smartgarage.services.contracts.VisitService;
 import com.example.smartgarage.services.mappers.VisitMapper;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,43 +24,41 @@ import java.util.stream.Collectors;
 public class VisitMVCController {
 
     private final VisitService visitService;
-
-    private final UserService userService;
-
     private final VehicleService vehicleService;
-
     private final CarServizService carServizService;
-    private final AuthenticationHelper authenticationHelper;
-    private final ModelMapper modelMapper;
     private final VisitMapper visitMapper;
     private final PDFGeneratorService pdfGeneratorService;
 
-    public VisitMVCController(VisitService visitService, UserService userService, VehicleService vehicleService,
+    public VisitMVCController(VisitService visitService,
+                              VehicleService vehicleService,
                               CarServizService carServizService,
-                              AuthenticationHelper authenticationHelper,
-                              ModelMapper modelMapper, VisitMapper visitMapper, PDFGeneratorService pdfGeneratorService) {
+                              VisitMapper visitMapper,
+                              PDFGeneratorService pdfGeneratorService) {
         this.visitService = visitService;
-        this.userService = userService;
         this.vehicleService = vehicleService;
         this.carServizService = carServizService;
-        this.authenticationHelper = authenticationHelper;
-        this.modelMapper = modelMapper;
         this.visitMapper = visitMapper;
         this.pdfGeneratorService = pdfGeneratorService;
     }
 
     @GetMapping()
-    public String getAllVisits(Model model, @RequestParam(required = false) Boolean showArchived) {
-        List<Visit> allVisits = visitService.getAll();
-        if (showArchived != null && showArchived) {
+    public String getAllVisits(Model model,
+                               @RequestParam(required = false) Boolean onlyArchived,
+                               @RequestParam(required = false) Boolean includeArchived,
+                               @ModelAttribute("filterOptions") VisitFilterDto visitFilterDto) {
+        List<Visit> allVisits = visitService.getAllSorted(visitFilterDto.getSortBy(), visitFilterDto.getSortOrder());
+
+        if (onlyArchived != null && onlyArchived) {
             allVisits = allVisits.stream().filter(Visit::isArchived).collect(Collectors.toList());
+        } else if (includeArchived != null && includeArchived) {
+            allVisits = new ArrayList<>(allVisits);
         } else {
             allVisits = allVisits.stream()
                     .filter(visit -> !visit.isArchived())
-                    .sorted(Comparator.comparing(Visit::getId).reversed())
                     .collect(Collectors.toList());
         }
         model.addAttribute("all", allVisits);
+        model.addAttribute("filterOptions", visitFilterDto);
         return "visits";
     }
 
@@ -77,8 +77,6 @@ public class VisitMVCController {
 
     @GetMapping("/visit-new")
     public String create(Model model) {
-        //TODO gets crushed if checkAuthorization(headers)
-        //authenticationHelper.checkAuthorization(headers);
         List<Vehicle> vehicles = vehicleService.getAll();
         List<CarService> services = carServizService.getAll();
         List<VisitStatus> statusList = visitService.findAllStatuses();
@@ -198,5 +196,4 @@ public class VisitMVCController {
             this.pdfGeneratorService.export(response, visit);
         }
     }
-
 }
