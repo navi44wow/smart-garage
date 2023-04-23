@@ -133,15 +133,6 @@ public class UserServiceImpl implements UserService {
         user.addRole(userRole);
         user = userRepository.save(user);
 
-        UserDetails userDetails = smartGarageUserService.loadUserByUsername(user.getUsername());
-
-        Authentication authentication = new UsernamePasswordAuthenticationToken(
-                userDetails,
-                user.getPassword(),
-                userDetails.getAuthorities()
-        );
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
     @Override
@@ -285,6 +276,16 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(updated.getPassword()));
         user.setPhoneNumber(updated.getPhoneNumber());
         userRepository.save(user);
+
+        UserDetails userDetails = smartGarageUserService.loadUserByUsername(user.getUsername());
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                userDetails,
+                user.getPassword(),
+                userDetails.getAuthorities()
+        );
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         return modelMapper.map(updated, UserViewModel.class);
     }

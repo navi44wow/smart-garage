@@ -64,40 +64,6 @@ public class CustomerController {
         return "customer-dashboard";
     }
 
-    @GetMapping("/forgotPassword")
-    public String forgotPassword() {
-        return "forgot_password";
-    }
-
-    @PostMapping("/forgotPassword")
-    public String sendEmailForForgottenPassword(@Valid GenerateUserDto generateUserDto, BindingResult bindingResult,
-                                                Model model) {
-
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("generateUserDto", generateUserDto);
-            model.addAttribute("org.springframework.validation.BindingResult.generateUserDto", bindingResult);
-
-            return "forgot_password";
-        }
-
-        try {
-            generateUserDto.setPassword(generateRandomString(8));
-            UserViewModel userViewModel = userService.getByEmail(generateUserDto.getEmail());
-            generateUserDto.setUsername(userViewModel.getUsername());
-            UserServiceModel userServiceModel = modelMapper.map(generateUserDto, UserServiceModel.class);
-            userService.prepareForPasswordReset(userServiceModel);
-            sendEmail(userServiceModel);
-        } catch (EntityNotFoundException e) {
-            model.addAttribute("generateUserDto", generateUserDto);
-            model.addAttribute("userNotFound", true);
-            model.addAttribute("exceptionNotFound", e.getMessage());
-            return "forgot_password";
-        }
-
-
-        return "redirect:/users/login";
-    }
-
     @GetMapping("/resetPassword/{username}")
     public String getResetPassword(@PathVariable String username, Model model) {
         model.addAttribute("username", username);

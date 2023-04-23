@@ -23,6 +23,7 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 import java.util.Properties;
 
@@ -157,7 +158,7 @@ public class UserMVCController {
 
         sendEmail(modelMapper.map(generateUserDto, UserServiceModel.class));
 
-        return "employee-dashboard";
+        return "redirect:/users/all";
     }
 
     static void sendEmail(UserServiceModel userServiceModel) {
@@ -200,7 +201,7 @@ public class UserMVCController {
 
 
     @GetMapping("/all")
-    public String getAllUsers(@ModelAttribute("filterOptions")UserFilterDto userFilterDto, Model model){
+    public String getAllUsers(@ModelAttribute("filterOptions")UserFilterDto userFilterDto, Model model, Principal principal){
 
         UserFilterOptions userFilterOptions = new UserFilterOptions(
                 userFilterDto.getUsername(),
@@ -216,6 +217,7 @@ public class UserMVCController {
         );
 
 
+        System.out.println(principal.getName());
         model.addAttribute("allUsers", userService.get(userFilterOptions));
         model.addAttribute("filterOptions", userFilterDto);
         return "users-all";
