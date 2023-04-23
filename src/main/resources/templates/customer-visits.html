@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>My Visits</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css}">
+</head>
+<body>
+<div class="container mt-5">
+  <h2>My Visits</h2>
+  <a th:href="@{/customer/}" class="btn btn-primary mb-2">Dashboard</a>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Vehicle</th>
+      <th>User</th>
+      <th>Start Date</th>
+      <th>Due Date</th>
+      <th>Status</th>
+      <th>Actions</th>
+      <th>Message board</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="visit : ${visits}">
+      <td><a th:href="@{/visits/visit-view/{id}(id=${visit.getId()})}" th:text="${visit.id}">Visit ID</a></td>
+      <td th:text="${visit.vehicle.getCarModelId().getBrand().getBrandName()+' | '
+                +visit.vehicle.getCarModelId().getModelName()+' | '
+                +visit.vehicle.getLicensePlate()}"></td>
+      <td th:text="${visit.getVehicle().getUser().username}"></td>
+      <td th:text="${visit.startDate}"></td>
+      <td th:text="${visit.dueDate}"></td>
+      <td th:text="${visit.status}"></td>
+      <td>
+        <a class="h6 m-3" th:href="@{'/visits/visit-invoice/' + ${visit.id}}">Invoice</a>
+      </td>
+    </tbody>
+  </table>
+</div>
+<!-- Bootstrap JS -->
+<script th:src="@{https://code.jquery.com/jquery-3.2.1.slim.min.js}"></script>
+<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js}"></script>
+<script th:src="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js}"></script>
+</body>
+</html>

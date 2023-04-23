@@ -4,9 +4,12 @@ import com.example.smartgarage.exceptions.EntityNotFoundException;
 import com.example.smartgarage.exceptions.NotValidPasswordException;
 import com.example.smartgarage.exceptions.PasswordConfirmationException;
 import com.example.smartgarage.models.dtos.GenerateUserDto;
+import com.example.smartgarage.models.entities.User;
+import com.example.smartgarage.models.entities.Visit;
 import com.example.smartgarage.models.service_models.UserServiceModel;
 import com.example.smartgarage.models.view_models.UserViewModel;
 import com.example.smartgarage.services.contracts.UserService;
+import com.example.smartgarage.services.contracts.VisitService;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +24,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 import static com.example.smartgarage.controllers.mvc.UserMVCController.generateRandomString;
 import static com.example.smartgarage.controllers.mvc.UserMVCController.sendEmail;
 
@@ -29,9 +36,12 @@ public class CustomerController {
     private final UserService userService;
     private final ModelMapper modelMapper;
 
-    public CustomerController(UserService userService, ModelMapper modelMapper) {
+    private final VisitService visitService;
+
+    public CustomerController(UserService userService, ModelMapper modelMapper, VisitService visitService) {
         this.userService = userService;
         this.modelMapper = modelMapper;
+        this.visitService = visitService;
     }
 
     @ModelAttribute("loggedInUser")
@@ -125,6 +135,16 @@ public class CustomerController {
         return "redirect:/users/login";
     }
 
+    @GetMapping("/customer/{username}/customer-visits")
+    public String getAll(@PathVariable("username") String username, Model model) {
+        UserViewModel user = userService.getByUsername(username);
+        List<Visit> visits = visitService.getAll().stream()
+                .filter(visit -> visit.getVehicle().getUser().getUsername().equals(user.getUsername()))
+                .collect(Collectors.toList());
+        model.addAttribute("visits", visits);
+        model.addAttribute("username", user.getUsername());
+        return "customer-visits";
+    }
 
     private UserViewModel getLoggedInUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -133,8 +153,5 @@ public class CustomerController {
         }
         return userService.getByUsername(authentication.getName());
     }
-
-
-
 
 }
