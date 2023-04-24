@@ -30,11 +30,18 @@
     </form>
     <form method="get" th:action="@{/users/all}" th:object="${filterOptions}" class="form-inline mb-3">
 
-        <label for="carModel">Username:</label>
-        <input type="text" th:field="*{username}" id="carModel" carModel="carModel" class="form-control mx-2">
+        <label for="username">Username:</label>
+        <input type="text" th:field="*{username}" id="username" carModel="carModel" class="form-control mx-2">
 
-        <label for="carModel">Vehicle Vin:</label>
-        <input type="text" th:field="*{vehicleVin}" id="username" carModel="carModel" class="form-control mx-2">
+        <label for="vin">Vehicle Vin:</label>
+        <input type="text" th:field="*{vehicleVin}" id="vin" carModel="carModel" class="form-control mx-2">
+
+        <label for="vehicleBrand">Vehicle Brand:</label>
+        <input type="text" th:field="*{vehicleBrand}" id="vehicleBrand" carModel="carModel" class="form-control mx-2">
+
+
+        <label for="vehicleModel">Vehicle Model:</label>
+        <input type="text" th:field="*{vehicleModel}" id="vehicleModel" carModel="carModel" class="form-control mx-2">
 
         <label for="email">Email:</label>
         <input type="text" th:field="*{email}"  id="email" brand="email" class="form-control mx-2">
@@ -55,12 +62,15 @@
         </thead>
         <tbody>
         <tr th:each="user : ${allUsers}">
-            <td th:text="${user.getFirstName()} + ' ' + ${user.getLastName()}">Name</td>
+            <td>
+                <a th:href="@{'/users/detailsPage/' + ${user.getUsername()}}"
+                   th:text="${user.getFirstName()} + ' ' + ${user.getLastName()}">Name</a>
+            </td>
             <td th:text="${user.getUsername()}">Username</td>
             <td th:text="${user.getEmail()}">Email</td>
             <td th:text="${user.getPhoneNumber()}">Phone Number</td>
             <td>
-                <a class="h6 m-3" th:href="@{'/services/service-update/'}">Edit</a>
+                <a class="h6 m-3" th:href="@{'/users/update/' + ${user.getUsername()}}">Edit</a>
                 <a class="h6" th:href="@{'/users/delete/' + ${user.getUsername()}}">Delete</a>
             </td>
         </tr>

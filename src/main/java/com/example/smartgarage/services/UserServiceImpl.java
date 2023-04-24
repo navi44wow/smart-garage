@@ -182,29 +182,49 @@ public class UserServiceImpl implements UserService {
     public List<UserViewModel> get(UserFilterOptions userFilterOptions) {
         Set<User> users = new HashSet<>();
 
+        boolean isPresentSth = false;
+
         if (!userFilterOptions.getUsername().equals(Optional.of(""))){
+            isPresentSth = true;
             users.addAll(userRepository.findAllByUsername(userFilterOptions.getUsername()));
         }
 
         if (!userFilterOptions.getEmail().equals(Optional.of(""))){
+            isPresentSth = true;
             users.addAll(userRepository.findAllByEmail(userFilterOptions.getEmail()));
         }
 
         if (!userFilterOptions.getPhoneNumber().equals(Optional.of(""))){
+            isPresentSth = true;
             users.addAll(userRepository.findAllByPhoneNumber(userFilterOptions.getPhoneNumber()));
         }
 
         if (!userFilterOptions.getVehicleVin().equals(Optional.of(""))){
+            isPresentSth = true;
             users.addAll(userRepository.findByVehiclesVIN(userFilterOptions.getVehicleVin()));
         }
 
+        if (!userFilterOptions.getVehicleModel().equals(Optional.of(""))){
+            isPresentSth = true;
+            users.addAll(userRepository.findByVehiclesModel(userFilterOptions.getVehicleModel()));
+        }
+
+        if (!userFilterOptions.getVehicleBrand().equals(Optional.of(""))){
+            isPresentSth = true;
+            users.addAll(userRepository.findByVehiclesBrand(userFilterOptions.getVehicleBrand()));
+        }
 
 
-        if (users.isEmpty()){
+        if (users.isEmpty() && !isPresentSth){
+            users.addAll(userRepository.findAllUsers());
+        }
+
+        if (userFilterOptions.getSortBy().isPresent()){
             users.addAll(userRepository.findAllUsers());
         }
 
         if (!userFilterOptions.getSortBy().equals(Optional.of("None"))) {
+
             if (userFilterOptions.getSortBy().equals(Optional.of("Username"))) {
                 if (userFilterOptions.getSortOrder().equals(Optional.of("Asc"))) {
                     users = users.stream()

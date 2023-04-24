@@ -194,6 +194,11 @@ public class UserMVCController {
 
     }
 
+    @GetMapping("/detailsPage/{username}")
+    public String detailsPage(@PathVariable String username){
+        return "user-details-page";
+    }
+
     static void sendEmail(UserServiceModel userServiceModel) {
         String recipientUsername = userServiceModel.getUsername();
         String recipientPassword = userServiceModel.getPassword();

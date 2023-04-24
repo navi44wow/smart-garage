@@ -21,13 +21,19 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     Optional<User> findById(UUID id);
 
-    @Query("SELECT u FROM User u JOIN FETCH u.vehicles v WHERE v.VIN = :vin")
+    @Query("SELECT u FROM User u JOIN FETCH u.vehicles v WHERE v.VIN like %:vin%")
     List<User> findByVehiclesVIN(Optional<String> vin);
+
+    @Query("SELECT u FROM User u JOIN FETCH u.vehicles v WHERE v.carModelId.modelName like %:model%")
+    List<User> findByVehiclesModel(Optional<String> model);
+
+    @Query("SELECT u FROM User u JOIN FETCH u.vehicles v WHERE v.carModelId.brand.brandName like %:brand%")
+    List<User> findByVehiclesBrand(Optional<String> brand);
 
     @Query("select u from User u where u.phoneNumber like :phoneNumber")
     Optional<User> findByPhoneNumber(String phoneNumber);
-
 //    @Query("select u from User u where u.email like :email")
+
     Optional<User> findByEmail(String email);
 
     @Query("select u from User u where u.username like %:username%")
@@ -38,7 +44,5 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     @Query("select u from User u where u.phoneNumber like %:phoneNumber%")
     List<User> findAllByPhoneNumber(Optional<String> phoneNumber);
-
-
 
 }
