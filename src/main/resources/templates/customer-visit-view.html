@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Visit Details</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css}">
+</head>
+<body>
+<div class="container mt-5">
+  <h1>Visit Details</h1>
+  <a th:href="@{/customer/}" class="btn btn-primary mb-2">Dashboard</a>
+  <a th:href="@{/customer/visit-invoice/{id}/pdf/generate(id=${visit.get().getId()})}" class="btn btn-primary mb-2">Generate PDF</a>
+  <a th:href="@{/customer/{username}/customer-visits(username=${loggedInUser.username})}" class="btn btn-primary mb-2">Back</a>
+  <table class="table table-striped">
+    <tbody>
+    <tr>
+      <th>ID:</th>
+      <td th:text="${visit.get().id}"></td>
+    </tr>
+    <tr>
+      <th>Owner:</th>
+      <td th:text="${visit.get().vehicle.getUser().username}"></td>
+    </tr>
+    <tr>
+      <th>Vehicle:</th>
+      <td th:text="${visit.get().vehicle.getCarModelId().getBrand().getBrandName()+' | '
+            +visit.get().vehicle.getCarModelId().getModelName()+' | '
+            +visit.get().vehicle.getLicensePlate()}"></td>
+    </tr>
+    <tr>
+      <th>Services:</th>
+      <td>
+        <ul>
+          <li th:each="service : ${visit.get().getServices()}"
+              th:text="${service.getServiceName() +': '+service.getServicePrice()}+' BGN.'"></li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <th>Start Date:</th>
+      <td th:text="${visit.get().startDate}"></td>
+    </tr>
+    <tr>
+      <th>Due Date:</th>
+      <td th:text="${visit.get().dueDate}"></td>
+    </tr>
+    <tr>
+      <th>Status:</th>
+      <td th:text="${visit.get().status}"></td>
+    </tr>
+    <tr>
+      <th>Total amount:</th>
+      <td th:text="${visit.get().displaySum() + ' BGN.'}"></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<!-- Bootstrap JS -->
+<script th:src="@{https://code.jquery.com/jquery-3.2.1.slim.min.js}"></script>
+<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/js/bootstrap.min.js" integrity="sha512-kK3qKNRs0tJyVfTgTtTqvTQKXhB0ZM7VBsGz8MBjK1sGB0AdJtVgTtHymT2lhG+JAGYfzfVieTHwkcH8djrh1w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</body>
+</html>

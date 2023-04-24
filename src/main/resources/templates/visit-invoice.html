@@ -13,7 +13,6 @@
     <div class="row mb-3">
         <div class="col-md-6">
             <a th:href="@{/employee/}" class="btn btn-primary mb-2">Dashboard</a>
-<!--            <a th:href="@{${#authentication.principal.authorities.contains('ROLE_EMPLOYEE') ? '/employee/' : '/customer/'}}" class="btn btn-primary mb-2">Dashboard</a>-->
             <a th:href="@{/visits/}" class="btn btn-primary mb-2">Back</a>
         </div>
         <div class="col-md-6 text-md-right">
@@ -94,26 +93,6 @@
         const newAmount = (parseFloat(bgnTotal) * rate).toFixed(2);
         totalAmountElement.textContent = `${newAmount} ${selectedCurrency}`;
     });
-    function generatePDF() {
-        const visitId = this.visitId
-        $.ajax({
-            url: "/pdf/generate?visitId=" + visitId,
-            method: "GET",
-            xhrFields: {
-                responseType: 'blob'
-            },
-            success: function(response) {
-                const blob = new Blob([response], {type: 'application/pdf'});
-                const link = document.createElement('a');
-                link.href = window.URL.createObjectURL(blob);
-                link.download = 'visit_' + visitId + '_' + new Date().toISOString() + '.pdf';
-                link.click();
-            },
-            error: function(xhr, status, error) {
-                console.log('Error generating PDF:', error);
-            }
-        });
-    };
 </script>
 </body>
 </html>

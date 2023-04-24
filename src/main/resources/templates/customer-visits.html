@@ -20,13 +20,12 @@
       <th>Start Date</th>
       <th>Due Date</th>
       <th>Status</th>
-      <th>Actions</th>
-      <th>Message board</th>
+      <th>Options</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="visit : ${visits}">
-      <td><a th:href="@{/visits/visit-view/{id}(id=${visit.getId()})}" th:text="${visit.id}">Visit ID</a></td>
+      <td><a th:text="${visit.id}">Visit ID</a></td>
       <td th:text="${visit.vehicle.getCarModelId().getBrand().getBrandName()+' | '
                 +visit.vehicle.getCarModelId().getModelName()+' | '
                 +visit.vehicle.getLicensePlate()}"></td>
@@ -35,7 +34,9 @@
       <td th:text="${visit.dueDate}"></td>
       <td th:text="${visit.status}"></td>
       <td>
-        <a class="h6 m-3" th:href="@{'/visits/visit-invoice/' + ${visit.id}}">Invoice</a>
+        <a class="h6 m-3" th:href="@{/customer/{username}/customer-visits/customer-visit-view/{id}
+      (id=${visit.getId()},
+      username=${loggedInUser.username})}">Invoice</a>
       </td>
     </tbody>
   </table>

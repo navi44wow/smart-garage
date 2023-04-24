@@ -42,7 +42,7 @@
     <div class="container">
       <h2>Our Services</h2>
       <ul th:each="service : ${allServices}">
-        <li th:text="${service.getName()+' '+service.price}">Lawn mowing and edging</li>
+        <li th:text="${service.getName()+': '+service.price +' BGN.'}">Lawn mowing and edging</li>
       </ul>
       <a href="#contact" class="cta-button">Get a Quote</a>
     </div>
