@@ -3,7 +3,9 @@ package com.example.smartgarage.controllers.mvc;
 import com.example.smartgarage.models.dtos.CarModelDto;
 import com.example.smartgarage.models.dtos.CarModelFilterDto;
 
+import com.example.smartgarage.models.dtos.VehicleFilterDto;
 import com.example.smartgarage.models.entities.CarModel;
+import com.example.smartgarage.models.entities.Vehicle;
 import org.springframework.ui.Model;
 import com.example.smartgarage.helpers.AuthenticationHelper;
 import com.example.smartgarage.services.VehicleMapper;
@@ -22,7 +24,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Controller
-@RequestMapping("/models")
+@RequestMapping("/carModels")
 public class BrandModelMVCController {
 
     private final VehicleService vehicleService;
@@ -50,11 +52,18 @@ public class BrandModelMVCController {
         List<CarModel> carModelList = carModelService.getAll();
         model.addAttribute("models", carModelList);
 
-        CarModelFilterDto modelFilterDto = new CarModelFilterDto();
-        model.addAttribute("modelFilterDto", modelFilterDto);
+        CarModelFilterDto carModelFilterDto = new CarModelFilterDto();
+        model.addAttribute("modelFilterDto", carModelFilterDto);
 
         return "models";
     }
+
+//    List<Vehicle> vehiclesList = vehicleService.getAll();
+//        model.addAttribute("vehicles", vehiclesList);
+//    VehicleFilterDto filterDTO = new VehicleFilterDto();
+//        model.addAttribute("filterDTO", filterDTO);
+//        return "vehicles";
+//}
 
 
     @GetMapping("/new")
@@ -65,13 +74,13 @@ public class BrandModelMVCController {
 //        } catch (AuthorizationException e) {
 //            return "redirect:/auth/login";
 //        }
-        model.addAttribute("modelDto", new CarModelDto());
+        model.addAttribute("carModelDto", new CarModelDto());
         //model.addAttribute("user", user.);
         return "model-new";
     }
 
     @PostMapping("/new")
-    public String createNewModel(@Valid @ModelAttribute("modelDto") CarModelDto modelDto, BindingResult bindingResult, HttpSession httpSession) {
+    public String createNewModel(@Valid @ModelAttribute("carModelDto") CarModelDto carModelDto, BindingResult bindingResult, HttpSession httpSession) {
 //        User user;
 //        try {
 //            user = authenticationHelper.tryGetUser(httpSession);
@@ -82,7 +91,8 @@ public class BrandModelMVCController {
 //            return "comment_new";
 //        }
 //        try {
-        CarModel carModel = modelMapper.map(modelDto, CarModel.class);
+        CarModel carModel = modelMapper.map(carModelDto, CarModel.class);
+        carModel.setBrand(carModelDto.getBrand());
         carModelService.save(carModel);
         return "/model-new";
     }

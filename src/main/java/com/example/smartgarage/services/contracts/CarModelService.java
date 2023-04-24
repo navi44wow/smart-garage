@@ -20,7 +20,7 @@ public interface CarModelService {
 
     void save(CarModel carModel);
 
-    public CarModel update(CarModel carModel, CarModelDto modelDto);
+    public CarModel update(CarModel carModel, CarModelDto carModelDto);
 
     void deleteCarModelById(Long carModelId);
 

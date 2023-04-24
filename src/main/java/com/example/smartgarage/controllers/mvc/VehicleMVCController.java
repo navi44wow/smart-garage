@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -57,29 +58,25 @@ public class VehicleMVCController {
     }
 
     @PostMapping("/new")
-    public String createNewVehicle(@Valid @ModelAttribute("vehicleDto") VehicleDto vehicleDto, Model model) {
-        User user = new User();
-        user.setId(vehicleDto.getUser());
-        Vehicle vehicle = vehicleMapper.createDtoToObject(vehicleDto, user);
+    public String createNewVehicle(@Valid @ModelAttribute("vehicleDto") VehicleDto vehicleDto, RedirectAttributes redirectAttributes) {
+//        User user = new User();
+//        user.setId(vehicleDto.getUser());
+//        Vehicle vehicle = vehicleMapper.createDtoToObject(vehicleDto);
+//        vehicleService.save(vehicle);
+//        model.addAttribute("vehicle", vehicle);
+
+//        User user = new User();
+//        user.setId(vehicleDto.getUser());
+        Vehicle vehicle = vehicleMapper.createDtoToObject(vehicleDto);
+//        Vehicle vehicle = modelMapper.map(vehicleDto, Vehicle.class);
         vehicleService.save(vehicle);
-        model.addAttribute("vehicle", vehicle);
+     //   redirectAttributes.addAttribute("id", vehicle.getVehicleId());
+        /*
+        CarService service = modelMapper.map(serviceDto, CarService.class);
+            carServizService.save(service);
+            redirectAttributes.addAttribute("id", service.getId());
+            return "redirect:/services";
+         */
         return "redirect:/vehicles";
     }
-
-//    @GetMapping("/new")
-//    public String createNewVehicle(Model model) {
-//        model.addAttribute("vehicleDto", new VehicleDto());
-//        return "vehicle-new";
-//    }
-//
-//    @PostMapping("/new")
-//    public String createNewVehicle(@Valid @ModelAttribute("vehicleDto") VehicleDto vehicleDto, BindingResult bindingResult, HttpSession httpSession) {
-//        Vehicle vehicle = modelMapper.map(vehicleDto, Vehicle.class);
-//        vehicleService.save(vehicle);
-//        vehicle.setUser(vehicleDto.setUser(vehicleDto.getUser()));
-//        vehicle.setModelId(vehicleDto.getModel().longValue());
-////        vehicle.setUser(userService.getById(UUID.fromString("157e3e10-a4d8-47dc-be3e-124406cd93fd")));
-////        vehicle.setModelId(modelService.getById(17L));
-//        return "redirect:/vehicles";
-//    }
 }

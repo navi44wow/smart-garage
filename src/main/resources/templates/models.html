@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Brands and carModels</title>
+    <title>Brands and car Models</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap CSS -->
@@ -9,13 +9,13 @@
 </head>
 <body>
 <div class="container mt-5">
-    <h2>Brands and carModels</h2>
+    <h2>Brands and car Models</h2>
     <a th:href="@{/employee/}" class="btn btn-primary mb-2">Dashboard</a>
     <a th:href="@{/carModels/new}" class="btn btn-primary mb-2">New Brand/Model</a>
-    <form method="post" th:action="@{/carModels/}" class="form-inline mb-3">
+    <form method="post" th:action="@{/carModels/}" th:object="${modelFilterDto}" class="form-inline mb-3">
         <label for="sortBy">Sort By:</label>
         <select id="sortBy" th:name="sortBy" class="form-control mx-2">
-            <option value="carModel">carModel</option>
+            <option value="carModel">car Model</option>
             <option value="brand">brand</option>
         </select>
         <label for="sortOrder">Sort Order:</label>
@@ -25,9 +25,9 @@
         </select>
         <button type="submit" class="btn btn-primary mx-2">Sort</button>
     </form>
-    <form method="post" th:action="@{/carModels/}" class="form-inline mb-3">
+    <form method="post" th:action="@{/carModels/}" th:object="${modelFilterDtoDto}" class="form-inline mb-3">
 
-        <label for="carModel">carModel:</label>
+        <label for="carModel">car Model:</label>
         <input type="text" id="carModel" th:name="carModel" class="form-control mx-2">
         <button type="submit" class="btn btn-primary mx-2">Search</button>
 
@@ -44,7 +44,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="carModel : ${carModels}">
+        <tr th:each="carModel : ${models}">
             <td th:text="${carModel.getBrand().getBrandName()}">brand</td>
             <td th:text="${carModel.getModelName()}">carModel</td>
             <td>

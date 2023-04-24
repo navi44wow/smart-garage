@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>New carModel brand</title>
+  <title>New car Model brand</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Bootstrap CSS -->
@@ -9,29 +9,30 @@
 </head>
 <body>
 <div class="container mt-5">
-  <h1>New carModel brand</h1>
+  <h1>New car Model brand</h1>
   <form method="post" th:action="@{__${#httpServletRequest.requestURI}__}"
-        th:object="${modelDto}">
+        th:object="${carModelDto}">
     <div class="form-group">
-      <label for="carModel">carModel:</label>
-      <select class="form-control" name="modelId" id="carModel" required>
+      <label for="carModel">car Model:</label>
+      <select class="form-control" name="carModelId" id="carModel" required>
         <option value="">-- Select Brand --</option>
-        <option th:each="carModel : ${carModels}" th:value="${carModel.modelId}"
-                th:text="${brand.getBrandName()}"></option>
+        <option th:each="carModel : ${carModelDto}" th:value="${carModelDto.getModelName()}"
+                th:text="${carModelDto.getModelName()}"></option>
       </select>
     </div>
     <div class="form-group">
-      <label for="service">Service:</label>
+      <label for="brand">brand:</label>
       <div class="service-list">
-        <select class="form-control" name="service" id="service" required>
-          <option value="">-- Select Service --</option>
-          <option th:each="service : ${services}" th:value="${service.id}" th:text="${service.name}"></option>
+        <select class="form-control" name="brand" id="brand" required>
+          <option value="">-- Select brand --</option>
+          <option th:each="brand : ${carModelDto}" th:value="${carModelDto.getBrand().getBrandName()}"
+                  th:text="${carModelDto.getBrand().getBrandName()}"></option>
         </select>
-        <a href="#" class="add-service">Add Service</a>
+        <a href="#" class="add-service">Add brand</a>
       </div>
     </div>
     <button type="submit" class="btn btn-primary">Save</button>
-    <a th:href="@{/visits/}" class="btn btn-secondary">Cancel</a>
+    <a th:href="@{/models/}" class="btn btn-secondary">Cancel</a>
   </form>
 </div>
 <!-- Bootstrap JS -->

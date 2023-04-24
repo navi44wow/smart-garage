@@ -12,9 +12,12 @@
     <h2>Vehicles</h2>
     <a th:href="@{/employee/}" class="btn btn-primary mb-2">Dashboard</a>
     <a th:href="@{/vehicles/new}" class="btn btn-primary mb-2">New Vehicle</a>
-    <form method="post" th:action="@{/vehicles/}" class="form-inline mb-3">
+
+<!--    //тук едитни името на филтердто при нужда; -->
+    <form method="post" th:action="@{/vehicles/}" th:object="${filterDTO}" class="form-inline mb-3">
         <label for="sortBy">Sort By:</label>
         <select id="sortBy" name="sortBy" class="form-control mx-2">
+            <option value="user">Owner</option>
             <option value="carModel">carModel</option>
             <option value="brand">brand</option>
             <option value="brand">creation year</option>
@@ -26,19 +29,21 @@
         </select>
         <button type="submit" class="btn btn-primary mx-2">Sort</button>
     </form>
-    <form method="post" th:action="@{/vehicles/}" class="form-inline mb-3">
+    <form method="post" th:action="@{/vehicles/}" th:object="${filterDTO}" class="form-inline mb-3">
 
         <label for="user">Owner:</label>
         <input type="text" id="user" name="user" class="form-control mx-2">
-        <button type="submit" class="btn btn-primary mx-2">Search</button>
+
 
         <label for="carModel">Model:</label>
         <input type="text" id="carModel" name="carModel" class="form-control mx-2">
-        <button type="submit" class="btn btn-primary mx-2">Search</button>
+
+        <br>
+        <br/>
 
         <label for="brand">Brand:</label>
         <input type="text" id="brand" name="brand" class="form-control mx-2">
-        <button type="submit" class="btn btn-primary mx-2">Search</button>
+
 
         <label for="creationYear">CreationYear:</label>
         <input type="text" id="creationYear" name="creationYear" class="form-control mx-2">

@@ -61,11 +61,11 @@ public class CarModelRestController {
     @PostMapping("/new")
     public CarModel createModel(
             @RequestHeader("Authorization") HttpHeaders headers,
-            @Valid @RequestBody CarModelDto modelDto) {
+            @Valid @RequestBody CarModelDto carModelDto) {
         CarModel carModel;
         try {
             authenticationHelper.checkAuthorization(headers);
-            carModel = modelMapper.map(modelDto, CarModel.class);
+            carModel = modelMapper.map(carModelDto, CarModel.class);
             carModelService.save(carModel);
             return carModelService.getById(carModel.getModelId());
         } catch (EntityNotFoundException e) {
@@ -79,13 +79,13 @@ public class CarModelRestController {
 
     @PutMapping("/{modelId}/update")
     public CarModel updateModel(@PathVariable Long modelId,
-                                @Valid @RequestBody CarModelDto modelDto,
+                                @Valid @RequestBody CarModelDto carModelDto,
                                 @RequestHeader("Authorization") HttpHeaders headers) {
         CarModel existingCarModel;
         try {
             authenticationHelper.checkAuthorization(headers);
             existingCarModel = carModelService.getById(modelId);
-            return carModelService.update(existingCarModel, modelDto);
+            return carModelService.update(existingCarModel, carModelDto);
         } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         } catch (EntityNotFoundException e) {

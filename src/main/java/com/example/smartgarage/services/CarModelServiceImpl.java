@@ -66,9 +66,9 @@ public class CarModelServiceImpl implements CarModelService {
     }
 
     @Override
-    public CarModel update(CarModel carModel, CarModelDto modelDto) {
-        carModel.setModelName(modelDto.getModelName());
-        carModel.setBrand(modelDto.getBrand());
+    public CarModel update(CarModel carModel, CarModelDto carModelDto) {
+        carModel.setModelName(carModelDto.getModelName());
+        carModel.setBrand(carModelDto.getBrand());
         carModelRepository.save(carModel);
         return carModel;
     }

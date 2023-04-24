@@ -1,6 +1,7 @@
 package com.example.smartgarage.models.dtos;
 
 
+import com.example.smartgarage.models.entities.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,9 +18,8 @@ public class VehicleFilterDto {
 
     private String brand;
     private String model;
-    private UUID user;
-    private int creationYearMin;
-    private int creationYearMax;
+    private User user;
+    private int creationYear;
     private String sortBy;
     private String sortOrder;
 }

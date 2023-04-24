@@ -10,30 +10,30 @@
 <body>
 <div class="container mt-5">
     <h2>New Vehicle</h2>
-    <form th:action="@{/vehicles/new}" method="post">
+    <form method="post" th:action="@{/vehicles/new}" th:object="${vehicleDto}">
         <div class="form-group">
             <label for="carModel">Model of Vehicle</label>
-            <input type="text" class="form-control" id="carModel" name="carModel.getById" required>
+            <input type="text" class="form-control" id="carModel" name="vehicleDto.carModel.getByCarModelName" required>
         </div>
         <div class="form-group">
             <label for="brand">Brand</label>
-            <input type="text" class="form-control" id="brand" name="brand" required>
+            <input type="text" class="form-control" id="brand" name="vehicleDto.carModel.getBrand.getBrandName" required>
         </div>
         <div class="form-group">
             <label for="user">Owner</label>
-            <input type="text" class="form-control" id="user" name="user.getById" required>
+            <input type="text" class="form-control" id="user" name="vehicleDto.getUser.getByUsername" required>
         </div>
         <div class="form-group">
             <label for="licensePlate">License plate</label>
-            <input type="text" class="form-control" id="licensePlate" name="licensePlate" required>
+            <input type="text" class="form-control" id="licensePlate" name="vehicleDto.getLicensePlate" required>
         </div>
         <div class="form-group">
             <label for="creationYear">Creation year</label>
-            <input type="text" class="form-control" id="creationYear" name="creationYear" required>
+            <input type="text" class="form-control" id="creationYear" name="vehicleDto.getCreationYear" required>
         </div>
         <div class="form-group">
             <label for="VIN">VIN</label>
-            <input type="text" class="form-control" id="VIN" name="VIN" required>
+            <input type="text" class="form-control" id="VIN" name="vehicleDto.getVIN" required>
         </div>
 
         <button type="submit" class="btn btn-primary mr-2">Add</button>
