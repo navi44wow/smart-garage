@@ -14,17 +14,18 @@
     <a th:href="@{/users/generateUser}" class="btn btn-primary mb-2">Generate a new user</a>
     <form method="get" th:action="@{/users/all}" th:object="${filterOptions}" class="form-inline mb-3">
         <label for="sortBy">Sort By:</label>
-        <select id="sortBy" carModel="sortBy" class="form-control mx-2">
-            <option value="none">None</option>
-            <option value="username">Username</option>
-            <option value="date">Visit Date</option>
+        <select id="sortBy" name="sortBy" class="form-control mx-2">
+            <option value="None">None</option>
+            <option value="Username">Username</option>
+            <option value="Date">Visit Date</option>
         </select>
         <label for="sortOrder">Sort Order:</label>
-        <select id="sortOrder" carModel="sortOrder" class="form-control mx-2">
-            <option value="none">None</option>
-            <option value="asc">Ascending</option>
-            <option value="desc">Descending</option>
+        <select id="sortOrder" name="sortOrder" class="form-control mx-2">
+            <option value="None">None</option>
+            <option value="Asc">Ascending</option>
+            <option value="Sesc">Descending</option>
         </select>
+
         <button type="submit" class="btn btn-primary mx-2">Sort</button>
     </form>
     <form method="get" th:action="@{/users/all}" th:object="${filterOptions}" class="form-inline mb-3">
