@@ -1,17 +1,23 @@
 [
   {
+    "firstName": "Iliyan",
+    "lastName": "Trenchev",
     "username": "iliyan02",
     "password": "12345",
     "email": "iliyan02@abv.bg",
     "phoneNumber": "0894053050"
   },
   {
+    "firstName": "Aleks",
+    "lastName": "Torhov",
     "username": "admin",
     "password": "98765",
     "email": "arcturus1986@abv.bg",
     "phoneNumber": "0894053055"
   },
   {
+    "firstName": "Ivan",
+    "lastName": "Belev",
     "username": "ivan91",
     "password": "Ivan12345@",
     "email": "ivan@abv.bg",

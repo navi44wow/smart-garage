@@ -14,6 +14,12 @@ import javax.validation.constraints.Size;
 @Setter
 @NoArgsConstructor
 public class UserDto {
+    @NotBlank(message = "First name cannot be empty")
+    @Size(min = 2, max = 20)
+    private String firstName;
+    @NotBlank(message = "Last name cannot be empty")
+    @Size(min = 2, max = 20)
+    private String lastName;
     @NotBlank(message = "Username cannot be empty")
     @Size(min = 2, max = 20)
     private String username;

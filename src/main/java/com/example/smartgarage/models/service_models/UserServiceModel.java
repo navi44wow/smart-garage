@@ -12,6 +12,8 @@ import javax.validation.constraints.Size;
 @Setter
 @NoArgsConstructor
 public class UserServiceModel {
+    private String firstName;
+    private String lastName;
     private String username;
     private String password;
     private String confirmPassword;

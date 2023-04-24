@@ -19,6 +19,10 @@ public class User {
     @Type(type = "uuid-char")
     @Column(name = "user_id")
     private UUID id;
+    @Column(name = "first_name")
+    private String firstName;
+    @Column(name = "last_name")
+    private String lastName;
     @Column(name = "username")
     private String username;
     @Column(name = "password")
@@ -40,6 +44,23 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private List<UserRoleEntity> roles = new ArrayList<>();
+
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
     public User setRoles(List<UserRoleEntity> roles) {
         this.roles = roles;

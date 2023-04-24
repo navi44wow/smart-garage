@@ -277,6 +277,8 @@ public class UserServiceImpl implements UserService {
 
         User user = userRepository.findByUsername(username).orElseThrow(() ->
                 new EntityNotFoundException("User with username ", updated.getUsername(), " was not found!"));
+        user.setFirstName(updated.getFirstName());
+        user.setLastName(updated.getLastName());
         user.setRoles(new ArrayList<>(Collections.singletonList(userRole)));
         user.setUsername(updated.getUsername());
         user.setPassword(passwordEncoder.encode(updated.getPassword()));
@@ -318,17 +320,31 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<String> checkIfExist(String username, String phoneNumber, String email) {
         List<String> exists = new ArrayList<>();
+        UserViewModel userViewModel = getLoggedInUser();
 
-        if (userRepository.findByUsername(username).isPresent()) {
+        if (userRepository.findByUsername(username).isPresent() && !userViewModel.getUsername().equals(username)) {
             exists.add("username");
         }
-        if (userRepository.findByPhoneNumber(phoneNumber).isPresent()) {
+        assert userViewModel != null;
+        if (userViewModel.getPhoneNumber() == null){
+            if (userRepository.findByPhoneNumber(phoneNumber).isPresent()) {
+                exists.add("phoneNumber");
+            }
+        } else if (userRepository.findByPhoneNumber(phoneNumber).isPresent()  && !userViewModel.getPhoneNumber().equals(phoneNumber)) {
             exists.add("phoneNumber");
         }
-        if (userRepository.findByEmail(email).isPresent()) {
+        if (userRepository.findByEmail(email).isPresent() && !userViewModel.getEmail().equals(email)) {
             exists.add("email");
         }
 
         return exists;
+    }
+
+    private UserViewModel getLoggedInUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null;
+        }
+        return getByUsername(authentication.getName());
     }
 }
