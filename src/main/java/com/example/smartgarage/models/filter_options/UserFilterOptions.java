@@ -16,6 +16,7 @@ public class UserFilterOptions {
     private Optional<String> username;
     private Optional<String> email;
     private Optional<String> phoneNumber;
+    private Optional<String> vehicleVin;
     private Optional<String> vehicleModel;
     private Optional<String> vehicleBrand;
     private Optional<LocalDate> visitFirstDate;
@@ -25,12 +26,13 @@ public class UserFilterOptions {
     private Optional<String> sortBy;
     private Optional<String> sortOrder;
 
-    public UserFilterOptions(String username, String email, String phoneNumber,
+    public UserFilterOptions(String username, String email, String phoneNumber, String vehicleVin,
                              String vehicleModel, String vehicleBrand, LocalDate visitFirstDate,
                              LocalDate visitLastDate, LocalDate visitDate, String sortBy, String sortOrder) {
         this.username = Optional.ofNullable(username);
         this.email = Optional.ofNullable(email);
         this.phoneNumber = Optional.ofNullable(phoneNumber);
+        this.vehicleVin = Optional.ofNullable(vehicleVin);
         this.vehicleModel = Optional.ofNullable(vehicleModel);
         this.vehicleBrand = Optional.ofNullable(vehicleBrand);
         this.visitFirstDate = Optional.ofNullable(visitFirstDate);

@@ -194,6 +194,12 @@ public class UserServiceImpl implements UserService {
             users.addAll(userRepository.findAllByPhoneNumber(userFilterOptions.getPhoneNumber()));
         }
 
+        if (!userFilterOptions.getVehicleVin().equals(Optional.of(""))){
+            users.addAll(userRepository.findByVehiclesVIN(userFilterOptions.getVehicleVin()));
+        }
+
+
+
         if (users.isEmpty()){
             users.addAll(userRepository.findAllUsers());
         }

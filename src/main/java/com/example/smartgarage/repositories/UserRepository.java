@@ -4,6 +4,7 @@ import com.example.smartgarage.models.entities.User;
 import com.example.smartgarage.models.view_models.UserViewModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
@@ -20,6 +21,9 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     Optional<User> findById(UUID id);
 
+    @Query("SELECT u FROM User u JOIN FETCH u.vehicles v WHERE v.VIN = :vin")
+    List<User> findByVehiclesVIN(Optional<String> vin);
+
     @Query("select u from User u where u.phoneNumber like :phoneNumber")
     Optional<User> findByPhoneNumber(String phoneNumber);
 
@@ -34,5 +38,7 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     @Query("select u from User u where u.phoneNumber like %:phoneNumber%")
     List<User> findAllByPhoneNumber(Optional<String> phoneNumber);
+
+
 
 }

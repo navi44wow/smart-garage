@@ -19,6 +19,8 @@ public class UserFilterDto {
 
     private String phoneNumber;
 
+    private String vehicleVin;
+
     private String vehicleModel;
 
     private String vehicleBrand;

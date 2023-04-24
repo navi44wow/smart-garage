@@ -207,6 +207,7 @@ public class UserMVCController {
                 userFilterDto.getUsername(),
                 userFilterDto.getEmail(),
                 userFilterDto.getPhoneNumber(),
+                userFilterDto.getVehicleVin(),
                 userFilterDto.getVehicleModel(),
                 userFilterDto.getVehicleBrand(),
                 userFilterDto.getVisitFirstDate(),
