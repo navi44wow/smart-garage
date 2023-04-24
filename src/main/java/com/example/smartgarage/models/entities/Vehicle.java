@@ -10,6 +10,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.Objects;
+import java.util.Set;
 
 
 @Entity
@@ -51,6 +52,10 @@ public class Vehicle {
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "model_id")
     private CarModel carModelId;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Visit> visits;
 
 
     @Override

@@ -57,6 +57,10 @@
             <td th:text="${user.getUsername()}">Username</td>
             <td th:text="${user.getEmail()}">Email</td>
             <td th:text="${user.getPhoneNumber()}">Phone Number</td>
+            <td>
+                <a class="h6 m-3" th:href="@{'/services/service-update/'}">Edit</a>
+                <a class="h6" th:href="@{'/users/delete/' + ${user.getUsername()}}">Delete</a>
+            </td>
         </tr>
         </tbody>
     </table>

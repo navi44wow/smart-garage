@@ -161,6 +161,39 @@ public class UserMVCController {
         return "redirect:/users/all";
     }
 
+    @GetMapping("/all")
+    public String getAllUsers(@ModelAttribute("filterOptions")UserFilterDto userFilterDto, Model model, Principal principal){
+
+        UserFilterOptions userFilterOptions = new UserFilterOptions(
+                userFilterDto.getUsername(),
+                userFilterDto.getEmail(),
+                userFilterDto.getPhoneNumber(),
+                userFilterDto.getVehicleVin(),
+                userFilterDto.getVehicleModel(),
+                userFilterDto.getVehicleBrand(),
+                userFilterDto.getVisitFirstDate(),
+                userFilterDto.getVisitLastDate(),
+                userFilterDto.getVisitDate(),
+                userFilterDto.getSortBy(),
+                userFilterDto.getSortOrder()
+        );
+
+
+        System.out.println(principal.getName());
+        model.addAttribute("allUsers", userService.get(userFilterOptions));
+        model.addAttribute("filterOptions", userFilterDto);
+        return "users-all";
+    }
+
+    @GetMapping("/delete/{username}")
+    public String deleteUser(@PathVariable String username){
+
+        UserServiceModel userServiceModel = modelMapper.map(userService.getByUsername(username), UserServiceModel.class);
+        userService.delete(userServiceModel);
+        return "redirect:/users/all";
+
+    }
+
     static void sendEmail(UserServiceModel userServiceModel) {
         String recipientUsername = userServiceModel.getUsername();
         String recipientPassword = userServiceModel.getPassword();
@@ -197,31 +230,6 @@ public class UserMVCController {
             throw new RuntimeException(e);
         }
 
-    }
-
-
-    @GetMapping("/all")
-    public String getAllUsers(@ModelAttribute("filterOptions")UserFilterDto userFilterDto, Model model, Principal principal){
-
-        UserFilterOptions userFilterOptions = new UserFilterOptions(
-                userFilterDto.getUsername(),
-                userFilterDto.getEmail(),
-                userFilterDto.getPhoneNumber(),
-                userFilterDto.getVehicleVin(),
-                userFilterDto.getVehicleModel(),
-                userFilterDto.getVehicleBrand(),
-                userFilterDto.getVisitFirstDate(),
-                userFilterDto.getVisitLastDate(),
-                userFilterDto.getVisitDate(),
-                userFilterDto.getSortBy(),
-                userFilterDto.getSortOrder()
-        );
-
-
-        System.out.println(principal.getName());
-        model.addAttribute("allUsers", userService.get(userFilterOptions));
-        model.addAttribute("filterOptions", userFilterDto);
-        return "users-all";
     }
 
     static String generateRandomString(int n) {
