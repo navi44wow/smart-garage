@@ -55,6 +55,7 @@ public class VisitMVCController {
         } else {
             allVisits = allVisits.stream()
                     .filter(visit -> !visit.isArchived())
+                    .sorted(Comparator.comparing(Visit::getId).reversed())
                     .collect(Collectors.toList());
         }
         model.addAttribute("all", allVisits);

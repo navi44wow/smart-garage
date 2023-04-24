@@ -43,7 +43,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                 .antMatchers("/", "/users/login", "/password/forgot", "/resetPassword/**").permitAll()
                 .antMatchers("/api/users/**", "/api/vehicles/**", "/api/services/**", "/api/brands/**", "/api/models/**", "/api/visits/**", "/api/send-email**").permitAll().
-                antMatchers("/employee/**").hasRole("EMPLOYEE").
+                antMatchers("/employee/**").hasRole("EMPLOYEE")
+                .antMatchers("/visits/**").hasRole("EMPLOYEE")
+                .antMatchers("/services/**").hasRole("EMPLOYEE")
+                .antMatchers("/vehicles/**").hasRole("EMPLOYEE")
+                .antMatchers("/brands/**").hasRole("EMPLOYEE")
+                .antMatchers("/carModels/**").hasRole("EMPLOYEE").
                 antMatchers("/**").authenticated().
                 and().
                 formLogin()

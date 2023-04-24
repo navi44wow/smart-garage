@@ -4,10 +4,10 @@ import com.example.smartgarage.exceptions.EntityNotFoundException;
 import com.example.smartgarage.exceptions.NotValidPasswordException;
 import com.example.smartgarage.exceptions.PasswordConfirmationException;
 import com.example.smartgarage.models.dtos.GenerateUserDto;
-import com.example.smartgarage.models.entities.User;
 import com.example.smartgarage.models.entities.Visit;
 import com.example.smartgarage.models.service_models.UserServiceModel;
 import com.example.smartgarage.models.view_models.UserViewModel;
+import com.example.smartgarage.services.contracts.PDFGeneratorService;
 import com.example.smartgarage.services.contracts.UserService;
 import com.example.smartgarage.services.contracts.VisitService;
 import org.modelmapper.ModelMapper;
@@ -21,15 +21,16 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
-import java.util.UUID;
+import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static com.example.smartgarage.controllers.mvc.UserMVCController.generateRandomString;
-import static com.example.smartgarage.controllers.mvc.UserMVCController.sendEmail;
 
 @Controller
 public class CustomerController {
@@ -38,10 +39,13 @@ public class CustomerController {
 
     private final VisitService visitService;
 
-    public CustomerController(UserService userService, ModelMapper modelMapper, VisitService visitService) {
+    private final PDFGeneratorService pdfGeneratorService;
+
+    public CustomerController(UserService userService, ModelMapper modelMapper, VisitService visitService, PDFGeneratorService pdfGeneratorService) {
         this.userService = userService;
         this.modelMapper = modelMapper;
         this.visitService = visitService;
+        this.pdfGeneratorService = pdfGeneratorService;
     }
 
     @ModelAttribute("loggedInUser")
@@ -111,6 +115,34 @@ public class CustomerController {
         model.addAttribute("username", user.getUsername());
         return "customer-visits";
     }
+
+    @GetMapping("/customer/{username}/customer-visits/customer-visit-view/{visitId}")
+    public String getVisit(@PathVariable("visitId") Long visitId,
+                           @PathVariable("username") String username,
+                           Model model) {
+        Optional<Visit> visit = visitService.getById(visitId);
+        model.addAttribute("visit", visit);
+        model.addAttribute("username", visit.get().getVehicle().getUser().getUsername());
+        return "customer-visit-view";
+    }
+
+    @GetMapping("/customer/visit-invoice/{id}/pdf/generate")
+    public void generatePDF(HttpServletResponse response, @PathVariable("id") Long visitId) throws IOException {
+        response.setContentType("application/pdf");
+        DateFormat dateFormatter = new SimpleDateFormat("yyy-MM-dd:hh:mm");
+        String currentDateTime = dateFormatter.format(new Date());
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=visit_" + visitId + "_" + currentDateTime + ".pdf";
+        response.setHeader(headerKey, headerValue);
+
+        Optional<Visit> optionalVisit = visitService.getById(visitId);
+        if(optionalVisit.isPresent()) {
+            Visit visit = optionalVisit.get();
+            this.pdfGeneratorService.export(response, visit);
+        }
+    }
+
 
     private UserViewModel getLoggedInUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
