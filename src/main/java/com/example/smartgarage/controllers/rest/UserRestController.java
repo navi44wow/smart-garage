@@ -41,33 +41,33 @@ public class UserRestController {
     }
 
 
-    @GetMapping("/all")
-    public List<UserViewModel> getAllUsers(UserFilterDto userFilterDto,
-                                           @RequestHeader("Authorization") HttpHeaders headers) {
-
-        UserFilterOptions userFilterOptions;
-        try {
-            authenticationHelper.checkAuthorization(headers);
-            userFilterOptions = new UserFilterOptions(
-                    userFilterDto.getUsername(),
-                    userFilterDto.getEmail(),
-                    userFilterDto.getPhoneNumber(),
-                    userFilterDto.getVehicleVin(),
-                    userFilterDto.getVehicleModel(),
-                    userFilterDto.getVehicleBrand(),
-                    userFilterDto.getVisitFirstDate(),
-                    userFilterDto.getVisitLastDate(),
-                    userFilterDto.getVisitDate(),
-                    userFilterDto.getSortBy(),
-                    userFilterDto.getSortOrder()
-            );
-        } catch (AuthorizationException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        }
-
-
-        return userService.get(userFilterOptions);
-    }
+//    @GetMapping("/all")
+//    public List<UserViewModel> getAllUsers(UserFilterDto userFilterDto,
+//                                           @RequestHeader("Authorization") HttpHeaders headers) {
+//
+//        UserFilterOptions userFilterOptions;
+//        try {
+//            authenticationHelper.checkAuthorization(headers);
+//            userFilterOptions = new UserFilterOptions(
+//                    userFilterDto.getUsername(),
+//                    userFilterDto.getEmail(),
+//                    userFilterDto.getPhoneNumber(),
+//                    userFilterDto.getVehicleVin(),
+//                    userFilterDto.getVehicleModel(),
+//                    userFilterDto.getVehicleBrand(),
+//                    userFilterDto.getVisitFirstDate(),
+//                    userFilterDto.getVisitLastDate(),
+//                    userFilterDto.getVisitDate(),
+//                    userFilterDto.getSortBy(),
+//                    userFilterDto.getSortOrder()
+//            );
+//        } catch (AuthorizationException e) {
+//            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+//        }
+//
+//
+//        return userService.get(userFilterOptions);
+//    }
 
 
     @GetMapping("/username/{username}")

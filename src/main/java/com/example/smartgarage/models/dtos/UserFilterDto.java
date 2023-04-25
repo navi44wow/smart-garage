@@ -25,9 +25,9 @@ public class UserFilterDto {
 
     private String vehicleBrand;
 
-    private LocalDate visitFirstDate;
+    private String visitFirstDate;
 
-    private LocalDate visitLastDate;
+    private String visitLastDate;
 
     private LocalDate visitDate;
 

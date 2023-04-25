@@ -7,10 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.time.LocalDate;
+import java.util.*;
 
 
 @Repository
@@ -44,5 +42,13 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     @Query("select u from User u where u.phoneNumber like %:phoneNumber%")
     List<User> findAllByPhoneNumber(Optional<String> phoneNumber);
+
+    @Query("SELECT u FROM User u JOIN Vehicle v ON u.id = v.user.id JOIN Visit vs ON v.vehicleId = vs.vehicle.vehicleId GROUP BY u.id ORDER BY vs.startDate ASC")
+    Set<User> sortByVisitDate();
+    @Query("SELECT u FROM User u JOIN Vehicle v ON u.id = v.user.id JOIN Visit vs ON v.vehicleId = vs.vehicle.vehicleId GROUP BY u.id ORDER BY vs.startDate DESC")
+    Set<User> sortByVisitDateDesc();
+
+    @Query("SELECT DISTINCT u FROM User u JOIN u.vehicles v JOIN v.visits vs WHERE (:visitFirstDate IS NULL OR vs.startDate >= :visitFirstDate) AND (:visitLastDate IS NULL OR vs.startDate <= :visitLastDate)")
+    Set<User> findByVisitsInRange(@Param("visitFirstDate") Optional<LocalDate> visitFirstDate, @Param("visitLastDate") Optional<LocalDate> visitLastDate);
 
 }

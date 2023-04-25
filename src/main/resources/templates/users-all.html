@@ -17,7 +17,7 @@
         <select id="sortBy" name="sortBy" class="form-control mx-2">
             <option value="None">None</option>
             <option value="Username">Username</option>
-            <option value="Date">Visit Date</option>
+            <option value="VisitDate">VisitDate</option>
         </select>
         <label for="sortOrder">Sort Order:</label>
         <select id="sortOrder" name="sortOrder" class="form-control mx-2">
@@ -39,6 +39,12 @@
         <label for="vehicleBrand">Vehicle Brand:</label>
         <input type="text" th:field="*{vehicleBrand}" id="vehicleBrand" carModel="carModel" class="form-control mx-2">
 
+
+        <label for="vehicleBrand">Vehicle Start date:</label>
+        <input type="date" th:field="*{visitFirstDate}" id="visitStartDate" class="form-control mx-2">
+
+        <label for="vehicleBrand">Visit Last date:</label>
+        <input type="date" th:field="*{visitLastDate}"  id="visitLastDate" class="form-control mx-2">
 
         <label for="vehicleModel">Vehicle Model:</label>
         <input type="text" th:field="*{vehicleModel}" id="vehicleModel" carModel="carModel" class="form-control mx-2">

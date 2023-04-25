@@ -24,6 +24,10 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.validation.Valid;
 import java.security.Principal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -164,6 +168,21 @@ public class UserMVCController {
     @GetMapping("/all")
     public String getAllUsers(@ModelAttribute("filterOptions")UserFilterDto userFilterDto, Model model, Principal principal){
 
+        LocalDate visitFirstDate = null;
+        LocalDate visitLastDate = null;
+        if (userFilterDto.getVisitFirstDate() != null) {
+            String visitFirstDateStr = String.valueOf(userFilterDto.getVisitFirstDate());
+            visitFirstDate = !visitFirstDateStr.isEmpty() ? LocalDate.parse(visitFirstDateStr) : null;
+        }
+
+        if (userFilterDto.getVisitLastDate() != null) {
+            String visitLastDateStr = String.valueOf(userFilterDto.getVisitLastDate());
+            visitLastDate = !visitLastDateStr.isEmpty() ? LocalDate.parse(visitLastDateStr) : null;
+        }
+
+
+//        LocalDate visitDate = LocalDate.parse(userFilterDto.getVisitDate());
+
         UserFilterOptions userFilterOptions = new UserFilterOptions(
                 userFilterDto.getUsername(),
                 userFilterDto.getEmail(),
@@ -171,9 +190,9 @@ public class UserMVCController {
                 userFilterDto.getVehicleVin(),
                 userFilterDto.getVehicleModel(),
                 userFilterDto.getVehicleBrand(),
-                userFilterDto.getVisitFirstDate(),
-                userFilterDto.getVisitLastDate(),
-                userFilterDto.getVisitDate(),
+                visitFirstDate,
+                visitLastDate,
+                    userFilterDto.getVisitDate(),
                 userFilterDto.getSortBy(),
                 userFilterDto.getSortOrder()
         );

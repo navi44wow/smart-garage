@@ -120,7 +120,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void generateUser(GenerateUserDto generateUserDto) {
-        if (userRepository.findByEmail(generateUserDto.getEmail()).isPresent()){
+        if (userRepository.findByEmail(generateUserDto.getEmail()).isPresent()) {
             throw new EntityDuplicateException("User", "email", generateUserDto.getEmail());
         }
         User user = modelMapper.map(generateUserDto, User.class);
@@ -166,7 +166,7 @@ public class UserServiceImpl implements UserService {
         UserRoleEntity employeeUserRole = userRoleRepository.findByRole(UserRole.EMPLOYEE).orElseThrow(
                 () -> new NotFoundRoleException("CUSTOMER role not found. Please seed the roles.")
         );
-        if (user.getRoles().contains(employeeUserRole)){
+        if (user.getRoles().contains(employeeUserRole)) {
             user.setRoles(new ArrayList<>(Collections.singletonList(employeeUserRole)));
         } else {
             user.setRoles(new ArrayList<>(Collections.singletonList(customerUserRole)));
@@ -184,42 +184,53 @@ public class UserServiceImpl implements UserService {
 
         boolean isPresentSth = false;
 
-        if (!userFilterOptions.getUsername().equals(Optional.of(""))){
+        if (!userFilterOptions.getUsername().equals(Optional.of(""))
+                && userFilterOptions.getUsername().isPresent()) {
             isPresentSth = true;
             users.addAll(userRepository.findAllByUsername(userFilterOptions.getUsername()));
         }
 
-        if (!userFilterOptions.getEmail().equals(Optional.of(""))){
+        if (!userFilterOptions.getEmail().equals(Optional.of(""))
+                && userFilterOptions.getEmail().isPresent()) {
             isPresentSth = true;
             users.addAll(userRepository.findAllByEmail(userFilterOptions.getEmail()));
         }
 
-        if (!userFilterOptions.getPhoneNumber().equals(Optional.of(""))){
+        if (!userFilterOptions.getPhoneNumber().equals(Optional.of(""))
+                && userFilterOptions.getPhoneNumber().isPresent()) {
             isPresentSth = true;
             users.addAll(userRepository.findAllByPhoneNumber(userFilterOptions.getPhoneNumber()));
         }
 
-        if (!userFilterOptions.getVehicleVin().equals(Optional.of(""))){
+        if (!userFilterOptions.getVehicleVin().equals(Optional.of(""))
+                && userFilterOptions.getVehicleVin().isPresent()) {
             isPresentSth = true;
             users.addAll(userRepository.findByVehiclesVIN(userFilterOptions.getVehicleVin()));
         }
 
-        if (!userFilterOptions.getVehicleModel().equals(Optional.of(""))){
+        if (!userFilterOptions.getVehicleModel().equals(Optional.of(""))
+                && userFilterOptions.getVehicleModel().isPresent()) {
             isPresentSth = true;
             users.addAll(userRepository.findByVehiclesModel(userFilterOptions.getVehicleModel()));
         }
 
-        if (!userFilterOptions.getVehicleBrand().equals(Optional.of(""))){
+        if (!userFilterOptions.getVehicleBrand().equals(Optional.of(""))
+                && userFilterOptions.getVehicleBrand().isPresent()) {
             isPresentSth = true;
             users.addAll(userRepository.findByVehiclesBrand(userFilterOptions.getVehicleBrand()));
         }
 
+        if (userFilterOptions.getVisitFirstDate().isPresent() && userFilterOptions.getVisitLastDate().isPresent()) {
+            users.addAll(userRepository.
+                    findByVisitsInRange(userFilterOptions.getVisitFirstDate(), userFilterOptions.getVisitLastDate()));
+        }
 
-        if (users.isEmpty() && !isPresentSth){
+
+        if (users.isEmpty() && !isPresentSth) {
             users.addAll(userRepository.findAllUsers());
         }
 
-        if (userFilterOptions.getSortBy().isPresent()){
+        if (userFilterOptions.getSortBy().isPresent()) {
             users.addAll(userRepository.findAllUsers());
         }
 
@@ -235,8 +246,12 @@ public class UserServiceImpl implements UserService {
                             .sorted(Comparator.comparing(User::getUsername).reversed())
                             .collect(Collectors.toCollection(LinkedHashSet::new));
                 }
-            } else if (userFilterOptions.getSortBy().equals(Optional.of("Visit Date"))) {
-                //TODO
+            } else if (userFilterOptions.getSortBy().equals(Optional.of("VisitDate"))) {
+                if (userFilterOptions.getSortOrder().equals(Optional.of("Asc"))) {
+                    users = userRepository.sortByVisitDate();
+                } else {
+                    users = userRepository.sortByVisitDateDesc();
+                }
             }
         }
 
@@ -281,7 +296,6 @@ public class UserServiceImpl implements UserService {
 
         return modelMapper.map(user, UserViewModel.class);
     }
-
 
 
     @Override
@@ -346,11 +360,11 @@ public class UserServiceImpl implements UserService {
             exists.add("username");
         }
         assert userViewModel != null;
-        if (userViewModel.getPhoneNumber() == null){
+        if (userViewModel.getPhoneNumber() == null) {
             if (userRepository.findByPhoneNumber(phoneNumber).isPresent()) {
                 exists.add("phoneNumber");
             }
-        } else if (userRepository.findByPhoneNumber(phoneNumber).isPresent()  && !userViewModel.getPhoneNumber().equals(phoneNumber)) {
+        } else if (userRepository.findByPhoneNumber(phoneNumber).isPresent() && !userViewModel.getPhoneNumber().equals(phoneNumber)) {
             exists.add("phoneNumber");
         }
         if (userRepository.findByEmail(email).isPresent() && !userViewModel.getEmail().equals(email)) {
