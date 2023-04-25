@@ -54,9 +54,9 @@
                 <a class="nav-link"
                    th:href="@{/customer/{username}/customer-visits(username=${loggedInUser.username})}">My visits</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{'/resetPassword/' + ${loggedInUser.getUsername()}}">Password Reset</a>
-            </li>
+<!--            <li class="nav-item">-->
+<!--                <a class="nav-link" th:href="@{'/resetPassword/' + ${loggedInUser.getUsername()}}">Password Reset</a>-->
+<!--            </li> -->
             <li>
                 <form th:action="@{/logout}" method="POST">
                     <button type="submit" class="btn btn-info nav-link">
@@ -96,10 +96,10 @@
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/visits}">Visits</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{'/employee/resetPassword/' + ${loggedInUser.getUsername()}}">Password
-                    Reset</a>
-            </li>
+<!--            <li class="nav-item">-->
+<!--                <a class="nav-link" th:href="@{'/employee/resetPassword/' + ${loggedInUser.getUsername()}}">Password-->
+<!--                    Reset</a>-->
+<!--            </li>-->
             <li class="nav-item">
                 <a class="nav-link" href="#">Generate a Report</a>
             </li>
