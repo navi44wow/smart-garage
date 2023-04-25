@@ -1,84 +1,50 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>New car Model brand</title>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css}">
+    <title>New model</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css}">
 </head>
 <body>
 <div class="container mt-5">
-  <h1>New car Model brand</h1>
-  <form method="post" th:action="@{__${#httpServletRequest.requestURI}__}"
-        th:object="${carModelDto}">
-    <div class="form-group">
-      <label for="carModel">car Model:</label>
-      <select class="form-control" name="carModelId" id="carModel" required>
-        <option value="">-- Select Brand --</option>
-        <option th:each="carModel : ${carModelDto}" th:value="${carModelDto.getModelName()}"
-                th:text="${carModelDto.getModelName()}"></option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label for="brand">brand:</label>
-      <div class="service-list">
-        <select class="form-control" name="brand" id="brand" required>
-          <option value="">-- Select brand --</option>
-          <option th:each="brand : ${carModelDto}" th:value="${carModelDto.getBrand().getBrandName()}"
-                  th:text="${carModelDto.getBrand().getBrandName()}"></option>
-        </select>
-        <a href="#" class="add-service">Add brand</a>
-      </div>
-    </div>
-    <button type="submit" class="btn btn-primary">Save</button>
-    <a th:href="@{/models/}" class="btn btn-secondary">Cancel</a>
-  </form>
+    <h1>New model</h1>
+    <form method="post" th:action="@{__${#httpServletRequest.requestURI}__}"
+          th:object="${carModelDto}">
+        <div class="form-group">
+            <label for="brand">Brand:</label>
+            <select class="form-control" name="brandId" id="brand" required>
+                <option value="">-- Select brand --</option>
+                <option th:each="brand : ${brands}" th:value="${brand.brandName}"
+                        th:text="${brand.brandName}"></option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a th:href="@{/carModels/}" class="btn btn-secondary">Cancel</a>
+    </form>
 </div>
 <!-- Bootstrap JS -->
 <script th:src="@{https://code.jquery.com/jquery-3.2.1.slim.min.js}"></script>
 <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js}"></script>
-<script th:src="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/js/bootstrap.min.js"
+        integrity="sha512-kK3qKNRs0tJyVfTgTtTqvTQKXhB0ZM7VBsGz8MBjK1sGB0AdJtVgTtHymT2lhG+JAGYfzfVieTHwkcH8djrh1w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-  const vehicles = [[${#httpServletRequest.getAttribute('vehicles')}]];
+    const brands = [[${#httpServletRequest.getAttribute('brands')}]];
 
-  function populateVehicles() {
-    console.log("populateVehicles() called");
-    const selectedOwner = document.getElementById("owner").value;
-    const vehicleDropdown = document.getElementById("vehicle");
-    const filteredVehicles = vehicles.filter(vehicle => vehicle.user.id.toString() === selectedOwner);
-    console.log("filteredVehicles: " + filteredVehicles);
+    function populateBrands() {
+        console.log("populateBrands() called");
+        //  const selectedOwner = document.getElementById("owner").value;
+        const brandDropdown = document.getElementById("brand");
+        //const filteredVehicles = vehicles.filter(vehicle => vehicle.user.id.toString() === selectedOwner);
+        // console.log("filteredVehicles: " + filteredVehicles);
 
-    // Clear existing options
-    while (vehicleDropdown.options.length > 1) {
-      vehicleDropdown.remove();
+        // Clear existing options
+        while (brandDropdown.options.length > 1) {
+            brandDropdown.remove();
+        }
     }
-
-    // Filter vehicles by owner
-    for (let i = 0; i < filteredVehicles.length; i++) {
-      const option = document.createElement("option");
-      option.text = filteredVehicles[i].carModel;
-      option.value = filteredVehicles[i].id;
-      vehicleDropdown.add(option);
-    }
-  }
-</script>
-<script>
-  $(document).ready(function () {
-    let serviceCount = 1;
-
-    $('.add-service').click(function (e) {
-      e.preventDefault();
-      serviceCount++;
-
-      const newService = $('<select class="form-control" name="service' + serviceCount + '" id="service' + serviceCount + '" required>\
-                              <option value="">-- Select Service --</option>\
-                            </select>');
-      const options = $('.service-list select:first-of-type option').clone();
-      newService.append(options);
-      $('.service-list').append(newService);
-    });
-  });
 </script>
 </body>
 </html>

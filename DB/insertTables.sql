@@ -123,3 +123,12 @@ VALUES
     (24, 4, 'Tire rotation', 35, 11),
     (25, 5, 'Air conditioning recharge', 75, 11),
     (26, 6, 'Transmission flush', 150, 11);
+
+
+
+INSERT INTO `car-garage`.users (user_id, email, first_name, last_name, password, phone_number, username)
+VALUES ('888cf3b3-d25a-40f7-bd47-8b3a9861ee2f', 'iliyan02@abv.bg', 'Iliyan', 'Trenchev', '12345', '0894053050',
+        'iliyan02'),
+       ('998cf3b3-d25a-40f7-bd47-8b3a9861ee2f', 'ivan@abv.bg', 'Ivan', 'Belev', 'Ivan12345@', '0888665102', 'ivan91'),
+       ('118cf3b3-d25a-40f7-bd47-8b3a9861ee2f', 'arcturus1986@abv.bg', 'Aleks', 'Torhov', '98765', '0894053055',
+        'admin');
