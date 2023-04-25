@@ -21,40 +21,11 @@ VALUES ('Change filter', 25),
        ('Wheel alignment', 80);
 
 
-INSERT INTO vehicles (VIN, creation_year, license_plate, model_id, user_id)
-VALUES ('dlaksjdlak9089809', 2000, 'CB1000AA', 17, '888cf3b3-d25a-40f7-bd47-8b3a9861ee2f'),
-       ('dlaksjdlak9089810', 2001, 'CB1001AA', 18, '888cf3b3-d25a-40f7-bd47-8b3a9861ee2f'),
-       ('dlaksjdlak9089811', 2002, 'CB1002AA', 19, '888cf3b3-d25a-40f7-bd47-8b3a9861ee2f'),
-       ('dlaksjdlak9089812', 2003, 'CB1003AA', 20, '888cf3b3-d25a-40f7-bd47-8b3a9861ee2f'),
-       ('dlaksjdlak9089813', 2004, 'CB1004AA', 21, '888cf3b3-d25a-40f7-bd47-8b3a9861ee2f'),
-       ('dlaksjdlak9089814', 2005, 'CB1005AA', 22, '888cf3b3-d25a-40f7-bd47-8b3a9861ee2f'),
-       ('dlaksjdlak9089815', 2006, 'CB1006AA', 23, '888cf3b3-d25a-40f7-bd47-8b3a9861ee2f'),
-       ('dlaksjdlak9089816', 2007, 'CB1007AA', 24, '888cf3b3-d25a-40f7-bd47-8b3a9861ee2f'),
-       ('dlaksjdlak9089817', 2008, 'CB1008AA', 25, '888cf3b3-d25a-40f7-bd47-8b3a9861ee2f'),
-       ('dlaksjdlak9089818', 2009, 'CB1009AA', 26, '888cf3b3-d25a-40f7-bd47-8b3a9861ee2f'),
-       ('dlaksjdlak9089819', 2010, 'CB1010AA', 27, '888cf3b3-d25a-40f7-bd47-8b3a9861ee2f'),
-       ('dlaksjdlak9089820', 2011, 'CB1011AA', 28, '888cf3b3-d25a-40f7-bd47-8b3a9861ee2f');
-
-
-
 INSERT INTO visit_status(id, name)
 VALUES (1, 'Not started'),
        (2, 'In progress'),
        (3, 'Completed');
 
-INSERT INTO visits(vehicle_id, start_date, due_date, status_id, is_archived)
-VALUES
-    (1, '2023-04-09', '2023-04-10', 1, false),
-       (2, '2023-04-09', '2023-04-10', 2, false),
-       (3, '2023-04-08', '2023-04-10', 3, true),
-       (4, '2023-04-08', '2023-04-10', 1, false),
-       (5, '2023-04-07', '2023-04-10', 2, false),
-       (6, '2023-04-08', '2023-04-10', 3, true),
-       (7, '2023-04-10', '2023-04-11', 1, false),
-       (8, '2023-04-09', '2023-04-11', 2, false),
-       (9, '2023-04-08', '2023-04-11', 3, true),
-       (10, '2023-04-04', '2023-04-11', 1, false),
-       (11, '2023-04-05', '2023-04-11', 2, false);
 
 
 INSERT INTO `car-garage`.brands (brand_id, brand_name)
@@ -62,8 +33,6 @@ VALUES (1, 'audi'),
        (2, 'vw'),
        (3, 'bmw'),
        (4, 'mercedes-benz');
-
-
 
 INSERT INTO `car-garage`.car_models (model_id, model_name, brand_id)
 VALUES (17, 'q3', 1),
@@ -94,6 +63,31 @@ VALUES (17, 'q3', 1),
        (44, 'a5', 1),
        (45, 'a6', 1),
        (46, 'a8', 1);
+#        (3, '2023-04-08', '2023-04-10', 3, true),
+#        (4, '2023-04-08', '2023-04-10', 1, false),
+#        (5, '2023-04-07', '2023-04-10', 2, false),
+#        (6, '2023-04-08', '2023-04-10', 3, true),
+#        (7, '2023-04-10', '2023-04-11', 1, false),
+#        (8, '2023-04-09', '2023-04-11', 2, false),
+#        (9, '2023-04-08', '2023-04-11', 3, true),
+#        (10, '2023-04-04', '2023-04-11', 1, false),
+#        (11, '2023-04-05', '2023-04-11', 2, false);
+
+
+INSERT INTO vehicles (VIN, creation_year, license_plate, model_id, user_id)
+VALUES
+    ('dlaksjdlak9089809', 2000, 'CB1000AA', 17, 'c3215d2d-c76e-41fa-be32-cd507c911bb4'),
+    ('dlaksjdlak9089808', 2000, 'CB1000AA', 17, 'd75f5d1c-d550-4fba-be88-4b04ae4a7adc'),
+    ('dlaksjdlak9089888', 2000, 'CB1000AA', 17, 'dac76825-dd6b-43fc-a33a-0ce33c574a97');
+
+
+
+INSERT INTO visits(vehicle_id, start_date, due_date, status_id, is_archived)
+VALUES
+#     (1, '2023-04-09', '2023-04-10', 1, false),
+       (1, '2023-04-09', '2023-04-10', 2, false),
+       (2, '2023-04-01', '2023-04-10', 2, false),
+       (2, '2023-03-09', '2023-04-10', 2, false);
 
 INSERT INTO list_of_services(id, service_id, service_name, service_price, visit_id)
 VALUES
@@ -106,20 +100,20 @@ VALUES
     (7, 7, 'Battery replacement', 125, 3),
     (8, 8, 'Windshield wiper replacement', 20, 3),
     (9, 9, 'Coolant flush', 80, 3),
-    (10, 10, 'Fuel injector cleaning', 100, 4),
-    (11, 11, 'Engine tune-up', 200, 4),
-    (12, 12, 'Headlight restoration', 50, 5),
-    (13, 13, 'Alternator replacement', 175, 5),
-    (14, 14, 'Ignition system repair', 150, 6),
-    (15, 15, 'Suspension repair', 250, 6),
-    (16, 16, 'Power steering fluid flush', 100, 7),
-    (17, 17, 'Serpentine belt replacement', 75, 7),
-    (18, 18, 'Spark plug replacement', 75, 8),
-    (19, 19, 'Exhaust system repair', 200, 8),
-    (20, 20, 'Wheel alignment', 80, 9),
-    (21, 1, 'Change filter', 25, 10),
-    (22, 2, 'Oil change', 50, 10),
-    (23, 3, 'Brake pad replacement', 100, 11),
-    (24, 4, 'Tire rotation', 35, 11),
-    (25, 5, 'Air conditioning recharge', 75, 11),
-    (26, 6, 'Transmission flush', 150, 11);
+    (10, 10, 'Fuel injector cleaning', 100, 1),
+    (11, 11, 'Engine tune-up', 200, 1),
+    (12, 12, 'Headlight restoration', 50, 1),
+    (13, 13, 'Alternator replacement', 175, 2),
+    (14, 14, 'Ignition system repair', 150, 3),
+    (15, 15, 'Suspension repair', 250, 2),
+    (16, 16, 'Power steering fluid flush', 100, 2),
+    (17, 17, 'Serpentine belt replacement', 75, 1),
+    (18, 18, 'Spark plug replacement', 75, 2),
+    (19, 19, 'Exhaust system repair', 200, 3),
+    (20, 20, 'Wheel alignment', 80, 3),
+    (21, 1, 'Change filter', 25, 1),
+    (22, 2, 'Oil change', 50, 2),
+    (23, 3, 'Brake pad replacement', 100, 3),
+    (24, 4, 'Tire rotation', 35, 2),
+    (25, 5, 'Air conditioning recharge', 75, 1),
+    (26, 6, 'Transmission flush', 150, 2);

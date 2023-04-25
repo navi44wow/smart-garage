@@ -32,6 +32,16 @@ public class HomeController {
         return "index";
     }
 
+    @GetMapping("/contactUs")
+    public String contact() {
+        return "contact";
+    }
+
+    @GetMapping("/whyUs")
+    public String whyUs() {
+        return "why";
+    }
+
 //    @PostMapping("/forgot_password")
 //    public String forgotPassword(@RequestParam String email){
 //

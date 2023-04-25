@@ -9,7 +9,6 @@ import com.example.smartgarage.models.dtos.GenerateUserDto;
 import com.example.smartgarage.models.dtos.UserFilterDto;
 import com.example.smartgarage.models.filter_options.UserFilterOptions;
 import com.example.smartgarage.models.service_models.UserServiceModel;
-import com.example.smartgarage.repositories.CarModelRepository;
 import com.example.smartgarage.services.contracts.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -24,10 +23,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.validation.Valid;
 import java.security.Principal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -37,13 +33,11 @@ public class UserMVCController {
 
     private final UserService userService;
     private final ModelMapper modelMapper;
-    private final CarModelRepository carModelRepository;
 
-    public UserMVCController(UserService userService, ModelMapper modelMapper,
-                             CarModelRepository carModelRepository) {
+    public UserMVCController(UserService userService, ModelMapper modelMapper) {
         this.userService = userService;
         this.modelMapper = modelMapper;
-        this.carModelRepository = carModelRepository;
+
     }
 
     @ModelAttribute("userDto")
@@ -171,12 +165,12 @@ public class UserMVCController {
         LocalDate visitFirstDate = null;
         LocalDate visitLastDate = null;
         if (userFilterDto.getVisitFirstDate() != null) {
-            String visitFirstDateStr = String.valueOf(userFilterDto.getVisitFirstDate());
+            String visitFirstDateStr = userFilterDto.getVisitFirstDate();
             visitFirstDate = !visitFirstDateStr.isEmpty() ? LocalDate.parse(visitFirstDateStr) : null;
         }
 
         if (userFilterDto.getVisitLastDate() != null) {
-            String visitLastDateStr = String.valueOf(userFilterDto.getVisitLastDate());
+            String visitLastDateStr = userFilterDto.getVisitLastDate();
             visitLastDate = !visitLastDateStr.isEmpty() ? LocalDate.parse(visitLastDateStr) : null;
         }
 
@@ -214,7 +208,8 @@ public class UserMVCController {
     }
 
     @GetMapping("/detailsPage/{username}")
-    public String detailsPage(@PathVariable String username){
+    public String detailsPage(@PathVariable String username, Model model){
+        model.addAttribute("username");
         return "user-details-page";
     }
 

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head">
+</head>
+
+<body>
+
+<!-- header section strats -->
+<header class="header_section">
+    <div class="container-fluid">
+        <nav th:replace="fragments/navbar :: navbar-not-logged-in">
+        </nav>
+    </div>
+</header>
+<!-- end header section -->
+
+<!-- why section -->
+
+<section class="why_section layout_padding">
+    <div class="container">
+        <div class="heading_container heading_center">
+            <h2>
+                Why Choose Us
+            </h2>
+        </div>
+    </div>
+    <div class="container ">
+        <div class="row">
+            <div class="col-md-6 col-lg-4 mx-auto">
+                <div class="box ">
+                    <div class="img-box">
+                        <img src="/static/images/w1.png" th:src="@{/images/w1.png}" alt="">
+                    </div>
+                    <div class="detail-box">
+                        <h4>
+                            Best Workers
+                        </h4>
+                        <p>
+                            We are a group of professionals auto mechanics with years of experience behind our backs
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 mx-auto ">
+                <div class="box ">
+                    <div class="img-box">
+                        <img src="/static/images/w2.png" th:src="@{/images/w2.png}" alt="">
+                    </div>
+                    <div class="detail-box">
+                        <h4>
+                            Best Materials
+                        </h4>
+                        <p>
+                            Оur materials are proven premium quality with high durability and manufactured by high class manufacturers
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 mx-auto">
+                <div class="box ">
+                    <div class="img-box">
+                        <img src="/static/images/w3.png" th:src="@{/images/w3.png}" alt="">
+                    </div>
+                    <div class="detail-box">
+                        <h4>
+                            Best Service
+                        </h4>
+                        <p>
+                            We take care of your car so that we do not miss even the smallest details. We receive feedbacks from our customers, you can see some of them in Testimonials on the home page
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- end why section -->
+
+<!-- info section -->
+
+<section th:replace="fragments/info-section :: info-section"></section>
+<!-- end info section -->
+
+<!-- footer section -->
+<footer th:replace="fragments/footer :: footer-not-logged-in">
+</footer>
+<!-- footer section -->
+
+<!-- jQery -->
+
+<script src="/static/js/jquery-3.4.1.min.js" th:src="@{/js/jquery-3.4.1.min.js}"></script>
+<!-- bootstrap js -->
+<script src="/static/js/bootstrap.js" th:src="@{/js/bootstrap.js}"></script>
+<!-- custom js -->
+<script src="/static/js/custom.js" th:src="@{/js/custom.js}"></script>
+
+
+</body>
+
+</html>

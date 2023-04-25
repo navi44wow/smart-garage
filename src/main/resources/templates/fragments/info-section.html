@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<section class="info_section " th:fragment="info-section">
+  <div class="info_container ">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-9">
+          <div class="info_contact ">
+            <div class="row">
+              <div class="col-md-3">
+                <a class="link-box" href="https://www.google.com/maps">
+                  <i class="fa fa-map-marker" aria-hidden="true"></i>
+                  <span>
+                      Location
+                    </span>
+                </a>
+              </div>
+              <div class="col-md-5">
+                <a href="#" class="link-box">
+                  <i class="fa fa-phone" aria-hidden="true"></i>
+                  <span>
+                      Call +359 89 405 3050
+                    </span>
+                </a>
+              </div>
+              <div class="col-md-4">
+                <a href="#" class="link-box">
+                  <i class="fa fa-envelope" aria-hidden="true"></i>
+                  <span>
+                      motora@gmail.com
+                    </span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="info_logo">
+        <a class="navbar-brand" href="index.html" th:href="@{'/'}">
+            <span>
+              Motora
+            </span>
+        </a>
+      </div>
+      <div class="social-box">
+        <a href="https://www.facebook.com/">
+          <i class="fa fa-facebook" aria-hidden="true"></i>
+        </a>
+        <a href="https://twitter.com/">
+          <i class="fa fa-twitter" aria-hidden="true"></i>
+        </a>
+        <a href="https://www.instagram.com/">
+          <i class="fa fa-instagram" aria-hidden="true"></i>
+        </a>
+        <a href="https://www.youtube.com/">
+          <i class="fa fa-youtube" aria-hidden="true"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
