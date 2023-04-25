@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Welcome to My Website</title>
+  <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet"/>
+</head>
+<body>
+<header>
+  <nav>
+    <ul>
+      <li><a href="#about">About Us</a></li>
+      <li><a href="#services">Our Services</a></li>
+      <li><a href="#testimonials">Testimonials</a></li>
+      <li><a href="#contact">Contact Us</a></li>
+    </ul>
+
+    <ul>
+      <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" th:href="@{/users/login}">Login</a></li>
+    </ul>
+  </nav>
+  <div class="hero-image" id="hero-image">
+    <div class="hero-text">
+      <h1>Welcome to Our Website</h1>
+      <p>We provide top-notch services for all your car's care needs.</p>
+      <a href="#services" class="cta-button" onclick="hideHero()">Get Started</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section id="about">
+    <div class="container">
+      <h2>About Us</h2>
+      <p>We are a team of experienced auto mechanics, dedicated to providing exceptional services to our clients.</p>
+      <p>With years of experience in the industry, we have the knowledge and expertise to handle any car service challenge. Whether you need regular maintenance, oil change or repairing transmission, we've got you covered.</p>
+      <a href="#contact" class="cta-button">Contact Us</a>
+    </div>
+  </section>
+
+  <section id="services">
+    <div class="container">
+      <h2>Our Services</h2>
+      <ul th:each="service : ${allServices}">
+        <li th:text="${service.getName()+': '+service.price +' BGN.'}">Lawn mowing and edging</li>
+      </ul>
+      <a href="#contact" class="cta-button">Get a Quote</a>
+    </div>
+  </section>
+
+  <section id="testimonials">
+    <div class="container">
+      <h2>Testimonials</h2>
+      <div class="testimonial">
+        <p>"I've been using their services for over a year now and I couldn't be happier."</p>
+        <p>- John D.</p>
+      </div>
+      <div class="testimonial">
+        <p>"Their team is professional, reliable, and always goes above and beyond to make sure I'm satisfied with their work."</p>
+        <p>- Sarah W.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="container">
+      <h2>Contact Us</h2>
+      <form action="submit-form.php" method="POST">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" required></textarea>
+
+        <button type="submit" class="cta-button">Send</button>
+      </form>
+    </div>
+  </section>
+
+</main>
+<script>
+  function hideHero() {
+    console.log("hideHero() function called");
+    document.getElementById("hero-image").style.display = "none";
+  }
+</script>
+
+
+</body>
+</html>
