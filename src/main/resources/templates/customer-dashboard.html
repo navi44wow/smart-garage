@@ -1,40 +1,18 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-    <title>Customer Visits</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css}">
+<head th:replace="fragments/head :: head">
 </head>
+
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Customer Dashboard</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/customer/{username}/customer-visits(username=${loggedInUser.username})}">My visits</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{'/resetPassword/' + ${loggedInUser.getUsername()}}">Password Reset</a>
-            </li>
-        </ul>
-        <ul class="navbar-nav" sec:authorize="isAuthenticated()">
-            <form th:action="@{/logout}" method="POST">
-                <button type="submit" class="btn btn-info nav-link">
-                    Logout
-                </button>
-            </form>
-        </ul>
-    </div>
+<nav th:replace="fragments/navbar :: navbar-customer-logged-in">
 </nav>
 <!-- Bootstrap JS -->
 <script th:src="@{https://code.jquery.com/jquery-3.2.1.slim.min.js}"></script>
 <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js}"></script>
 <script th:src="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js}"></script>
+
+<footer  th:replace="fragments/footer :: footer-not-logged-in">
+</footer>
 </body>
 </html>

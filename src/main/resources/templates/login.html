@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Login Page</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css}">
+
+<head th:replace="fragments/head :: head">
 </head>
+
 <body>
+<header class="header_section">
+    <div class="container-fluid">
+        <nav th:replace="fragments/navbar :: navbar-not-logged-in">
+        </nav>
+    </div>
+</header>
+
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-6 mx-auto">
@@ -32,10 +36,12 @@
         </div>
     </div>
 </div>
-
 <!-- Bootstrap JS -->
 <script th:src="@{https://code.jquery.com/jquery-3.2.1.slim.min.js}"></script>
 <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js}"></script>
 <script th:src="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js}"></script>
 </body>
+<footer  th:replace="fragments/footer :: footer-not-logged-in">
+</footer>
+
 </html>

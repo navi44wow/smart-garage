@@ -792,7 +792,9 @@ a:focus {
 /* end info section */
 /* footer section*/
 .footer_section {
-    position: relative;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
     background-color: #292725;
     text-align: center;
 }

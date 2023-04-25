@@ -1,36 +1,115 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <nav class="navbar navbar-expand-lg custom_nav-container" th:fragment="navbar-not-logged-in">
-  <a class="navbar-brand" href="index.html" th:href="@{'/'}">
-    <span>Motora</span>
-  </a>
+    <a class="navbar-brand" href="index.html" th:href="@{'/'}">
+        <span>Motora</span>
+    </a>
 
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class=""> </span>
-  </button>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class=""> </span>
+    </button>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav  ml-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="index.html" th:href="@{'/'}">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="about.html" th:href="@{'/about'}"> About</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="service.html" th:href="@{'/home/services'}">Services</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="why.html" th:href="@{'/whyUs'}">Why Us</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="contact.html" th:href="@{'/contactUs'}">Contact Us</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="contact.html" th:href="@{'/users/login'}">Login</a>
-      </li>
-    </ul>
-  </div>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav  ml-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="index.html" th:href="@{'/'}">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="about.html" th:href="@{'/about'}"> About</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="service.html" th:href="@{'/home/services'}">Services</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="why.html" th:href="@{'/whyUs'}">Why Us</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="contact.html" th:href="@{'/contactUs'}">Contact Us</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="contact.html" th:href="@{'/users/login'}">Login</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+
+<nav class="navbar navbar-expand-lg custom_nav-container" th:fragment="navbar-customer-logged-in">
+    <a class="navbar-brand" href="index.html" th:href="@{'/'}">
+        <span>Motora</span>
+    </a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class=""> </span>
+    </button>
+
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent1">
+        <ul class="navbar-nav  ml-auto">
+            <li class="nav-item active">
+                <a class="nav-link"
+                   th:href="@{/customer/{username}/customer-visits(username=${loggedInUser.username})}">My visits</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{'/resetPassword/' + ${loggedInUser.getUsername()}}">Password Reset</a>
+            </li>
+            <li>
+                <form th:action="@{/logout}" method="POST">
+                    <button type="submit" class="btn btn-info nav-link">
+                        Logout
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<nav class="navbar navbar-expand-lg custom_nav-container" th:fragment="navbar-employee-logged-in">
+    <a class="navbar-brand" href="index.html" th:href="@{'/'}">
+        <span>Motora</span>
+    </a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class=""> </span>
+    </button>
+
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent2">
+        <ul class="navbar-nav  ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/vehicles}">Vehicles</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/carModels}">Brands/Models</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/users/all}">Users</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/services}">Services</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/visits}">Visits</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{'/employee/resetPassword/' + ${loggedInUser.getUsername()}}">Password
+                    Reset</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Generate a Report</a>
+            </li>
+            <form th:action="@{/logout}" method="POST">
+                <button type="submit" class="btn btn-info nav-link">
+                    Logout
+                </button>
+            </form>
+        </ul>
+    </div>
 </nav>
 
 </html>

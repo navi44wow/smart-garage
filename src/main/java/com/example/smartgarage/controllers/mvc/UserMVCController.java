@@ -9,8 +9,11 @@ import com.example.smartgarage.models.dtos.GenerateUserDto;
 import com.example.smartgarage.models.dtos.UserFilterDto;
 import com.example.smartgarage.models.filter_options.UserFilterOptions;
 import com.example.smartgarage.models.service_models.UserServiceModel;
+import com.example.smartgarage.models.view_models.UserViewModel;
 import com.example.smartgarage.services.contracts.UserService;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,6 +51,11 @@ public class UserMVCController {
     @ModelAttribute("generateUserDto")
     public GenerateUserDto createGenerateUserModel() {
         return new GenerateUserDto();
+    }
+
+    @ModelAttribute("loggedInUser")
+    public UserViewModel loggedInUser() {
+        return getLoggedInUser();
     }
 
     @GetMapping("/login")
@@ -259,5 +267,14 @@ public class UserMVCController {
             sb.append(AlphaNumericString.charAt(index));
         }
         return sb.toString();
+    }
+
+
+    private UserViewModel getLoggedInUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null;
+        }
+        return userService.getByUsername(authentication.getName());
     }
 }
