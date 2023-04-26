@@ -6,12 +6,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
-    @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 
-    public class BrandFilterDto {
-        private String brandName;
+public class BrandFilterDto {
+    private String brandName;
+    private String sortBy;
+    private String sortOrder;
 
-    }
+}
 
