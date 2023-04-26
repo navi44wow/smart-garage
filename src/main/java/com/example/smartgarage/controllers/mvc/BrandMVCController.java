@@ -86,7 +86,7 @@ public class BrandMVCController {
         Brand brand = modelMapper.map(brandDto, Brand.class);
         brand.setBrandName(brandDto.getBrandName());
         brandService.save(brand);
-        return "brands";
+        return "redirect:/brands";
     }
 
     @GetMapping("/brand-update/{id}")
