@@ -13,16 +13,19 @@
     <div class="row mb-3">
         <div class="col-md-6">
             <a th:href="@{/employee/}" class="btn btn-primary mb-2">Dashboard</a>
+            <a th:href="@{/visits/visit-invoice/{id}/pdf/generate(id=${visit.get().getId()})}"
+               class="btn btn-primary mb-2">Generate PDF</a>
             <a th:href="@{/visits/}" class="btn btn-primary mb-2">Back</a>
-        </div>
-        <div class="col-md-6 text-md-right">
-            <label for="currency" class="mr-2">Currency:</label>
-            <select class="form-control d-inline-block w-auto" name="currency" id="currency">
-                <option value="BGN" selected>BGN</option>
+        <div class="form-group">
+            <label for="currency">Currency:</label>
+            <select class="form-control" name="currency" id="currency" onchange="calculateTotal()">
+                <option value="BGN">None</option>
                 <option value="USD">USD</option>
                 <option value="EUR">EUR</option>
+                <option value="GBP">GBP</option>
+                <option value="CHF">CHF</option>
             </select>
-            <a th:href="@{/visits/visit-invoice/{id}/pdf/generate(id=${visit.get().getId()})}" class="btn btn-primary mb-2">Generate PDF</a>
+        </div>
         </div>
     </div>
     <table class="table table-striped">
@@ -45,8 +48,10 @@
             <th>Services:</th>
             <td>
                 <ul>
-                    <li th:each="service : ${visit.get().getServices()}" class="price" th:data-bgn-price="${service.getServicePrice()}"
-                        th:text="${service.getServiceName() +': '+service.getServicePrice()}+' BGN.'"></li>
+                    <li th:each="service : ${visit.get().getServices()}" class="price"
+                        th:data-bgn-price="${service.getServicePrice()}"
+                        th:text="${service.getServiceName() +': '+service.getServicePrice()}+' BGN.'">
+                    </li>
                 </ul>
             </td>
         </tr>
@@ -63,9 +68,13 @@
             <td th:text="${visit.get().status}"></td>
         </tr>
         <tr>
-            <th>Total amount:</th>
-            <td th:text="${visit.get().displaySum() + ' BGN.'}" id="total-amount-bgn" th:data-bgn-total="${visit.get().displaySum()}"></td>
+            <th>Total amount (BGN):</th>
+            <td th:text="${visit.get().displaySum() + ' BGN.'}" id="total"></td>
         </tr>
+        <div id="totalAmountSection" style="display: none;">
+            <th>Total amount in foreign currency:</th>
+            <td id="totalInCurrency"></td>
+        </div>
         </tbody>
     </table>
 </div>
@@ -77,22 +86,25 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
-    const convertCurrency = async (currency) => {
-        const response = await axios.get(`https://api.exchangeratesapi.io/latest?base=BGN&symbols=${currency}`);
-        const rate = response.data.rates[currency];
-        return rate;
-    };
+    function calculateTotal() {
+        const currency = document.getElementById("currency").value;
+        const bgnAmount = parseFloat(document.getElementById("total").innerText);
 
-    const currencySelect = document.getElementById('currency');
-    const totalAmountElement = document.getElementById('total-amount-bgn');
+        if (currency === "BGN") {
+            document.getElementById("totalInCurrency").innerText = "";
+            return;
+        }
 
-    currencySelect.addEventListener('change', async (event) => {
-        const selectedCurrency = event.target.value;
-        const rate = await convertCurrency(selectedCurrency);
-        const bgnTotal = totalAmountElement.dataset.bgnTotal;
-        const newAmount = (parseFloat(bgnTotal) * rate).toFixed(2);
-        totalAmountElement.textContent = `${newAmount} ${selectedCurrency}`;
-    });
+        axios.get("https://openexchangerates.org/api/latest.json?app_id=7e7c5da3150845e798197c12bcbc6484&symbols=BGN," + currency)
+            .then(function(response) {
+                const rate = response.data.rates[currency] / response.data.rates.BGN;
+                const convertedAmount = (bgnAmount * rate).toFixed(2);
+                document.getElementById("totalInCurrency").innerText = convertedAmount + " " + currency;
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+    }
 </script>
 </body>
 </html>

@@ -13,7 +13,7 @@
   <a th:href="@{/customer/}" class="btn btn-primary mb-2">Dashboard</a>
 
   <form method="get" th:action="@{/customer/{username}/customer-visits(username=${loggedInUser.username})}" th:object="${filterOptions}" class="form-inline mb-3">
-    <label for="search-by-vehicle">Search by:</label>
+    <label for="search-by-vehicle">Search by Vehicle:</label>
     <select id="search-by-vehicle" name="brand" class="form-control mx-2">
       <option value="">All</option>
       <option th:each="vehicle : ${vehicles}" th:value="${vehicle.getCarModelId().getBrand().getBrandName()}"
