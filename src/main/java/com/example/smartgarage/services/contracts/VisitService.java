@@ -1,5 +1,7 @@
 package com.example.smartgarage.services.contracts;
 
+import com.example.smartgarage.models.dtos.VisitFilterDto;
+import com.example.smartgarage.models.entities.CarService;
 import com.example.smartgarage.models.entities.Visit;
 import com.example.smartgarage.models.entities.VisitStatus;
 import org.springframework.stereotype.Service;
@@ -22,5 +24,9 @@ public interface VisitService {
 
     List<VisitStatus> findAllStatuses();
 
-    List<Visit> getAllSorted(String sortBy, String sortOrder);
+    List<Visit> getAllVisits(Boolean onlyArchived, Boolean includeArchived, VisitFilterDto visitFilterDto);
+
+    Visit toggleArchivedStatus(Visit visit);
+
+    List<CarService> getFilteredCarServices(Visit visit);
 }

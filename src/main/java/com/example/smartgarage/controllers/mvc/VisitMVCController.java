@@ -3,10 +3,8 @@ package com.example.smartgarage.controllers.mvc;
 import com.example.smartgarage.models.dtos.VisitDto;
 import com.example.smartgarage.models.dtos.VisitFilterDto;
 import com.example.smartgarage.models.entities.*;
-import com.example.smartgarage.services.contracts.CarServizService;
-import com.example.smartgarage.services.contracts.PDFGeneratorService;
-import com.example.smartgarage.services.contracts.VehicleService;
-import com.example.smartgarage.services.contracts.VisitService;
+import com.example.smartgarage.models.view_models.UserViewModel;
+import com.example.smartgarage.services.contracts.*;
 import com.example.smartgarage.services.mappers.VisitMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,21 +20,22 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/visits")
 public class VisitMVCController {
-
     private final VisitService visitService;
     private final VehicleService vehicleService;
     private final CarServizService carServizService;
+    private final UserService userService;
     private final VisitMapper visitMapper;
     private final PDFGeneratorService pdfGeneratorService;
 
     public VisitMVCController(VisitService visitService,
                               VehicleService vehicleService,
                               CarServizService carServizService,
-                              VisitMapper visitMapper,
+                              UserService userService, VisitMapper visitMapper,
                               PDFGeneratorService pdfGeneratorService) {
         this.visitService = visitService;
         this.vehicleService = vehicleService;
         this.carServizService = carServizService;
+        this.userService = userService;
         this.visitMapper = visitMapper;
         this.pdfGeneratorService = pdfGeneratorService;
     }
@@ -46,31 +45,21 @@ public class VisitMVCController {
                                @RequestParam(required = false) Boolean onlyArchived,
                                @RequestParam(required = false) Boolean includeArchived,
                                @ModelAttribute("filterOptions") VisitFilterDto visitFilterDto) {
-        List<Visit> allVisits = visitService.getAllSorted(visitFilterDto.getSortBy(), visitFilterDto.getSortOrder());
-
-        if (onlyArchived != null && onlyArchived) {
-            allVisits = allVisits.stream().filter(Visit::isArchived).collect(Collectors.toList());
-        } else if (includeArchived != null && includeArchived) {
-            allVisits = new ArrayList<>(allVisits);
-        } else {
-            allVisits = allVisits.stream()
-                    .filter(visit -> !visit.isArchived())
-                    .sorted(Comparator.comparing(Visit::getId).reversed())
-                    .collect(Collectors.toList());
-        }
+        List<Visit> allVisits = visitService.getAllVisits(onlyArchived, includeArchived, visitFilterDto);
+        List<Vehicle> vehicles = vehicleService.getAll();
+        List<UserViewModel> users = userService.getAll();
         model.addAttribute("all", allVisits);
+        model.addAttribute("vehicles", vehicles);
+        model.addAttribute("users", users);
         model.addAttribute("filterOptions", visitFilterDto);
+
         return "visits";
     }
 
     @PostMapping()
     public String archiveVisit(@RequestParam("visitId") Long visitId) {
         Visit visit = visitService.getVisitById(visitId);
-        if (visit.isArchived()) {
-            visit.setArchived(false);
-        } else {
-            visit.setArchived(true);
-        }
+        visit = visitService.toggleArchivedStatus(visit);
         visitService.save(visit);
         return "redirect:/visits";
     }
@@ -99,22 +88,7 @@ public class VisitMVCController {
     @GetMapping("/visit-view/{id}")
     public String addServices(@PathVariable("id") Long id, Model model) {
         Optional<Visit> visit = visitService.getById(id);
-        Set<ListOfServices> listOfServices = visit.get().getServices();
-        List<CarService> services = carServizService.getAll();
-        List<CarService> filteredServices = new ArrayList<>();
-        for (CarService service : services) {
-            boolean isPresent = false;
-            for (ListOfServices listOfService : listOfServices) {
-                if (listOfService.getServiceID().equals(service.getId())) {
-                    isPresent = true;
-                    break;
-                }
-            }
-            if (!isPresent) {
-                filteredServices.add(service);
-            }
-        }
-
+        List<CarService> filteredServices = visitService.getFilteredCarServices(visit.get());
         List<VisitStatus> statusList = visitService.findAllStatuses();
         model.addAttribute("statusList", statusList);
         model.addAttribute("services", filteredServices);
@@ -192,7 +166,7 @@ public class VisitMVCController {
         response.setHeader(headerKey, headerValue);
 
         Optional<Visit> optionalVisit = visitService.getById(visitId);
-        if(optionalVisit.isPresent()) {
+        if (optionalVisit.isPresent()) {
             Visit visit = optionalVisit.get();
             this.pdfGeneratorService.export(response, visit);
         }
