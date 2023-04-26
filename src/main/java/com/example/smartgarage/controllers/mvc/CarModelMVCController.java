@@ -1,9 +1,10 @@
 package com.example.smartgarage.controllers.mvc;
 
+import com.example.smartgarage.exceptions.EntityNotFoundException;
 import com.example.smartgarage.models.dtos.*;
 
-import com.example.smartgarage.models.entities.Brand;
-import com.example.smartgarage.models.entities.CarModel;
+import com.example.smartgarage.models.entities.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import com.example.smartgarage.helpers.AuthenticationHelper;
 import com.example.smartgarage.services.VehicleMapper;
@@ -14,12 +15,12 @@ import com.example.smartgarage.services.contracts.VehicleService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.List;
+import java.util.*;
 
 @Controller
 @RequestMapping("/carModels")
@@ -46,35 +47,60 @@ public class CarModelMVCController {
 
 
     @GetMapping()
-    public String getAllBrandsModels(Model model) {
+    public String getAllCarModels(Model model) {
         List<CarModel> carModelList = carModelService.getAll();
         model.addAttribute("models", carModelList);
-
         CarModelFilterDto carModelFilterDto = new CarModelFilterDto();
-        model.addAttribute("modelFilterDto", carModelFilterDto);
-
+        model.addAttribute("carModelFilterDto", carModelFilterDto);
         return "models";
     }
 
-
     @GetMapping("/new")
-    public String createNewModel(Model model, HttpSession httpSession) {
-
+    public String createNewModel(Model model) {
+        List<Brand> brands = brandService.getAll();
         model.addAttribute("carModelDto", new CarModelDto());
-        model.addAttribute("brandDto", new BrandDto());
+        model.addAttribute("brands", brands);
         return "model-new";
     }
 
+
     @PostMapping("/new")
-    public String createNewModel(@Valid @ModelAttribute("carModelDto") CarModelDto carModelDto, BrandDto brandDto, BindingResult bindingResult, HttpSession httpSession) {
-
+    public String createNewModel(@Valid @ModelAttribute("carModelDto") CarModelDto carModelDto) {
         CarModel carModel = modelMapper.map(carModelDto, CarModel.class);
-        Brand brand = new Brand();
-        brand.setBrandName(brandDto.getBrandName());
-
+        Brand brand = brandService.getById(carModelDto.getBrand().getId());
         carModel.setBrand(brand);
-        brandService.save(brand);
         carModelService.save(carModel);
-        return "models";
+        return "redirect:/carModels";
+    }
+
+    @GetMapping("/carModel-update/{id}")
+    public String updateModel(@PathVariable("id") Long id, Model model) {
+        List<Brand> brands = brandService.getAll();
+        model.addAttribute("brands", brands);
+        CarModel carModel = carModelService.getById(id);
+        model.addAttribute("carModel", carModel);
+        model.addAttribute("id", id);
+        return "model-update";
+    }
+
+
+    @PostMapping("/carModel-update/{id}")
+    public String updateModel(@PathVariable("id") Long id, @Valid @ModelAttribute("carModelDto") CarModelDto carModelDto) {
+        CarModel carModel = carModelService.getById(id);
+        Brand brand = brandService.getById(carModelDto.getBrand().getId());
+        carModel.setBrand(brand);
+        carModelService.update(carModel, carModelDto);
+        return "redirect:/carModels";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+        try {
+            carModelService.deleteCarModelById(id);
+            redirectAttributes.addFlashAttribute("message", "Car model successfully deleted.");
+            return "redirect:/carModels";
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
     }
 }
