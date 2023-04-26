@@ -11,12 +11,37 @@
 <div class="container mt-5">
   <h2>My Visits</h2>
   <a th:href="@{/customer/}" class="btn btn-primary mb-2">Dashboard</a>
+
+  <form method="get" th:action="@{/customer/{username}/customer-visits(username=${loggedInUser.username})}" th:object="${filterOptions}" class="form-inline mb-3">
+    <label for="search-by-vehicle">Search by:</label>
+    <select id="search-by-vehicle" name="brand" class="form-control mx-2">
+      <option value="">All</option>
+      <option th:each="vehicle : ${vehicles}" th:value="${vehicle.getCarModelId().getBrand().getBrandName()}"
+              th:text="${vehicle.user.username+' - '+vehicle.getCarModelId().getBrand().getBrandName()+' - '+vehicle.licensePlate}"></option>
+    </select>
+    <select id="search-by-status" name="status" class="form-control mx-2">
+      <option value="">All</option>
+      <option value="Not started" th:selected="${filterOptions.status == 'Not started'}">Not started</option>
+      <option value="In progress" th:selected="${filterOptions.status == 'In progress'}">In progress</option>
+      <option value="Completed" th:selected="${filterOptions.status == 'Completed'}">Completed</option>
+    </select>
+    <div class="form-group">
+      <label for="search-by-startDate" style="display: block;">Start Date:</label>
+      <input type="date" id="search-by-startDate" name="startDate" class="form-control mx-2" th:value="${filterOptions.startDate}">
+    </div>
+
+    <div class="form-group">
+      <label for="search-by-endDate" style="display: block;">End Date:</label>
+      <input type="date" id="search-by-endDate" name="endDate" class="form-control mx-2" th:value="${filterOptions.endDate}">
+    </div>
+
+    <button type="submit" class="btn btn-primary mx-2">Search</button>
+  </form>
   <table class="table table-striped">
     <thead>
     <tr>
       <th>ID</th>
       <th>Vehicle</th>
-      <th>User</th>
       <th>Start Date</th>
       <th>Due Date</th>
       <th>Status</th>
@@ -25,20 +50,18 @@
     </thead>
     <tbody>
     <tr th:each="visit : ${visits}">
-      <td><a th:text="${visit.id}">Visit ID</a></td>
-      <td th:text="${visit.vehicle.getCarModelId().getBrand().getBrandName()+' | '
-                +visit.vehicle.getCarModelId().getModelName()+' | '
-                +visit.vehicle.getLicensePlate()}"></td>
-      <td th:text="${visit.getVehicle().getUser().username}"></td>
+      <td th:text="${visit.id}"></td>
+      <td th:text="${visit.vehicle.getCarModelId().getBrand().getBrandName() + ' | ' + visit.vehicle.getCarModelId().getModelName() + ' | ' + visit.vehicle.getLicensePlate()}"></td>
       <td th:text="${visit.startDate}"></td>
       <td th:text="${visit.dueDate}"></td>
       <td th:text="${visit.status}"></td>
       <td>
         <a class="h6 m-3" th:href="@{/customer/{username}/customer-visits/customer-visit-view/{id}
-      (id=${visit.getId()},
-      username=${loggedInUser.username})}">Invoice</a>
+    (id=${visit.getId()}, username=${loggedInUser.username})}"
+           th:text="${visit.getStatus().getName() == 'Completed' ? 'Invoice' : 'Details'}">Invoice</a>
       </td>
     </tbody>
+
   </table>
 </div>
 <!-- Bootstrap JS -->

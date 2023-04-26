@@ -11,7 +11,9 @@
 <div class="container mt-5">
   <h1>Visit Details</h1>
   <a th:href="@{/customer/}" class="btn btn-primary mb-2">Dashboard</a>
-  <a th:href="@{/customer/visit-invoice/{id}/pdf/generate(id=${visit.get().getId()})}" class="btn btn-primary mb-2">Generate PDF</a>
+  <a th:href="@{/customer/visit-invoice/{id}/pdf/generate(id=${visit.get().getId()})}"
+     class="btn btn-primary mb-2"
+     th:if="${visit.get().getStatus().getName() == 'Completed'}">Generate PDF</a>
   <a th:href="@{/customer/{username}/customer-visits(username=${loggedInUser.username})}" class="btn btn-primary mb-2">Back</a>
   <table class="table table-striped">
     <tbody>

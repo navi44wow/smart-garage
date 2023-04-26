@@ -4,6 +4,8 @@ import com.example.smartgarage.exceptions.EntityNotFoundException;
 import com.example.smartgarage.exceptions.NotValidPasswordException;
 import com.example.smartgarage.exceptions.PasswordConfirmationException;
 import com.example.smartgarage.models.dtos.GenerateUserDto;
+import com.example.smartgarage.models.dtos.VisitFilterDto;
+import com.example.smartgarage.models.entities.Vehicle;
 import com.example.smartgarage.models.entities.Visit;
 import com.example.smartgarage.models.service_models.UserServiceModel;
 import com.example.smartgarage.models.view_models.UserViewModel;
@@ -27,6 +29,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -106,12 +109,35 @@ public class CustomerController {
     }
 
     @GetMapping("/customer/{username}/customer-visits")
-    public String getAll(@PathVariable("username") String username, Model model) {
+    public String getAll(@PathVariable("username") String username, Model model,
+                         @ModelAttribute("filterOptions") VisitFilterDto visitFilterDto) {
         UserViewModel user = userService.getByUsername(username);
-        List<Visit> visits = visitService.getAll().stream()
-                .filter(visit -> visit.getVehicle().getUser().getUsername().equals(user.getUsername()))
+        List<Visit> allVisits = visitService.getAll().stream()
+                .filter(visit -> visit.getVehicle().getUser().getUsername().equals(username))
                 .collect(Collectors.toList());
-        model.addAttribute("visits", visits);
+
+        if (visitFilterDto.getBrand() != null && !visitFilterDto.getBrand().isEmpty()) {
+            allVisits = filterVisitsByBrand(allVisits, visitFilterDto.getBrand());
+        }
+        if (visitFilterDto.getStatus() != null && !visitFilterDto.getStatus().isEmpty()) {
+            allVisits = filterVisitsByStatus(allVisits, visitFilterDto.getStatus());
+        }
+        if (visitFilterDto.getStartDate() != null && visitFilterDto.getEndDate() != null) {
+            LocalDate startDate = visitFilterDto.getStartDate();
+            LocalDate endDate = visitFilterDto.getEndDate();
+            allVisits = filterVisitsByDateRange(allVisits, startDate, endDate);
+        } else if (visitFilterDto.getStartDate() != null) {
+            LocalDate startDate = visitFilterDto.getStartDate();
+            allVisits = filterVisitsByStartDate(allVisits, startDate);
+        }
+
+        List<Vehicle> vehicles = allVisits.stream()
+                .map(Visit::getVehicle)
+                .distinct()
+                .collect(Collectors.toList());
+
+        model.addAttribute("visits", allVisits);
+        model.addAttribute("vehicles", vehicles);
         model.addAttribute("username", user.getUsername());
         return "customer-visits";
     }
@@ -150,6 +176,27 @@ public class CustomerController {
             return null;
         }
         return userService.getByUsername(authentication.getName());
+    }
+
+    private List<Visit> filterVisitsByBrand(List<Visit> visits, String brand) {
+        return visits.stream()
+                .filter(visit -> visit.getVehicle().getCarModelId().getBrand().getBrandName().equalsIgnoreCase(brand))
+                .collect(Collectors.toList());
+    }
+
+    private List<Visit> filterVisitsByStatus(List<Visit> visits, String status) {
+        return visits.stream()
+                .filter(visit -> visit.getStatus().getName().equalsIgnoreCase(status))
+                .collect(Collectors.toList());
+    }
+
+    private List<Visit> filterVisitsByDateRange(List<Visit> visits, LocalDate startDate, LocalDate endDate) {
+        return visits.stream().filter(visit -> visit.getStartDate().isAfter(startDate.minusDays(1)) &&
+                visit.getStartDate().isBefore(endDate.plusDays(1))).collect(Collectors.toList());
+    }
+
+    private List<Visit> filterVisitsByStartDate(List<Visit> visits, LocalDate startDate) {
+        return visits.stream().filter(visit -> visit.getStartDate().isEqual(startDate)).collect(Collectors.toList());
     }
 
 }
