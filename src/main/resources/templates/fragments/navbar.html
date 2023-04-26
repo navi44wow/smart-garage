@@ -38,7 +38,7 @@
 
 
 <nav class="navbar navbar-expand-lg custom_nav-container" th:fragment="navbar-customer-logged-in">
-    <a class="navbar-brand" href="index.html" th:href="@{'/'}">
+    <a class="navbar-brand" href="index.html" th:href="@{'/customer'}">
         <span>Motora</span>
     </a>
 
@@ -54,9 +54,9 @@
                 <a class="nav-link"
                    th:href="@{/customer/{username}/customer-visits(username=${loggedInUser.username})}">My visits</a>
             </li>
-<!--            <li class="nav-item">-->
-<!--                <a class="nav-link" th:href="@{'/resetPassword/' + ${loggedInUser.getUsername()}}">Password Reset</a>-->
-<!--            </li> -->
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{'/detailsPage/' + ${loggedInUser.getUsername()}}">Profile</a>
+            </li>
             <li>
                 <form th:action="@{/logout}" method="POST">
                     <button type="submit" class="btn btn-info nav-link">
@@ -69,7 +69,7 @@
 </nav>
 
 <nav class="navbar navbar-expand-lg custom_nav-container" th:fragment="navbar-employee-logged-in">
-    <a class="navbar-brand" href="index.html" th:href="@{'/'}">
+    <a class="navbar-brand" href="index.html" th:href="@{'/employee'}">
         <span>Motora</span>
     </a>
 

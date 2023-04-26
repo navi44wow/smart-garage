@@ -28,4 +28,9 @@ public class UserRoleServiceImpl implements UserRoleService {
                     forgotPasswordCustomer));
         }
     }
+
+    @Override
+    public UserRoleEntity getByUserRole(UserRole employee) {
+        return userRoleRepository.findByRole(employee).orElseThrow();
+    }
 }

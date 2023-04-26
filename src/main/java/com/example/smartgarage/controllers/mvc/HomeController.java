@@ -42,6 +42,11 @@ public class HomeController {
         return "why";
     }
 
+    @GetMapping("/home/services")
+    public String service(Model model){
+        model.addAttribute("allServices", carServizService.getAll());
+        return "service";
+    }
 //    @PostMapping("/forgot_password")
 //    public String forgotPassword(@RequestParam String email){
 //

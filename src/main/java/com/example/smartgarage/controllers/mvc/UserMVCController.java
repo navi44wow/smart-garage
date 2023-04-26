@@ -207,11 +207,6 @@ public class UserMVCController {
 
     }
 
-    @GetMapping("/detailsPage/{username}")
-    public String detailsPage(@PathVariable String username, Model model){
-        model.addAttribute("username");
-        return "user-details-page";
-    }
 
     static void sendEmail(UserServiceModel userServiceModel) {
         String recipientUsername = userServiceModel.getUsername();

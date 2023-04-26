@@ -4,12 +4,19 @@ import com.example.smartgarage.exceptions.EntityNotFoundException;
 import com.example.smartgarage.exceptions.NotValidPasswordException;
 import com.example.smartgarage.exceptions.PasswordConfirmationException;
 import com.example.smartgarage.models.dtos.GenerateUserDto;
+import com.example.smartgarage.models.dtos.UserDto;
+import com.example.smartgarage.models.entities.User;
+import com.example.smartgarage.models.entities.UserRoleEntity;
 import com.example.smartgarage.models.dtos.VisitFilterDto;
 import com.example.smartgarage.models.entities.Vehicle;
 import com.example.smartgarage.models.entities.Visit;
+import com.example.smartgarage.models.enums.UserRole;
 import com.example.smartgarage.models.service_models.UserServiceModel;
 import com.example.smartgarage.models.view_models.UserViewModel;
+import com.example.smartgarage.repositories.UserRepository;
+import com.example.smartgarage.repositories.VehicleRepository;
 import com.example.smartgarage.services.contracts.PDFGeneratorService;
+import com.example.smartgarage.services.contracts.UserRoleService;
 import com.example.smartgarage.services.contracts.UserService;
 import com.example.smartgarage.services.contracts.VisitService;
 import org.modelmapper.ModelMapper;
@@ -44,15 +51,24 @@ public class CustomerController {
 
     private final PDFGeneratorService pdfGeneratorService;
 
-    public CustomerController(UserService userService, ModelMapper modelMapper, VisitService visitService, PDFGeneratorService pdfGeneratorService) {
+    private final UserRoleService userRoleService;
+    private final UserRepository userRepository;
+    private final VehicleRepository vehicleRepository;
+
+    public CustomerController(UserService userService, ModelMapper modelMapper, VisitService visitService, PDFGeneratorService pdfGeneratorService,
+                              UserRoleService userRoleService, UserRepository userRepository,
+                              VehicleRepository vehicleRepository) {
         this.userService = userService;
         this.modelMapper = modelMapper;
         this.visitService = visitService;
         this.pdfGeneratorService = pdfGeneratorService;
+        this.userRoleService = userRoleService;
+        this.userRepository = userRepository;
+        this.vehicleRepository = vehicleRepository;
     }
 
     @ModelAttribute("loggedInUser")
-    public UserViewModel loggedInUser() {
+    public User loggedInUser() {
         return getLoggedInUser();
     }
 
@@ -71,8 +87,70 @@ public class CustomerController {
         return "customer-dashboard";
     }
 
+    @GetMapping("/detailsPage/{username}")
+    public String detailsPage(@PathVariable String username, Model model){
+        model.addAttribute("forbidden", false);
+        UserRoleEntity userRole = userRoleService.getByUserRole(UserRole.EMPLOYEE);
+        UserViewModel userViewModel = userService.getByUsername(username);
+        model.addAttribute("isEmployee", false);
+        if (loggedInUser().getRoles().contains(userRole)){
+            model.addAttribute("isEmployee", true);
+        }
+        if (!loggedInUser().getUsername().equals(username) && userViewModel.getRoles().contains(userRole)){
+            model.addAttribute("forbidden", true);
+        }
+        if (!loggedInUser().getUsername().equals(username) && !loggedInUser().getRoles().contains(userRole)){
+            return "error";
+        }
+        model.addAttribute("cars", vehicleRepository.findAllByUserId(userViewModel.getId()));
+        model.addAttribute("user", userService.getByUsername(username));
+        model.addAttribute("username", username);
+        return "user-details-page";
+    }
+
+
+    @GetMapping("/userInfoUpdate/{username}")
+    public String updateUserInfo(@PathVariable String username, Model model){
+        model.addAttribute("forbidden", false);
+        if (!loggedInUser().getUsername().equals(username)){
+            model.addAttribute("forbidden", true);
+        }
+        UserRoleEntity userRole = userRoleService.getByUserRole(UserRole.EMPLOYEE);
+        UserViewModel user = userService.getByUsername(username);
+        if (!loggedInUser().getUsername().equals(username) && !loggedInUser().getRoles().contains(userRole)
+                || user.getRoles().contains(userRole) && !user.getUsername().equals(loggedInUser().getUsername())){
+            return "error";
+        }
+        model.addAttribute("user", userService.getByUsername(username));
+        model.addAttribute("username", username);
+        model.addAttribute("userUpdate", new UserDto());
+        return "update-user-details-info-page";
+    }
+
+
+    private String checkAuthorization(String username) {
+        UserRoleEntity userRole = userRoleService.getByUserRole(UserRole.EMPLOYEE);
+        if (!loggedInUser().getUsername().equals(username) && !loggedInUser().getRoles().contains(userRole)){
+            return "error";
+        }
+        return null;
+    }
+
+    @PostMapping("/userInfoUpdate/{username}")
+    public String updateUserInfo(@PathVariable String username, @ModelAttribute("userUpdate") UserDto userDto, Model model){
+
+
+        return "user-details-page";
+    }
+
     @GetMapping("/resetPassword/{username}")
     public String getResetPassword(@PathVariable String username, Model model) {
+        if (!loggedInUser().getUsername().equals(username)){
+            model.addAttribute("forbidden", true);
+        }
+        if (!loggedInUser().getUsername().equals(username)){
+            return "error";
+        }
         model.addAttribute("username", username);
         return "reset_password";
     }
@@ -170,12 +248,12 @@ public class CustomerController {
     }
 
 
-    private UserViewModel getLoggedInUser() {
+    private User getLoggedInUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {
             return null;
         }
-        return userService.getByUsername(authentication.getName());
+        return modelMapper.map(userService.getByUsername(authentication.getName()), User.class);
     }
 
     private List<Visit> filterVisitsByBrand(List<Visit> visits, String brand) {

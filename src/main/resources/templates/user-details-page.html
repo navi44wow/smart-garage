@@ -1,12 +1,83 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Login Page</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css}">
+<head th:replace="fragments/head :: head">
 </head>
 <body>
+<nav th:replace="fragments/navbar :: navbar-customer-logged-in"></nav>
+<section class="section about-section gray-bg" id="about">
+    <div class="container" th:object="${loggedInUser}">
+        <div class="row align-items-center flex-row-reverse">
+            <div class="col-lg-6">
+                <div class="about-text go-to">
+                    <a th:style="'margin-left: 585px'" href="/user-details/{username}/update"
+                       th:if="${!forbidden}" th:href="'/userInfoUpdate/' + ${user.getUsername()}" title="Edit" class="avatar-edit">
+                        <i class="fa fa-fw fa-2x fa-pencil"></i>
+                    </a>
+                    <h3 class="dark-color" th:text="'Username: /' + ${user.getUsername()}">About Me</h3>
+                    <div class="row about-list">
+                        <div class="col-md-6">
+                            <div class="media">
+                                <label>Name:&nbsp;</label>
+                                <p th:text="${user.getFirstName()} + ' ' + ${user.getLastName()}"></p>
+                            </div>
+
+                            <div class="media">
+                                <label>Email:&nbsp;</label>
+                                <p th:text="${user.getEmail()}"></p>
+                            </div>
+                            <div class="media">
+                                <label>Phone:&nbsp;</label>
+                                <p th:text="${user.getPhoneNumber()}">820-885-3321</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+<!--                            <div class="media" th:each="car : ${cars}">-->
+<!--                                <label>Vehicles:&nbsp;</label>-->
+<!--                                <p th:text="'Brand: ' + ${car.getCarModelId().getBrand().getBrandName()} + '; Model: ' + ${car.getCarModelId().getModelName()}"></p>-->
+<!--                            </div>-->
+                            <h>Vehicles</h>
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>Brand</th>
+                                    <th>Model</th>
+                                    <th>License Plate</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="car : ${cars}">
+                                    <td th:text="${car.getCarModelId().getBrand().getBrandName()}">Brand</td>
+                                    <td th:text="${car.getCarModelId().getModelName()}">Email</td>
+                                    <td th:text="${car.getLicensePlate()}">License Plate</td>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="about-avatar">
+                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" title="" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="counter">
+            <div class="row">
+                <div class="col-6 col-lg-3">
+                </div>
+                <div class="col-6 col-lg-3">
+                </div>
+                <div class="col-6 col-lg-3">
+                </div>
+                <div  class="col-6 col-lg-3">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer th:replace="fragments/footer :: footer-not-logged-in">
+</footer>
 </body>
 </html>

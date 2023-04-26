@@ -58,10 +58,7 @@
                   Anything embarrassing hidden in the middle of text. All the Lorem Ipsuanything
                   embarrassing hidden in the middle of text. All the Lorem Ipsumm </p>
                 <div class="btn-box">
-                  <a href="" class="btn-1">
-                    Read More
-                  </a>
-                  <a href="" class="btn-2">
+                  <a href="" th:href="@{'/contactUs'}" class="btn-2">
                     Contact Us
                   </a>
                 </div>
@@ -88,10 +85,7 @@
                   Anything embarrassing hidden in the middle of text. All the Lorem Ipsuanything
                   embarrassing hidden in the middle of text. All the Lorem Ipsumm </p>
                 <div class="btn-box">
-                  <a href="" class="btn-1">
-                    Read More
-                  </a>
-                  <a href="" class="btn-2">
+                  <a href="" th:href="@{'/contactUs'}" class="btn-2">
                     Contact Us
                   </a>
                 </div>
@@ -127,96 +121,27 @@
   </div>
   <div class="container ">
     <div class="row">
-      <div class="col-md-6 col-lg-4">
-        <div class="box ">
+      <div class="col-md-6 col-lg-4" th:each="service, status : ${allServices}">
+        <div class="box">
           <div class="img-box">
-            <img src="/static/images/s1.png" th:src="@{/images/s1.png}" alt="">
+            <img th:if="${status.index % 4 == 0}" th:src="@{/images/s1.png}" alt="">
+            <img th:if="${status.index % 4 == 1}" th:src="@{/images/s2.png}" alt="">
+            <img th:if="${status.index % 4 == 2}" th:src="@{/images/s3.png}" alt="">
+            <img th:unless="${status.index % 4 == 0 || status.index % 4 == 1 || status.index % 4 == 2}" th:src="@{/images/s4.png}" alt="">
           </div>
           <div class="detail-box">
-            <h4>
+            <h4 th:text="${service.getName()}">
               General Maintenance
             </h4>
-            <p>
-              Generators on the Internet tend to repeat predefined chunks as necessary
+            <p th:text="${service.getPrice()} + 'BGN'">
+
             </p>
           </div>
         </div>
       </div>
-      <div class="col-md-6 col-lg-4">
-        <div class="box ">
-          <div class="img-box">
-            <img src="/static/images/s2.png" th:src="@{/images/s2.png}" alt="">
-          </div>
-          <div class="detail-box">
-            <h4>
-              Repair and Replacement
-            </h4>
-            <p>
-              Generators on the Internet tend to repeat predefined chunks as necessary
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 col-lg-4 ">
-        <div class="box ">
-          <div class="img-box">
-            <img src="/static/images/s3.png" th:src="@{/images/s3.png}" alt="">
-          </div>
-          <div class="detail-box">
-            <h4>
-              Tire Repair and Replacement
-            </h4>
-            <p>
-              Generators on the Internet tend to repeat predefined chunks as necessary
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 col-lg-4">
-        <div class="box ">
-          <div class="img-box">
-            <img src="/static/images/s4.png" th:src="@{/images/s4.png}" alt="">
-          </div>
-          <div class="detail-box">
-            <h4>
-              Wheel Alignment
-            </h4>
-            <p>
-              Generators on the Internet tend to repeat predefined chunks as necessary
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 col-lg-4">
-        <div class="box ">
-          <div class="img-box">
-            <img src="/static/images/s5.png" th:src="@{/images/s5.png}" alt="">
-          </div>
-          <div class="detail-box">
-            <h4>
-              Fuel System Repair
-            </h4>
-            <p>
-              Generators on the Internet tend to repeat predefined chunks as necessary
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 col-lg-4">
-        <div class="box ">
-          <div class="img-box">
-            <img src="/static/images/s6.png" th:src="@{/images/s6.png}" alt="">
-          </div>
-          <div class="detail-box">
-            <h4>
-              Tune Up
-            </h4>
-            <p>
-              Generators on the Internet tend to repeat predefined chunks as necessary
-            </p>
-          </div>
-        </div>
-      </div>
+
+    </div>
+
     </div>
   </div>
 </section>
