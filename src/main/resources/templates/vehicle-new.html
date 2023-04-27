@@ -11,30 +11,34 @@
 <div class="container mt-5">
     <h2>New Vehicle</h2>
     <form method="post" th:action="@{/vehicles/new}" th:object="${vehicleDto}">
-        <div class="form-group">
-            <label for="carModel">Model of Vehicle</label>
-            <input type="text" class="form-control" id="carModel" name="vehicleDto.carModel.getByCarModelName" required>
+        <label for="carModelId"></label>
+        <select class="form-control" name="carModelId" id="carModelId" required>
+            <option value="">-- Select brand and model --</option>
+            <option th:each="carModel : ${carModels}" th:value="${carModel.modelId}"
+
+                    th:text="${carModel.getBrand().getBrandName() +' | ' + carModel.getModelName()}"></option>
+        </select>
+        <label for="userId"></label>
+        <select class="form-control" name="userId" id="userId" required>
+            <option value="">-- Select owner --</option>
+            <option th:each="user : ${users}" th:value="${user.getId()}"
+                    th:text="${user.getUsername()}"></option>
+        </select>
+        <div>
+            <br>
         </div>
-        <div class="form-group">
-            <label for="brand">Brand</label>
-            <input type="text" class="form-control" id="brand" name="vehicleDto.carModel.getBrand.getBrandName" required>
-        </div>
-        <div class="form-group">
-            <label for="user">Owner</label>
-            <input type="text" class="form-control" id="user" name="vehicleDto.getUser.getByUsername" required>
-        </div>
-        <div class="form-group">
-            <label for="licensePlate">License plate</label>
-            <input type="text" class="form-control" id="licensePlate" name="vehicleDto.getLicensePlate" required>
-        </div>
-        <div class="form-group">
-            <label for="creationYear">Creation year</label>
-            <input type="text" class="form-control" id="creationYear" name="vehicleDto.getCreationYear" required>
-        </div>
-        <div class="form-group">
-            <label for="VIN">VIN</label>
-            <input type="text" class="form-control" id="VIN" name="vehicleDto.getVIN" required>
-        </div>
+
+        <label for="licensePlate">license plate</label>
+        <input type="text" class="form-control" id="licensePlate" required
+               th:field="*{licensePlate}">
+
+        <label for="creationYear">Creation year</label>
+        <input type="text" class="form-control" id="creationYear" required
+               th:field="*{creationYear}">
+
+        <label for="VIN">VIN</label>
+        <input type="text" class="form-control" id="VIN" required
+               th:field="*{VIN}">
 
         <button type="submit" class="btn btn-primary mr-2">Add</button>
         <a th:href="@{/vehicles}" class="btn btn-secondary">Cancel</a>
@@ -45,5 +49,9 @@
 <script th:src="@{https://code.jquery.com/jquery-3.2.1.slim.min.js}"></script>
 <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js}"></script>
 <script th:src="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js}"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/js/bootstrap.min.js"
+        integrity="sha512-kK3qKNRs0tJyVfTgTtTqvTQKXhB0ZM7VBsGz8MBjK1sGB0AdJtVgTtHymT2lhG+JAGYfzfVieTHwkcH8djrh1w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </body>
 </html>

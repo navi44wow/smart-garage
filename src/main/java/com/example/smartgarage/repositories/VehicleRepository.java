@@ -17,6 +17,7 @@ import java.util.UUID;
 @Repository
 public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
 
+    void deleteVehicleByVehicleId(Long vehicleId);
     List<Vehicle> searchAllByCreationYear(Long creationYear);
 
     List<Vehicle> findByLicensePlate(String licensePlate);
@@ -33,9 +34,5 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
 
     @Query("SELECT v FROM Vehicle v WHERE v.user = :user")
     List<Vehicle> getByOwner(@Param("user") UserViewModel user);
-
-//    List<Vehicle> findAllByModelId_BrandIgnoreCase(Brand brand);
-//
-//    List<Vehicle> findAllByModelId_IgnoreCase(Model model);
 
 }

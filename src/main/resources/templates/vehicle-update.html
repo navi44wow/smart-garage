@@ -1,10 +1,67 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <title>New Vehicle</title>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css}">
 </head>
 <body>
+<div class="container mt-5">
+    <h2>Update Vehicle</h2>
+    <a th:href="@{/vehicles}" class="btn btn-outline-primary">Back to vehicles</a>
+
+    <form method="post" th:action="@{/vehicles/vehicle-update/{vehicleId}(vehicleId=${vehicle.vehicleId})}"
+          th:object="${vehicle}">
+
+        <div class="mb-3">
+            <label for="carModelId"></label>
+            <select class="form-control" name="carModelId" id="carModelId" required>
+                <option value="">-- Select brand and model --</option>
+                <option th:each="carModel : ${carModels}" th:value="${carModel.modelId}"
+
+                        th:text="${carModel.getBrand().getBrandName() +' | ' + carModel.getModelName()}"></option>
+            </select>
+
+            <label for="userId"></label>
+            <select class="form-control" name="userId" id="userId" required>
+                <option value="">-- Select owner --</option>
+                <option th:each="user : ${users}" th:value="${user.getId()}"
+                        th:text="${user.getUsername()}"></option>
+            </select>
+
+            <div>
+                <br>
+            </div>
+
+            <label for="licensePlate">license plate</label>
+            <input type="text" class="form-control" id="licensePlate" required
+                   th:field="*{licensePlate}">
+
+            <label for="creationYear">Creation year</label>
+            <input type="text" class="form-control" id="creationYear" required
+                   th:field="*{creationYear}">
+
+            <label for="VIN">VIN</label>
+            <input type="text" class="form-control" id="VIN" required
+                   th:field="*{VIN}">
+
+            <button type="submit" class="btn btn-primary mr-2">Add</button>
+            <a th:href="@{/vehicles}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<!-- Bootstrap JS -->
+<script th:src="@{https://code.jquery.com/jquery-3.2.1.slim.min.js}"></script>
+<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js}"></script>
+<script th:src="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js}"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/js/bootstrap.min.js"
+        integrity="sha512-kK3qKNRs0tJyVfTgTtTqvTQKXhB0ZM7VBsGz8MBjK1sGB0AdJtVgTtHymT2lhG+JAGYfzfVieTHwkcH8djrh1w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 
 </body>
 </html>

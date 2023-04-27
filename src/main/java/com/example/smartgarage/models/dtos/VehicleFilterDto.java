@@ -19,7 +19,7 @@ public class VehicleFilterDto {
     private String brand;
     private String model;
     private User user;
-    private int creationYear;
+    private Long creationYear;
     private String sortBy;
     private String sortOrder;
 }

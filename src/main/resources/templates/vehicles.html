@@ -13,14 +13,13 @@
     <a th:href="@{/employee/}" class="btn btn-primary mb-2">Dashboard</a>
     <a th:href="@{/vehicles/new}" class="btn btn-primary mb-2">New Vehicle</a>
 
-<!--    //тук едитни името на филтердто при нужда; -->
-    <form method="post" th:action="@{/vehicles/}" th:object="${filterDTO}" class="form-inline mb-3">
+    <form method="post" th:action="@{/vehicles/}" th:object="${vehicleFilterDto}" class="form-inline mb-3">
         <label for="sortBy">Sort By:</label>
         <select id="sortBy" name="sortBy" class="form-control mx-2">
-            <option value="user">Owner</option>
-            <option value="carModel">carModel</option>
-            <option value="brand">brand</option>
-            <option value="brand">creation year</option>
+<!--            <option value="user">Owner</option>-->
+<!--            <option value="carModel">carModel</option>-->
+<!--            <option value="brand">brand</option>-->
+            <option value="creationYear">creation year</option>
         </select>
         <label for="sortOrder">Sort Order:</label>
         <select id="sortOrder" name="sortOrder" class="form-control mx-2">
@@ -29,20 +28,21 @@
         </select>
         <button type="submit" class="btn btn-primary mx-2">Sort</button>
     </form>
-    <form method="post" th:action="@{/vehicles/}" th:object="${filterDTO}" class="form-inline mb-3">
 
-        <label for="user">Owner:</label>
-        <input type="text" id="user" name="user" class="form-control mx-2">
+    <form method="post" th:action="@{/vehicles/}" th:object="${vehicleFilterDto}" class="form-inline mb-3">
+
+<!--        <label for="user">Owner:</label>-->
+<!--        <input type="text" id="user" name="user" class="form-control mx-2">-->
 
 
-        <label for="carModel">Model:</label>
-        <input type="text" id="carModel" name="carModel" class="form-control mx-2">
+<!--        <label for="carModel">Model:</label>-->
+<!--        <input type="text" id="carModel" name="carModel" class="form-control mx-2">-->
 
-        <br>
-        <br/>
+<!--        <br>-->
+<!--        <br/>-->
 
-        <label for="brand">Brand:</label>
-        <input type="text" id="brand" name="brand" class="form-control mx-2">
+<!--        <label for="brand">Brand:</label>-->
+<!--        <input type="text" id="brand" name="brand" class="form-control mx-2">-->
 
 
         <label for="creationYear">CreationYear:</label>
@@ -71,7 +71,7 @@
             <td th:text="${vehicle.getCreationYear()}">Creation year</td>
             <td>
                 <a class="h6 m-3" th:href="@{'/vehicles/vehicle-update/' + ${vehicle.vehicleId}}">Edit</a>
-                <a class="h6" th:href="@{'/vehicles/delete/' + ${vehicle.vehicleId}}">Delete</a>
+                <a class="h6" th:href="@{'/vehicles/delete/' + ${vehicle.getVehicleId()}}">Delete</a>
             </td>
         </tr>
         </tbody>

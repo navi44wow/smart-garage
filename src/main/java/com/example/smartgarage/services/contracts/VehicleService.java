@@ -23,7 +23,11 @@ public interface VehicleService {
 
     Vehicle update(Vehicle vehicle, VehicleDto vehicleDto, CarModel carModel);
 
+    Vehicle updateForMVC(Vehicle vehicle, VehicleDto vehicleDto);
+
     void deleteVehicleById(Long vehicleId);
+
+     void deleteVehicleByVehicleId(Long vehicleId);
 
     List<Vehicle> getAll();
 
@@ -37,7 +41,5 @@ public interface VehicleService {
 
     List<Vehicle> getByUsername(String username);
 
-    <T> List<Vehicle> getAllGenericVehicles(Optional<T> brand,Optional<T> carModel,Optional<T> user,Optional<T> creationYearMin,Optional<T> creationYearMax, Optional<T> sortBy, Optional<T> sortOrder);
-
-
+    <T> List<Vehicle> getAllGenericVehicles(Optional<T> creationYear, Optional<T> sortBy, Optional<T> sortOrder);
 }

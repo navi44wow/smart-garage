@@ -24,9 +24,8 @@ public class VehicleMapper {
 
     public Vehicle createDtoToObject(VehicleDto vehicleDto) {
         User user = new User();
-        user.setId(vehicleDto.getUser());
+        user.setId(vehicleDto.getUserId());
         CarModel carModel = new CarModel();
-        carModel.setModelId(vehicleDto.getModel());
         String VIN = (vehicleDto.getVIN());
         Long creationYear = vehicleDto.getCreationYear();
         String licensePlate = vehicleDto.getLicensePlate();
@@ -37,9 +36,6 @@ public class VehicleMapper {
         vehicle.setVIN(VIN);
         vehicle.setCreationYear(creationYear);
         vehicle.setLicensePlate(licensePlate);
-//        vehicle.setVIN(vehicleDto.getVIN());
-//        vehicle.setCreationYear(vehicleDto.getCreationYear());
-//        vehicle.setLicensePlate(vehicleDto.getLicensePlate());
         return vehicle;
     }
 }

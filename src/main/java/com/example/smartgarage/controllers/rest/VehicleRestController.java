@@ -90,8 +90,8 @@ public class VehicleRestController {
             authenticationHelper.checkAuthorization(headers);
             vehicle = modelMapper.map(vehicleDto, Vehicle.class);
             vehicleService.save(vehicle);
-            vehicle.setUser(userService.getById(vehicleDto.getUser()));
-            vehicle.setCarModelId(carModelService.getById(vehicleDto.getModel()));
+            vehicle.setUser(userService.getById(vehicleDto.getUserId()));
+            vehicle.setCarModelId(carModelService.getById(vehicleDto.getCarModelId()));
             return vehicleService.getById(vehicle.getVehicleId());
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -114,8 +114,8 @@ public class VehicleRestController {
             existingVehicle.setVIN(vehicleDto.getVIN());
             existingVehicle.setCreationYear(vehicleDto.getCreationYear());
             existingVehicle.setLicensePlate(vehicleDto.getLicensePlate());
-            existingVehicle.setUser(userService.getById(vehicleDto.getUser()));
-            existingVehicle.setCarModelId(carModelService.getById(vehicleDto.getModel()));
+            existingVehicle.setUser(userService.getById(vehicleDto.getUserId()));
+            existingVehicle.setCarModelId(carModelService.getById(vehicleDto.getCarModelId()));
             return existingVehicle;
         } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());

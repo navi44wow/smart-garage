@@ -31,7 +31,7 @@ public class VehicleDto {
 
     private Long creationYear;
 
-    private UUID user;
+    private UUID userId;
 
-    private Long model;
+    private Long carModelId;
 }

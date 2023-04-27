@@ -38,9 +38,9 @@ public class CarModelServiceImpl implements CarModelService {
     }
 
     @Override
-    public CarModel getById(Long modelId) {
-        return carModelRepository.findById(modelId).orElseThrow(() ->
-                new EntityNotFoundException("Model with id ", modelId.toString(), " was not found!"));
+    public CarModel getById(Long carModelId) {
+        return carModelRepository.findById(carModelId).orElseThrow(() ->
+                new EntityNotFoundException("Model with id ", carModelId.toString(), " was not found!"));
     }
 
     @Override
@@ -87,33 +87,4 @@ public class CarModelServiceImpl implements CarModelService {
     public Optional<CarModel> findByCarModelName(String carModelName) {
         return carModelRepository.findByModelName(carModelName);
     }
-
-
-    //@Override
-//    public <T> List<Model> getAllGeneric(Optional<T> brandName, Optional<T> model, Optional<T> sortBy, Optional<T> sortOrder) {
-//        List<Model> models;
-//        if (brandName.isPresent() && !brandName.get().toString().isBlank()) {
-//            models = modelRepository.searchAllByBrand_BrandName(brandName.toString());
-//        } else {
-//            models = modelRepository.findAll();
-//        }
-//
-//        if (model.isPresent() && !model.get().toString().isBlank()) {
-//            models = modelRepository.findByModelName(model.toString()));
-//        } else {
-//            models = modelRepository.findAll();
-//        }
-//
-//        if (sortBy.isPresent() && !sortBy.get().toString().isBlank()) {
-//            String sortByValue = sortBy.get().toString();
-//            Sort.Direction sortDirection = Sort.Direction.ASC;
-//            if (sortOrder.isPresent() && sortOrder.get().toString().equalsIgnoreCase("desc")) {
-//                sortDirection = Sort.Direction.DESC;
-//            }
-//            Sort sort = Sort.by(sortDirection, sortByValue);
-//            carServices = carServiceRepository.findAll(sort);
-//        }
-//
-//        return carServices;
-//    }
 }
