@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-  <title>Service Details</title>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css}">
+<head th:replace="fragments/head :: head">
 </head>
+
 <body>
+
+
+<nav th:replace="fragments/navbar :: navbar-employee-logged-in">
+</nav>
 <div class="container mt-5">
   <h2>Service Details</h2>
   <form th:action="@{/services/service-update/{id}(id=${service.id})}" method="post">

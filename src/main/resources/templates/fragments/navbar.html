@@ -100,9 +100,6 @@
 <!--                <a class="nav-link" th:href="@{'/employee/resetPassword/' + ${loggedInUser.getUsername()}}">Password-->
 <!--                    Reset</a>-->
 <!--            </li>-->
-            <li class="nav-item">
-                <a class="nav-link" href="#">Generate a Report</a>
-            </li>
             <form th:action="@{/logout}" method="POST">
                 <button type="submit" class="btn btn-info nav-link">
                     Logout
