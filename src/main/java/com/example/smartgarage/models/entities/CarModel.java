@@ -40,4 +40,11 @@ public class CarModel {
     public String toString() {
         return modelName + ": " + brand;
     }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CarModel carModel = (CarModel) o;
+        return modelName == carModel.modelName;
+    }
 }

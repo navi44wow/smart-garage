@@ -7,7 +7,6 @@ import com.example.smartgarage.models.entities.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import com.example.smartgarage.helpers.AuthenticationHelper;
-import com.example.smartgarage.services.VehicleMapper;
 import com.example.smartgarage.services.contracts.BrandService;
 import com.example.smartgarage.services.contracts.CarModelService;
 import com.example.smartgarage.services.contracts.UserService;
@@ -31,17 +30,15 @@ public class CarModelMVCController {
     private final CarModelService carModelService;
     private final UserService userService;
     private final AuthenticationHelper authenticationHelper;
-    private final VehicleMapper vehicleMapper;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public CarModelMVCController(VehicleService vehicleService, BrandService brandService, CarModelService carModelService, UserService userService, AuthenticationHelper authenticationHelper, VehicleMapper vehicleMapper, ModelMapper modelMapper) {
+    public CarModelMVCController(VehicleService vehicleService, BrandService brandService, CarModelService carModelService, UserService userService, AuthenticationHelper authenticationHelper,  ModelMapper modelMapper) {
         this.vehicleService = vehicleService;
         this.brandService = brandService;
         this.carModelService = carModelService;
         this.userService = userService;
         this.authenticationHelper = authenticationHelper;
-        this.vehicleMapper = vehicleMapper;
         this.modelMapper = modelMapper;
     }
 
