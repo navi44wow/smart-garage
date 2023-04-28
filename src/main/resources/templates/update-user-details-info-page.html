@@ -8,32 +8,36 @@
 <section class="section about-section gray-bg" id="about">
   <div class="container">
     <h1>Edit profile</h1>
-    <form th:action="@{'/userInfoUpdate/' + ${user.getUsername()}}"  method="post">
+    <form th:action="@{'/userInfoUpdate/' + ${username}}" th:object="${userUpdate}"  method="post">
       <br/><br/>
       <label th:text="#{user.label.first-name}">First Name</label>
       <br/>
-      <input type="text" id="name" name="name" th:field="*{userUpdate.firstName}">
+      <input type="text" id="name" name="name" th:field="*{firstName}">
       <br/><br/>
 
       <label th:text="#{user.label.last-name}">First Name</label>
       <br/>
-      <input type="text" id="lastName" name="lastName" th:field="*{userUpdate.lastName}">
+      <input type="text" id="lastName" name="lastName" th:field="*{lastName}">
       <br/><br/>
 
       <label th:text="#{user.label.email}">First Name</label>
       <br/>
-      <input type="email" id="email" name="email" th:field="*{userUpdate.email}">
+      <input type="email" id="email" name="email" th:field="*{email}">
+      <small th:if="${emailExists}" id="emailUniqueError"
+             class="text-light form-text bg-danger rounded">Email is already occupied</small>
       <br><br/>
 
       <label th:text="#{user-additional.label.phone-number}"></label>
       <br/>
-      <input type="text" id="phone-number" name="phone-number" th:field="*{userUpdate.phoneNumber}">
+      <input type="text" id="phone-number" name="phone-number" th:field="*{phoneNumber}">
+      <small th:if="${phoneNumberExists}"  id="phoneNumberUniqueError"
+             class="text-light form-text bg-danger rounded"> There is already a user with this phoneNumber</small>
       <br><br/>
 
-      <a th:if="${!forbidden}" th:href="'/resetPassword/' + ${username}" class="btn btn-primary mb-2">Reset password</a>
       <input type="submit" value="Update"/>
-      <a th:href="'/users/delete/' + ${username}" class="btn btn-primary mb-2">Delete profile</a>
     </form>
+    <a th:if="${!forbidden}" th:href="'/resetPassword/' + ${username}" class="btn btn-primary mb-2">Reset password</a>
+    <a th:href="'/users/delete/' + ${username}" class="btn btn-primary mb-2">Delete profile</a>
 
 
 

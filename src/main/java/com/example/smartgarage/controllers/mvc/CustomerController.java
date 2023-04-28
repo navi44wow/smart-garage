@@ -1,6 +1,7 @@
 package com.example.smartgarage.controllers.mvc;
 
 import com.example.smartgarage.exceptions.EntityNotFoundException;
+import com.example.smartgarage.exceptions.NotFoundRoleException;
 import com.example.smartgarage.exceptions.NotValidPasswordException;
 import com.example.smartgarage.exceptions.PasswordConfirmationException;
 import com.example.smartgarage.models.dtos.GenerateUserDto;
@@ -128,19 +129,56 @@ public class CustomerController {
     }
 
 
-    private String checkAuthorization(String username) {
-        UserRoleEntity userRole = userRoleService.getByUserRole(UserRole.EMPLOYEE);
-        if (!loggedInUser().getUsername().equals(username) && !loggedInUser().getRoles().contains(userRole)){
-            return "error";
-        }
-        return null;
-    }
-
     @PostMapping("/userInfoUpdate/{username}")
-    public String updateUserInfo(@PathVariable String username, @ModelAttribute("userUpdate") UserDto userDto, Model model){
+    public String updateUserInfo(@PathVariable String username, @ModelAttribute("userUpdate") UserDto userDto,
+                                 Model model, BindingResult bindingResult){
+        model.addAttribute("forbidden", false);
+        if (!loggedInUser().getUsername().equals(username)){
+            model.addAttribute("forbidden", true);
+        }
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("userUpdate", userDto);
+            model.addAttribute("org.springframework.validation.BindingResult.userUpdate", bindingResult);
+
+            return "update-user-details-info-page";
+        }
+
+        List<String> exists = userService.checkIfExist(userDto.getUsername(), userDto.getPhoneNumber(),
+                userDto.getEmail());
+        if (!exists.isEmpty() && !exists.contains("username")) {
+            model.addAttribute("userUpdate", userDto);
+            for (String value : exists) {
+                switch (value) {
+                    case "phoneNumber":
+                        model.addAttribute("phoneNumberExists", true);
+                        break;
+                    case "email":
+                        model.addAttribute("emailExists", true);
+                        break;
+                }
+            }
+            return "update-user-details-info-page";
+        }
 
 
-        return "user-details-page";
+            UserServiceModel userServiceModel = modelMapper.map(userDto, UserServiceModel.class);
+            try {
+                userService.updateUserInfoPage(userServiceModel, username);
+            }catch (NotValidPasswordException e){
+                model.addAttribute("userUpdate", userDto);
+                model.addAttribute("invalidPassword", true);
+                model.addAttribute("exceptionPassMessage", e.getMessage());
+                return "update-user-details-info-page";
+            } catch (NotFoundRoleException e){
+                model.addAttribute("notFoundRoleExceptionMess", e.getMessage());
+                return "update-user-details-info-page";
+            } catch (PasswordConfirmationException e){
+                model.addAttribute("userUpdate", userDto);
+                model.addAttribute("notConfirmedPassword", true);
+                model.addAttribute("confirmationExcMessage", e.getMessage());
+                return "update-user-details-info-page";
+            }
+        return "redirect:/detailsPage/" + username;
     }
 
     @GetMapping("/resetPassword/{username}")

@@ -27,6 +27,7 @@ public interface UserService {
     UserViewModel getByPhoneNumber(String phoneNumber);
 
     UserViewModel updateUser(UserServiceModel user, String username);
+    UserViewModel updateUserInfoPage(UserServiceModel user, String username);
 
     UserViewModel delete(UserServiceModel userViewModel);
 

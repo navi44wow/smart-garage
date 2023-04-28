@@ -333,6 +333,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserViewModel updateUserInfoPage(UserServiceModel updated, String username) {
+
+        User user = userRepository.findByUsername(username).orElseThrow(() ->
+                new EntityNotFoundException("User with username ", updated.getUsername(), " was not found!"));
+        user.setFirstName(updated.getFirstName());
+        user.setLastName(updated.getLastName());
+        user.setEmail(updated.getEmail());
+        user.setPhoneNumber(updated.getPhoneNumber());
+        userRepository.save(user);
+
+        return modelMapper.map(updated, UserViewModel.class);
+    }
+
+    @Override
     public UserViewModel delete(UserServiceModel existingUser) {
         User user = userRepository.findByUsername(existingUser.getUsername()).orElseThrow(() ->
                 new EntityNotFoundException("User with username ", existingUser.getUsername(), " was not found!"));
