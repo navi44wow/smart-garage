@@ -11,6 +11,8 @@
 
 <div class="container mt-5">
   <h2>New brand</h2>
+  <a th:href="@{/carModels}" class="btn btn-primary mb-2">All car models</a>
+  <a th:href="@{/brands}" class="btn btn-primary mb-2">All brands</a>
   <form th:action="@{/brands/new}" method="post">
     <div class="form-group">
       <label for="brand">Name of brand</label>
