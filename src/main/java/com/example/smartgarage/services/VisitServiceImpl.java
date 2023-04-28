@@ -1,5 +1,6 @@
 package com.example.smartgarage.services;
 
+import com.example.smartgarage.exceptions.EntityNotFoundException;
 import com.example.smartgarage.models.dtos.VisitFilterDto;
 import com.example.smartgarage.models.entities.CarService;
 import com.example.smartgarage.models.entities.ListOfServices;
@@ -49,7 +50,7 @@ public class VisitServiceImpl implements VisitService {
     @Override
     public Visit getVisitById(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Visit with id " + id + " not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Visit", id));
     }
 
     @Override

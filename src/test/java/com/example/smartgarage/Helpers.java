@@ -10,6 +10,7 @@ import com.example.smartgarage.services.contracts.CarServizService;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -112,4 +113,28 @@ public class Helpers {
         visit.setArchived(false);
         return visit;
     }
+
+    public static Visit createAnotherMockVisit() {
+        Visit visit = new Visit();
+        visit.setId(2L);
+        visit.setVehicle(createMockVehicle());
+        visit.setStatus(createMockStatus());
+        visit.setStartDate(LocalDate.of(2023, 4, 1));
+        visit.setDueDate(LocalDate.of(2023, 5, 5));
+        visit.setArchived(false);
+        return visit;
+    }
+
+    public static List<VisitStatus> createMockListOfStatuses() {
+        VisitStatus visitStatus = createMockStatus();
+        VisitStatus visitStatus1 = new VisitStatus();
+        visitStatus1.setId(2L);
+        visitStatus1.setName("In progress");
+        VisitStatus visitStatus2 = new VisitStatus();
+        visitStatus1.setId(3L);
+        visitStatus1.setName("Completed");
+        List<VisitStatus> statuses = Arrays.asList(visitStatus, visitStatus1, visitStatus2);
+        return statuses;
+    }
+
 }
