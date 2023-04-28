@@ -1,7 +1,6 @@
 package com.example.smartgarage.models.dtos;
 
 
-import com.example.smartgarage.models.entities.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,9 +15,11 @@ import java.util.UUID;
 @NoArgsConstructor
 public class VehicleFilterDto {
 
-    private String brand;
-    private String model;
-    private User user;
+    private String brandName;
+    private String carModelName;
+    private UUID userId;
+
+    private String username;
     private Long creationYear;
     private String sortBy;
     private String sortOrder;

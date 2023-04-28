@@ -4,13 +4,11 @@ import com.example.smartgarage.exceptions.AuthorizationException;
 import com.example.smartgarage.exceptions.EntityDuplicateException;
 import com.example.smartgarage.exceptions.EntityNotFoundException;
 import com.example.smartgarage.helpers.AuthenticationHelper;
-
 import com.example.smartgarage.models.entities.Brand;
 import com.example.smartgarage.models.entities.CarModel;
 import com.example.smartgarage.models.entities.User;
 import com.example.smartgarage.models.entities.Vehicle;
 import com.example.smartgarage.models.view_models.UserViewModel;
-import com.example.smartgarage.services.VehicleMapper;
 import com.example.smartgarage.services.contracts.BrandService;
 import com.example.smartgarage.services.contracts.CarModelService;
 import com.example.smartgarage.services.contracts.UserService;
@@ -39,20 +37,17 @@ public class VehicleRestController {
     private final BrandService brandService;
     private final CarModelService carModelService;
     private final ModelMapper modelMapper;
-
-    private final VehicleMapper vehicleMapper;
     private final AuthenticationHelper authenticationHelper;
 
     private final UserService userService;
 
     public VehicleRestController(VehicleService vehicleService, BrandService brandService, CarModelService carModelService, ModelMapper modelMapper
-            , VehicleMapper vehicleMapper, AuthenticationHelper authenticationHelper,
+            ,  AuthenticationHelper authenticationHelper,
                                  UserService userService) {
         this.vehicleService = vehicleService;
         this.brandService = brandService;
         this.carModelService = carModelService;
         this.modelMapper = modelMapper;
-        this.vehicleMapper = vehicleMapper;
         this.authenticationHelper = authenticationHelper;
         this.userService = userService;
     }
@@ -90,8 +85,8 @@ public class VehicleRestController {
             authenticationHelper.checkAuthorization(headers);
             vehicle = modelMapper.map(vehicleDto, Vehicle.class);
             vehicleService.save(vehicle);
-            vehicle.setUser(userService.getById(vehicleDto.getUserId()));
-            vehicle.setCarModelId(carModelService.getById(vehicleDto.getCarModelId()));
+            vehicle.setUser(userService.getById(vehicleDto.getUserId().getId()));
+            vehicle.setCarModelId((vehicleDto.getCarModelId()));
             return vehicleService.getById(vehicle.getVehicleId());
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -114,8 +109,8 @@ public class VehicleRestController {
             existingVehicle.setVIN(vehicleDto.getVIN());
             existingVehicle.setCreationYear(vehicleDto.getCreationYear());
             existingVehicle.setLicensePlate(vehicleDto.getLicensePlate());
-            existingVehicle.setUser(userService.getById(vehicleDto.getUserId()));
-            existingVehicle.setCarModelId(carModelService.getById(vehicleDto.getCarModelId()));
+            existingVehicle.setUser(userService.getById(vehicleDto.getUserId().getId()));
+            existingVehicle.setCarModelId((vehicleDto.getCarModelId()));
             return existingVehicle;
         } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
@@ -216,6 +211,4 @@ public class VehicleRestController {
     public List<Vehicle> searchAllByVIN(@PathVariable String VIN) {
         return vehicleService.searchAllByVIN(VIN);
     }
-
-
 }

@@ -2,6 +2,7 @@ package com.example.smartgarage.services;
 
 import com.example.smartgarage.exceptions.EntityNotFoundException;
 import com.example.smartgarage.models.dtos.VehicleDto;
+import com.example.smartgarage.models.dtos.VehicleFilterDto;
 import com.example.smartgarage.models.entities.CarModel;
 import com.example.smartgarage.models.entities.User;
 import com.example.smartgarage.models.entities.Vehicle;
@@ -9,11 +10,11 @@ import com.example.smartgarage.repositories.VehicleRepository;
 import com.example.smartgarage.services.contracts.VehicleService;
 import org.hibernate.SessionFactory;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class VehicleServiceImpl implements VehicleService {
@@ -76,12 +77,6 @@ public class VehicleServiceImpl implements VehicleService {
         return vehicle;
     }
 
-    @Override
-    public Vehicle updateForMVC(Vehicle vehicle, VehicleDto vehicleDto) {
-        vehicleRepository.save(vehicle);
-        return vehicle;
-    }
-
     public void deleteVehicleById(Long vehicleId) {
         vehicleRepository.deleteById(vehicleId);
     }
@@ -110,26 +105,72 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
-    public <T> List<Vehicle> getAllGenericVehicles(Optional<T> creationYear, Optional<T> sortBy, Optional<T> sortOrder) {
-
-
-        List<Vehicle> vehicles;
-
-        if (creationYear.isPresent() && !creationYear.get().toString().isBlank()) {
-            vehicles = vehicleRepository.searchAllByCreationYear(Long.valueOf(creationYear.get().toString()));
-        } else {
-            vehicles = vehicleRepository.findAll();
+    public List<Vehicle> getAllVehicles(
+            VehicleFilterDto vehicleFilterDto) {
+        List<Vehicle> allVehicles = getAllSorted(vehicleFilterDto.getSortBy(), vehicleFilterDto.getSortOrder());
+        if (vehicleFilterDto.getBrandName() != null && !vehicleFilterDto.getBrandName().isEmpty()) {
+            allVehicles = filterVehiclesByBrandName(allVehicles, vehicleFilterDto.getBrandName());
         }
-        if (sortBy.isPresent() && !sortBy.get().toString().isBlank()) {
-            String sortByValue = sortBy.get().toString();
-            Sort.Direction sortDirection = Sort.Direction.ASC;
-            if (sortOrder.isPresent() && sortOrder.get().toString().equalsIgnoreCase("desc")) {
-                sortDirection = Sort.Direction.DESC;
-            }
-            Sort sort = Sort.by(sortDirection, sortByValue);
-            vehicles = vehicleRepository.findAll(sort);
+        if (vehicleFilterDto.getCarModelName() != null && !vehicleFilterDto.getCarModelName().isEmpty()) {
+            allVehicles = filterVehiclesByCarModelName(allVehicles, vehicleFilterDto.getCarModelName());
         }
-        return vehicles;
+        if (vehicleFilterDto.getCreationYear() != null) {
+            allVehicles = filterVehiclesByCreationYear(allVehicles, vehicleFilterDto.getCreationYear());
+        }
+        if (vehicleFilterDto.getUsername() != null && !vehicleFilterDto.getUsername().isEmpty()) {
+            allVehicles = filterVehiclesByUsername(allVehicles, vehicleFilterDto.getUsername());
+        }
+        return allVehicles;
     }
 
+    private List<Vehicle> filterVehiclesByBrandName(List<Vehicle> vehicles, String brandName) {
+        return vehicles.stream().filter(vehicle -> vehicle.getCarModelId().getBrand().getBrandName().
+                equalsIgnoreCase(brandName)).collect(Collectors.toList());
+    }
+
+    private List<Vehicle> filterVehiclesByCarModelName(List<Vehicle> vehicles, String carModelName) {
+        return vehicles.stream().filter(vehicle -> vehicle.getCarModelId().getModelName().
+                equalsIgnoreCase(carModelName)).collect(Collectors.toList());
+    }
+
+    private List<Vehicle> filterVehiclesByCreationYear(List<Vehicle> vehicles, Long creationYear) {
+        return vehicles.stream().filter(vehicle -> vehicle.getCreationYear().
+                equals(creationYear)).collect(Collectors.toList());
+    }
+
+    private List<Vehicle> filterVehiclesByUsername(List<Vehicle> vehicles, String username) {
+        return vehicles.stream().filter(vehicle -> vehicle.getUser().getUsername().
+                equalsIgnoreCase(username)).collect(Collectors.toList());
+    }
+
+
+    private List<Vehicle> getAllSorted(String sortBy, String sortOrder) {
+        List<Vehicle> allVehicles = vehicleRepository.findAll();
+        if (sortBy != null && !sortBy.equals("none") && sortOrder != null &&
+                (sortOrder.equals("asc") || sortOrder.equals("desc"))) {
+            Comparator<Vehicle> comparator = null;
+            switch (sortBy) {
+                case "brandName":
+                    comparator = Comparator.comparing(v -> v.getCarModelId().getBrand().getBrandName());
+                    break;
+                case "carModelName":
+                    comparator = Comparator.comparing(v -> v.getCarModelId().getModelName());
+                    break;
+                case "creationYear":
+                    comparator = Comparator.comparing(Vehicle::getCreationYear);
+                    break;
+                case "username":
+                    comparator = Comparator.comparing(v -> v.getUser().getUsername());
+                    break;
+            }
+            if (comparator != null) {
+            if (sortOrder.equals("asc")) {
+                    allVehicles.sort(comparator);
+                } else {
+                    allVehicles.sort(comparator.reversed());
+                }
+            }
+        }
+        return allVehicles;
+    }
 }

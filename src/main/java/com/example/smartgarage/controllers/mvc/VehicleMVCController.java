@@ -9,7 +9,6 @@ import com.example.smartgarage.models.entities.User;
 import com.example.smartgarage.models.entities.Vehicle;
 import com.example.smartgarage.models.view_models.UserViewModel;
 import com.example.smartgarage.repositories.CarModelRepository;
-import com.example.smartgarage.services.VehicleMapper;
 import com.example.smartgarage.services.contracts.BrandService;
 import com.example.smartgarage.services.contracts.CarModelService;
 import com.example.smartgarage.services.contracts.UserService;
@@ -22,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
+
 
 @Controller
 @RequestMapping("/vehicles")
@@ -38,27 +37,23 @@ public class VehicleMVCController {
     private final BrandService brandService;
 
     private final AuthenticationHelper authenticationHelper;
-    private final VehicleMapper vehicleMapper;
+
     private final ModelMapper modelMapper;
 
     @Autowired
-    public VehicleMVCController(VehicleService vehicleService, UserService userService, CarModelService carModelService, CarModelRepository carModelRepository, BrandService brandService, AuthenticationHelper authenticationHelper, VehicleMapper vehicleMapper, ModelMapper modelMapper) {
+    public VehicleMVCController(VehicleService vehicleService, UserService userService, CarModelService carModelService, CarModelRepository carModelRepository, BrandService brandService, AuthenticationHelper authenticationHelper, ModelMapper modelMapper) {
         this.vehicleService = vehicleService;
         this.userService = userService;
         this.carModelService = carModelService;
         this.carModelRepository = carModelRepository;
         this.brandService = brandService;
         this.authenticationHelper = authenticationHelper;
-        this.vehicleMapper = vehicleMapper;
         this.modelMapper = modelMapper;
     }
 
     @GetMapping()
     public String getAllVehicles(Model model) {
-        List<Vehicle> vehicleList = vehicleService.getAllGenericVehicles(
-                Optional.empty(),
-                Optional.of("creationYear"),
-                Optional.empty());
+        List<Vehicle> vehicleList = vehicleService.getAll();
         model.addAttribute("vehicles", vehicleList);
         VehicleFilterDto vehicleFilterDto = new VehicleFilterDto();
         model.addAttribute("vehicleFilterDto", vehicleFilterDto);
@@ -67,14 +62,9 @@ public class VehicleMVCController {
 
     @PostMapping()
     public String filterVehicles(@ModelAttribute("vehicleFilterDto") VehicleFilterDto vehicleFilterDto, Model model) {
-        List<Vehicle> vehicleList = vehicleService.getAllGenericVehicles(
-                Optional.ofNullable(vehicleFilterDto.getCreationYear()),
-                Optional.ofNullable(vehicleFilterDto.getSortBy()),
-                Optional.ofNullable(vehicleFilterDto.getSortOrder())
-        );
+        List<Vehicle> vehicleList = vehicleService.getAllVehicles(vehicleFilterDto);
         model.addAttribute("vehicles", vehicleList);
         model.addAttribute("vehicleFilterDto", vehicleFilterDto);
-
         return "vehicles";
     }
 
@@ -92,24 +82,15 @@ public class VehicleMVCController {
 
     @PostMapping("/new")
     public String createNewVehicle(@Valid @ModelAttribute("vehicleDto") VehicleDto vehicleDto) {
-        User user = userService.getById(vehicleDto.getUserId());
-        CarModel carModel = carModelService.getById(vehicleDto.getCarModelId());
+        User user = userService.getById(vehicleDto.getUserId().getId());
         Vehicle vehicle = modelMapper.map(vehicleDto, Vehicle.class);
-        vehicleService.save(vehicle);
         vehicle.setUser(user);
-        vehicle.setCarModelId(carModel);
+        vehicle.setCarModelId(vehicleDto.getCarModelId());
+        vehicleService.save(vehicle);
         return "redirect:/vehicles";
     }
 
-    @GetMapping("/delete/{vehicleId}")
-    public String deleteVehicle(@PathVariable("vehicleId") Long vehicleId) {
 
-        vehicleService.deleteVehicleByVehicleId(vehicleId);
-        return "redirect:/vehicles";
-    }
-
-    //Todo
-    //update
     @GetMapping("/vehicle-update/{vehicleId}")
     public String updateVehicle(@PathVariable("vehicleId") Long vehicleId, Model model) {
         List<CarModel> carModels = carModelService.getAll();
@@ -121,16 +102,22 @@ public class VehicleMVCController {
         model.addAttribute("vehicleId", vehicleId);
         return "vehicle-update";
     }
+
     @PostMapping("/vehicle-update/{vehicleId}")
     public String updateVehicle(@PathVariable("vehicleId") Long vehicleId, @Valid @ModelAttribute("vehicleDto") VehicleDto vehicleDto) {
         Vehicle vehicle = vehicleService.getById(vehicleId);
-        Long vehId = vehicle.getVehicleId();
-        CarModel carModel = carModelService.getById(vehicleDto.getCarModelId());
-        vehicle.setCarModelId(carModel);
-        modelMapper.map(vehicleDto, vehicle);
-        vehicle.setVehicleId(vehId);
+        vehicle.setVIN(vehicleDto.getVIN());
+        vehicle.setCreationYear(vehicleDto.getCreationYear());
+        vehicle.setLicensePlate(vehicleDto.getLicensePlate());
+        vehicle.setUser(vehicleDto.getUserId());
+        vehicle.setCarModelId(vehicleDto.getCarModelId());
         vehicleService.save(vehicle);
         return "redirect:/vehicles";
+    }
 
+    @GetMapping("/delete/{vehicleId}")
+    public String deleteVehicle(@PathVariable("vehicleId") Long vehicleId) {
+        vehicleService.deleteVehicleByVehicleId(vehicleId);
+        return "redirect:/vehicles";
     }
 }

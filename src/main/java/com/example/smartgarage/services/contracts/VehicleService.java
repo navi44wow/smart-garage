@@ -1,13 +1,12 @@
 package com.example.smartgarage.services.contracts;
 
 import com.example.smartgarage.models.dtos.VehicleDto;
+import com.example.smartgarage.models.dtos.VehicleFilterDto;
 import com.example.smartgarage.models.entities.CarModel;
 import com.example.smartgarage.models.entities.User;
 import com.example.smartgarage.models.entities.Vehicle;
 
 import java.util.List;
-import java.util.Optional;
-
 
 public interface VehicleService {
 
@@ -22,8 +21,6 @@ public interface VehicleService {
     void save(Vehicle vehicle);
 
     Vehicle update(Vehicle vehicle, VehicleDto vehicleDto, CarModel carModel);
-
-    Vehicle updateForMVC(Vehicle vehicle, VehicleDto vehicleDto);
 
     void deleteVehicleById(Long vehicleId);
 
@@ -41,5 +38,6 @@ public interface VehicleService {
 
     List<Vehicle> getByUsername(String username);
 
-    <T> List<Vehicle> getAllGenericVehicles(Optional<T> creationYear, Optional<T> sortBy, Optional<T> sortOrder);
+    List<Vehicle> getAllVehicles(
+            VehicleFilterDto vehicleFilterDto);
 }

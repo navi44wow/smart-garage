@@ -1,13 +1,14 @@
 package com.example.smartgarage.models.dtos;
 
+import com.example.smartgarage.models.entities.CarModel;
+import com.example.smartgarage.models.entities.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import javax.validation.constraints.*;
-import java.util.UUID;
-
 
 @Getter
 @Setter
@@ -18,6 +19,7 @@ public class VehicleDto {
 
     @NotNull(message = "VIN cannot be empty")
     @Size(min = 17, max = 17, message = "VIN has to be exactly 17 chars. Numbers and letters only!")
+    @Column(name = "VIN", length = 17)
     private String VIN;
 
     @NotNull(message = "license plate cannot be empty")
@@ -31,7 +33,7 @@ public class VehicleDto {
 
     private Long creationYear;
 
-    private UUID userId;
+    private User userId;
 
-    private Long carModelId;
+    private CarModel carModelId;
 }

@@ -16,10 +16,11 @@
     <form method="post" th:action="@{/vehicles/}" th:object="${vehicleFilterDto}" class="form-inline mb-3">
         <label for="sortBy">Sort By:</label>
         <select id="sortBy" name="sortBy" class="form-control mx-2">
-<!--            <option value="user">Owner</option>-->
-<!--            <option value="carModel">carModel</option>-->
-<!--            <option value="brand">brand</option>-->
-            <option value="creationYear">creation year</option>
+            <option value="none">None</option>
+            <option value="username">Owner</option>
+            <option value="brandName">Brand</option>
+            <option value="carModelName">Car Model</option>
+            <option value="creationYear">Creation year</option>
         </select>
         <label for="sortOrder">Sort Order:</label>
         <select id="sortOrder" name="sortOrder" class="form-control mx-2">
@@ -31,19 +32,15 @@
 
     <form method="post" th:action="@{/vehicles/}" th:object="${vehicleFilterDto}" class="form-inline mb-3">
 
-<!--        <label for="user">Owner:</label>-->
-<!--        <input type="text" id="user" name="user" class="form-control mx-2">-->
+        <label for="username">Owner:</label>
+        <input type="text" id="username" name="username" class="form-control mx-2">
 
 
-<!--        <label for="carModel">Model:</label>-->
-<!--        <input type="text" id="carModel" name="carModel" class="form-control mx-2">-->
+        <label for="brandName">Brand:</label>
+        <input type="text" id="brandName" name="brandName" class="form-control mx-2">
 
-<!--        <br>-->
-<!--        <br/>-->
-
-<!--        <label for="brand">Brand:</label>-->
-<!--        <input type="text" id="brand" name="brand" class="form-control mx-2">-->
-
+        <label for="carModelName">Model:</label>
+        <input type="text" id="carModelName" name="carModelName" class="form-control mx-2">
 
         <label for="creationYear">CreationYear:</label>
         <input type="text" id="creationYear" name="creationYear" class="form-control mx-2">
@@ -53,20 +50,20 @@
     <table class="table table-hover">
         <thead>
         <tr>
+            <th>Owner</th>
             <th>Brand</th>
             <th>Model</th>
             <th>License plate</th>
-            <th>owner</th>
             <th>VIN</th>
             <th>Creation year</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="vehicle : ${vehicles}">
-            <td th:text="${vehicle.getCarModelId().getBrand().getBrandName()}">brand</td>
-            <td th:text="${vehicle.getCarModelId().getModelName()}">carModel</td>
-            <td th:text="${vehicle.getLicensePlate()}">license plate</td>
-            <td th:text="${vehicle.getUser().getUsername()}">owner</td>
+            <td th:text="${vehicle.getUser().getUsername()}">Owner</td>
+            <td th:text="${vehicle.getCarModelId().getBrand().getBrandName()}">Brand</td>
+            <td th:text="${vehicle.getCarModelId().getModelName()}">Car Model</td>
+            <td th:text="${vehicle.getLicensePlate()}">License plate</td>
             <td th:text="${vehicle.getVIN()}">VIN</td>
             <td th:text="${vehicle.getCreationYear()}">Creation year</td>
             <td>
