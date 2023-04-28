@@ -22,7 +22,6 @@ public interface CarServizService {
     void save(CarService car);
 
 
-
     <T> List<CarService> getAllGeneric(Optional<T> name, Optional<T> sortBy, Optional<T> sortOrder);
 
     List<CarService> getAll(Optional<String> name,

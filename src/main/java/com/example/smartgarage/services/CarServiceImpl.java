@@ -1,5 +1,6 @@
 package com.example.smartgarage.services;
 
+import com.example.smartgarage.exceptions.EntityDuplicateException;
 import com.example.smartgarage.exceptions.EntityNotFoundException;
 import com.example.smartgarage.helpers.AuthenticationHelper;
 import com.example.smartgarage.models.dtos.CarServiceDto;
@@ -26,9 +27,9 @@ public class CarServiceImpl implements CarServizService {
 
     @Autowired
     SessionFactory sessionFactory;
-
     @Autowired
-    private AuthenticationHelper authenticationHelper;
+    AuthenticationHelper authenticationHelper;
+
 
 
     public List<CarService> getAll() {
@@ -45,6 +46,10 @@ public class CarServiceImpl implements CarServizService {
     }
 
     public void save(CarService carService) {
+        carServiceRepository.findByName(carService.getName())
+                .ifPresent(existing -> {
+                    throw new EntityDuplicateException("CarService", "name", carService.getName());
+                });
         carServiceRepository.save(carService);
     }
 

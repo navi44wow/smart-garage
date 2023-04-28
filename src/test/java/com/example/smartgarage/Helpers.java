@@ -1,10 +1,13 @@
 package com.example.smartgarage;
 
+import com.example.smartgarage.models.dtos.CarServiceDto;
+import com.example.smartgarage.models.entities.CarService;
 import com.example.smartgarage.models.entities.User;
 import com.example.smartgarage.models.entities.UserRoleEntity;
 import com.example.smartgarage.models.enums.UserRole;
 import com.example.smartgarage.models.filter_options.UserFilterOptions;
 import com.example.smartgarage.repositories.UserRoleRepository;
+import com.example.smartgarage.services.contracts.CarServizService;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -49,4 +52,30 @@ public class Helpers {
                 "Username",
                 "Asc");
     }
+
+    public static CarService createMockCarService() {
+        CarService service = new CarService();
+        service.setId(1L);
+        service.setName("MockService");
+        service.setPrice(100);
+        return service;
+
+    }
+
+    public static CarService createAnotherMockCarService() {
+        CarService service = new CarService();
+        service.setId(2L);
+        service.setName("AnotherMockService");
+        service.setPrice(200);
+        return service;
+    }
+
+    public static CarServiceDto createMockCarServiceDto() {
+        CarServiceDto carServiceDto = new CarServiceDto();
+//        carServiceDto.setName("MockServiceDto");
+//        carServiceDto.setPrice(150);
+        return carServiceDto;
+    }
+
+
 }

@@ -20,4 +20,6 @@ public interface CarServiceRepository extends JpaRepository<CarService, Long> {
     void deleteById(Long id);
 
     List<CarService> findByNameContainingIgnoreCase(String name);
+
+    Optional<CarService> findByName(String name);
 }
