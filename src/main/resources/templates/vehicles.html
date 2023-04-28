@@ -60,7 +60,13 @@
         </thead>
         <tbody>
         <tr th:each="vehicle : ${vehicles}">
-            <td th:text="${vehicle.getUser().getUsername()}">Owner</td>
+            <!--            <td th:text="${vehicle.getUser().getUsername()}">Owner</td>-->
+            <td>
+                <a
+                        th:href="@{'/vehicles/' + ${vehicle.getUser().getUsername()}}"
+                   th:text="${vehicle.getUser().getUsername()}">Owner</a>
+            </td>
+
             <td th:text="${vehicle.getCarModelId().getBrand().getBrandName()}">Brand</td>
             <td th:text="${vehicle.getCarModelId().getModelName()}">Car Model</td>
             <td th:text="${vehicle.getLicensePlate()}">License plate</td>

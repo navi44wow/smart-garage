@@ -120,4 +120,10 @@ public class VehicleMVCController {
         vehicleService.deleteVehicleByVehicleId(vehicleId);
         return "redirect:/vehicles";
     }
+    @GetMapping("/{username}")
+    public String getAllVehiclesByUsername(@PathVariable String username, Model model) {
+        List<Vehicle> vehiclesByUsername = vehicleService.getByUsername(username);
+        model.addAttribute("vehiclesByUsername", vehiclesByUsername);
+        return "vehiclesByUsername";
+    }
 }

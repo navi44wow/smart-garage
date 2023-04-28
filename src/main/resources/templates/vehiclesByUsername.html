@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Vehicles</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css}">
+</head>
+<body>
+<div class="container mt-5">
+    <h2>Vehicles</h2>
+    <a th:href="@{/employee/}" class="btn btn-primary mb-2">Dashboard</a>
+    <a th:href="@{/vehicles/new}" class="btn btn-primary mb-2">New Vehicle</a>
+
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Owner</th>
+            <th>Brand</th>
+            <th>Model</th>
+            <th>License plate</th>
+            <th>VIN</th>
+            <th>Creation year</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr th:each="vehicle : ${vehicles}">
+
+        <tr th:each="vehicle : ${vehiclesByUsername}">
+            <td th:text="${vehicle.getUser().getUsername()}">Owner</td>
+            </td>
+            <td th:text="${vehicle.getCarModelId().getBrand().getBrandName()}">Brand</td>
+            <td th:text="${vehicle.getCarModelId().getModelName()}">Car Model</td>
+            <td th:text="${vehicle.getLicensePlate()}">License plate</td>
+            <td th:text="${vehicle.getVIN()}">VIN</td>
+            <td th:text="${vehicle.getCreationYear()}">Creation year</td>
+            <td>
+                <a class="h6 m-3" th:href="@{'/vehicles/vehicle-update/' + ${vehicle.vehicleId}}">Edit</a>
+                <a class="h6" th:href="@{'/vehicles/delete/' + ${vehicle.getVehicleId()}}">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Bootstrap JS -->
+<script th:src="@{https://code.jquery.com/jquery-3.2.1.slim.min.js}"></script>
+<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js}"></script>
+<script th:src="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js}"></script>
+</body>
+</html>
