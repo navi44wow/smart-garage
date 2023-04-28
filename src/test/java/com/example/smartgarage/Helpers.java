@@ -1,9 +1,7 @@
 package com.example.smartgarage;
 
 import com.example.smartgarage.models.dtos.CarServiceDto;
-import com.example.smartgarage.models.entities.CarService;
-import com.example.smartgarage.models.entities.User;
-import com.example.smartgarage.models.entities.UserRoleEntity;
+import com.example.smartgarage.models.entities.*;
 import com.example.smartgarage.models.enums.UserRole;
 import com.example.smartgarage.models.filter_options.UserFilterOptions;
 import com.example.smartgarage.repositories.UserRoleRepository;
@@ -11,6 +9,7 @@ import com.example.smartgarage.services.contracts.CarServizService;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -70,12 +69,47 @@ public class Helpers {
         return service;
     }
 
-    public static CarServiceDto createMockCarServiceDto() {
-        CarServiceDto carServiceDto = new CarServiceDto();
-//        carServiceDto.setName("MockServiceDto");
-//        carServiceDto.setPrice(150);
-        return carServiceDto;
+    public static Vehicle createMockVehicle() {
+        Vehicle vehicle = new Vehicle();
+        vehicle.setVehicleId(1L);
+        vehicle.setUser(createMockUser());
+        vehicle.setVIN("dlaksjdlak9089809");
+        vehicle.setCreationYear(2023L);
+        vehicle.setLicensePlate("CB1001AA");
+        vehicle.setCarModelId(createMockModel());
+        return vehicle;
     }
 
+    public static Brand createMockBrand() {
+        Brand brand = new Brand();
+        brand.setId(1L);
+        brand.setBrandName("Tesla");
+        return brand;
+    }
 
+    public static CarModel createMockModel() {
+        CarModel carModel = new CarModel();
+        carModel.setModelId(1L);
+        carModel.setModelName("Y");
+        carModel.setBrand(createMockBrand());
+        return carModel;
+    }
+
+    public static VisitStatus createMockStatus() {
+        VisitStatus visitStatus = new VisitStatus();
+        visitStatus.setId(1L);
+        visitStatus.setName("Not started");
+        return visitStatus;
+    }
+
+    public static Visit createMockVisit() {
+        Visit visit = new Visit();
+        visit.setId(1L);
+        visit.setVehicle(createMockVehicle());
+        visit.setStatus(createMockStatus());
+        visit.setStartDate(LocalDate.of(2023, 4, 9));
+        visit.setDueDate(LocalDate.of(2023, 5, 1));
+        visit.setArchived(false);
+        return visit;
+    }
 }

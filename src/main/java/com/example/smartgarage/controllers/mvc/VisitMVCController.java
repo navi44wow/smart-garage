@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 public class VisitMVCController {
     private final VisitService visitService;
     private final VehicleService vehicleService;
+    private final BrandService brandService;
     private final CarServizService carServizService;
     private final UserService userService;
     private final VisitMapper visitMapper;
@@ -29,11 +30,12 @@ public class VisitMVCController {
 
     public VisitMVCController(VisitService visitService,
                               VehicleService vehicleService,
-                              CarServizService carServizService,
+                              BrandService brandService, CarServizService carServizService,
                               UserService userService, VisitMapper visitMapper,
                               PDFGeneratorService pdfGeneratorService) {
         this.visitService = visitService;
         this.vehicleService = vehicleService;
+        this.brandService = brandService;
         this.carServizService = carServizService;
         this.userService = userService;
         this.visitMapper = visitMapper;
@@ -46,10 +48,10 @@ public class VisitMVCController {
                                @RequestParam(required = false) Boolean includeArchived,
                                @ModelAttribute("filterOptions") VisitFilterDto visitFilterDto) {
         List<Visit> allVisits = visitService.getAllVisits(onlyArchived, includeArchived, visitFilterDto);
-        List<Vehicle> vehicles = vehicleService.getAll();
+        List<Brand> brands = brandService.getAll();
         List<UserViewModel> users = userService.getAll();
         model.addAttribute("all", allVisits);
-        model.addAttribute("vehicles", vehicles);
+        model.addAttribute("brands", brands);
         model.addAttribute("users", users);
         model.addAttribute("filterOptions", visitFilterDto);
 

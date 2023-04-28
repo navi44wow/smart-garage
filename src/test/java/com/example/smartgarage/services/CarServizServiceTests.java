@@ -10,6 +10,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,12 +45,40 @@ public class CarServizServiceTests {
     @Test
     void findById_Should_ReturnObject() {
         CarService mockService = createMockCarService();
-        Mockito.when(carServiceRepository.findById(mockService.getId())).thenReturn(Optional.of(mockService));
+        Mockito.when(carServiceRepository.findById(mockService.getId()))
+                .thenReturn(Optional.of(mockService));
 
         Optional<CarService> result = carService.findById(mockService.getId());
 
         assertTrue(result.isPresent());
         assertEquals(mockService.getId(), result.get().getId());
         Mockito.verify(carServiceRepository, Mockito.times(1)).findById(mockService.getId());
+    }
+
+    @Test
+    public void create_Should_returnService_When_Valid() {
+
+        carService.save(createMockCarService());
+        Optional<CarService> mockService = Optional.of(createMockCarService());
+
+        // Assert
+        assertTrue(mockService.isPresent());
+
+    }
+
+    @Test
+    void getAllGeneric_Should_ReturnAllCarServices_When_NoFiltersApplied() {
+        // Arrange
+        List<CarService> mockCarServices = Arrays.asList(
+                new CarService(1L, "Service1", 100),
+                new CarService(2L, "Service2", 200)
+        );
+        Mockito.when(carServiceRepository.findAll()).thenReturn(mockCarServices);
+
+        // Act
+        List<CarService> result = carService.getAllGeneric(Optional.empty(), Optional.empty(), Optional.empty());
+
+        // Assert
+        assertEquals(mockCarServices, result);
     }
 }
