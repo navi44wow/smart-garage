@@ -24,7 +24,5 @@ public interface BrandService {
 
     int getBrandsCount();
 
-    Optional<Brand> findByBrandName(String brandName);
-
     <T> List<Brand> getAllGeneric(Optional<T> brandName, Optional<T> sortBy, Optional<T> sortOrder);
 }

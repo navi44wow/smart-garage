@@ -173,7 +173,7 @@ public class VehicleRestController {
         try {
             authenticationHelper.checkAuthorization(headers);
             Optional<CarModel> carModel = carModelService.findByCarModelName(carModelName);
-            return vehicleService.searchAllByCarModelId(carModel.get());
+            return vehicleService.findAllByCarModelId(carModel.get());
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
@@ -183,7 +183,7 @@ public class VehicleRestController {
     public List<Vehicle> getAllByBrandName(@PathVariable String brandName, @RequestHeader("Authorization") HttpHeaders headers) {
         try {
             authenticationHelper.checkAuthorization(headers);
-            Brand brand = brandService.findByBrandName(brandName).orElseThrow(IllegalArgumentException::new);
+            Brand brand = brandService.getByName(brandName);
             List<CarModel> carModels = carModelService.getByBrandId(brand.getId());
             List<Vehicle> vehiclesNew = new ArrayList<>();
             for (CarModel m : carModels) {

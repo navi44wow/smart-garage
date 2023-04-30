@@ -66,11 +66,6 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public Optional<Brand> findByBrandName(String brandName) {
-        return brandRepository.findByBrandName(brandName);
-    }
-
-    @Override
     public <T> List<Brand> getAllGeneric(Optional<T> brandName, Optional<T> sortBy, Optional<T> sortOrder) {
         List<Brand> brands;
         if (brandName.isPresent() && !brandName.get().toString().isBlank()) {

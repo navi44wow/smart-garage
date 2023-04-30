@@ -58,11 +58,6 @@ public class VehicleServiceImpl implements VehicleService {
         return vehicleRepository.searchAllByVIN(VIN);
     }
 
-    @Override
-    public List<Vehicle> searchAllByCarModelId(CarModel carModel) {
-        return vehicleRepository.findAllByCarModelId(carModel);
-    }
-
     public void save(Vehicle vehicle) {
         vehicleRepository.save(vehicle);
     }

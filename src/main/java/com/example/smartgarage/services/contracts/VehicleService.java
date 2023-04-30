@@ -16,8 +16,6 @@ public interface VehicleService {
 
     List<Vehicle> getByUserId(User userId);
 
-    List<Vehicle> searchAllByCarModelId(CarModel carModel);
-
     void save(Vehicle vehicle);
 
     Vehicle update(Vehicle vehicle, VehicleDto vehicleDto, CarModel carModel);
