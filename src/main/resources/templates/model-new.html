@@ -1,13 +1,25 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>New model</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css}">
+<!--<head>-->
+<!--    <title>New model</title>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    &lt;!&ndash; Bootstrap CSS &ndash;&gt;-->
+<!--    <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css}">-->
+<!--</head>-->
+
+
+<head th:replace="fragments/head :: head">
 </head>
 <body>
+
+<header class="header_section">
+    <div class="container-fluid">
+        <nav th:replace="fragments/navbar :: navbar-employee-logged-in">
+        </nav>
+    </div>
+</header>
+
 <div class="container mt-5">
     <h1>New model</h1>
     <form method="post" th:action="@{__${#httpServletRequest.requestURI}__}"
@@ -42,5 +54,11 @@
 
     }
 </script>
+
+
+<footer th:replace="fragments/footer :: footer-not-logged-in">
+</footer>
+
+
 </body>
 </html>

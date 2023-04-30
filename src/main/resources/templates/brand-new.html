@@ -1,31 +1,45 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-  <title>New brand</title>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css}">
+<!--<head>-->
+<!--  <title>New brand</title>-->
+<!--  <meta charset="UTF-8">-->
+<!--  <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--  &lt;!&ndash; Bootstrap CSS &ndash;&gt;-->
+<!--  <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css}">-->
+<!--</head>-->
+<head th:replace="fragments/head :: head">
 </head>
 <body>
 
-<div class="container mt-5">
-  <h2>New brand</h2>
-  <a th:href="@{/carModels}" class="btn btn-primary mb-2">All car models</a>
-  <a th:href="@{/brands}" class="btn btn-primary mb-2">All brands</a>
-  <form th:action="@{/brands/new}" method="post">
-    <div class="form-group">
-      <label for="brand">Name of brand</label>
-      <input type="text" class="form-control" id="brand" name="brandName" required>
+<header class="header_section">
+    <div class="container-fluid">
+        <nav th:replace="fragments/navbar :: navbar-employee-logged-in">
+        </nav>
     </div>
-    <button type="submit" class="btn btn-primary mr-2">Add</button>
-    <a th:href="@{/brands}" class="btn btn-secondary">Cancel</a>
-  </form>
+</header>
+
+<div class="container mt-5">
+    <h2>New brand</h2>
+    <a th:href="@{/carModels}" class="btn btn-primary mb-2">All car models</a>
+    <a th:href="@{/brands}" class="btn btn-primary mb-2">All brands</a>
+    <form th:action="@{/brands/new}" method="post">
+        <div class="form-group">
+            <label for="brand">Name of brand</label>
+            <input type="text" class="form-control" id="brand" name="brandName" required>
+        </div>
+        <button type="submit" class="btn btn-primary mr-2">Add</button>
+        <a th:href="@{/brands}" class="btn btn-secondary">Cancel</a>
+    </form>
 </div>
 
 <!-- Bootstrap JS -->
 <script th:src="@{https://code.jquery.com/jquery-3.2.1.slim.min.js}"></script>
 <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js}"></script>
 <script th:src="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js}"></script>
+
+
+<footer th:replace="fragments/footer :: footer-not-logged-in">
+</footer>
+
 </body>
 </html>

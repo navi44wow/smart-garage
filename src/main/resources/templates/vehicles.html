@@ -1,13 +1,22 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Vehicles</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css}">
+<!--<head>-->
+<!--    <title>Vehicles</title>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    &lt;!&ndash; Bootstrap CSS &ndash;&gt;-->
+<!--    <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css}">-->
+<!--</head>-->
+<head th:replace="fragments/head :: head">
 </head>
 <body>
+
+<header class="header_section">
+    <div class="container-fluid">
+        <nav th:replace="fragments/navbar :: navbar-employee-logged-in">
+        </nav>
+    </div>
+</header>
 <div class="container mt-5">
     <h2>Vehicles</h2>
     <a th:href="@{/employee/}" class="btn btn-primary mb-2">Dashboard</a>
@@ -33,7 +42,8 @@
     <form method="post" th:action="@{/vehicles/}" th:object="${vehicleFilterDto}" class="form-inline mb-3">
 
         <label for="username">Owner:</label>
-        <input type="text" id="username" name="username" class="form-control mx-2">
+        <!--        <input type="text" th:field="*{username}" id="username" carModel="carModel" class="form-control mx-2">-->
+        <input type="text" th:field="*{username}" id="username" name="username" class="form-control mx-2">
 
 
         <label for="brandName">Brand:</label>
@@ -64,7 +74,7 @@
             <td>
                 <a
                         th:href="@{'/vehicles/' + ${vehicle.getUser().getUsername()}}"
-                   th:text="${vehicle.getUser().getUsername()}">Owner</a>
+                        th:text="${vehicle.getUser().getUsername()}">Owner</a>
             </td>
 
             <td th:text="${vehicle.getCarModelId().getBrand().getBrandName()}">Brand</td>
@@ -85,5 +95,9 @@
 <script th:src="@{https://code.jquery.com/jquery-3.2.1.slim.min.js}"></script>
 <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js}"></script>
 <script th:src="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js}"></script>
+
+<footer th:replace="fragments/footer :: footer-not-logged-in">
+</footer>
+
 </body>
 </html>
