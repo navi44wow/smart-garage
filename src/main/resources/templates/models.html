@@ -1,12 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<!--<head>-->
-<!--    <title>Brands and car Models</title>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-<!--    &lt;!&ndash; Bootstrap CSS &ndash;&gt;-->
-<!--    <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css}">-->
-<!--</head>-->
+
 <head th:replace="fragments/head :: head">
 </head>
 <body>
@@ -20,34 +14,8 @@
 <div class="container mt-5">
     <h2>Brands and car Models</h2>
     <a th:href="@{/employee/}" class="btn btn-primary mb-2">Dashboard</a>
-    <a th:href="@{/carModels/new}" class="btn btn-primary mb-2">New Brand/Model</a>
+    <a th:href="@{/carModels/new}" class="btn btn-primary mb-2">New Model</a>
     <a th:href="@{/brands}" class="btn btn-primary mb-2">List of Brands</a>
-
-<!--    <form method="post" th:action="@{/carModels/}" th:object="${carModelFilterDto}" class="form-inline mb-3">-->
-<!--        <label for="sortBy">Sort By:</label>-->
-<!--        <select id="sortBy" th:name="sortBy" class="form-control mx-2">-->
-<!--            <option value="carModel">car Model</option>-->
-<!--            <option value="brand">brand</option>-->
-<!--        </select>-->
-<!--        <label for="sortOrder">Sort Order:</label>-->
-<!--        <select id="sortOrder" th:name="sortOrder" class="form-control mx-2">-->
-<!--            <option value="asc">Ascending</option>-->
-<!--            <option value="desc">Descending</option>-->
-<!--        </select>-->
-<!--        <button type="submit" class="btn btn-primary mx-2">Sort</button>-->
-<!--    </form>-->
-
-<!--    <form method="post" th:action="@{/carModels/}" th:object="${carModelFilterDto}" class="form-inline mb-3">-->
-
-<!--        <label for="carModel">car Model:</label>-->
-<!--        <input type="text" id="carModel" th:name="carModel" class="form-control mx-2">-->
-<!--        <button type="submit" class="btn btn-primary mx-2">Search</button>-->
-
-<!--        <label for="brand">brand:</label>-->
-<!--        <input type="text" id="brand" th:name="brand" class="form-control mx-2">-->
-<!--        <button type="submit" class="btn btn-primary mx-2">Search</button>-->
-
-<!--    </form>-->
 
     <table class="table table-hover">
         <thead>
@@ -75,7 +43,6 @@
 <script th:src="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js}"></script>
 
 
-<footer th:replace="fragments/footer :: footer-not-logged-in">
-</footer>
+
 </body>
 </html>
