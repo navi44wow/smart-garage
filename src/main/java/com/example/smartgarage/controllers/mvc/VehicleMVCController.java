@@ -117,7 +117,7 @@ public class VehicleMVCController {
 
     @GetMapping("/delete/{vehicleId}")
     public String deleteVehicle(@PathVariable("vehicleId") Long vehicleId) {
-        vehicleService.deleteVehicleByVehicleId(vehicleId);
+        vehicleService.deleteVehicleById(vehicleId);
         return "redirect:/vehicles";
     }
     @GetMapping("/{username}")
