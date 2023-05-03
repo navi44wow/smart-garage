@@ -104,28 +104,6 @@ public class VehicleServiceTests {
         Mockito.verify(vehicleRepository, Mockito.times(1)).searchAllByCreationYear(vehicle.getCreationYear());
     }
 
-    @Test
-    void searchAllByLicensePlate_Should_ReturnListOfVehicles() {
-
-        List<Vehicle> vehiclesList = new ArrayList<>();
-        Vehicle vehicle = createMockVehicle();
-        Vehicle vehicle1 = createMockVehicle();
-
-        vehicle.setLicensePlate("1212452");
-        vehicle1.setLicensePlate("1212452");
-
-        vehiclesList.add(vehicle);
-        vehiclesList.add(vehicle1);
-
-        Mockito.when(vehicleRepository.findByLicensePlate("1212452")).thenReturn(vehiclesList);
-
-        List<Vehicle> result = (vehicleService.findByLicensePlate("1212452"));
-
-        assertNotNull(result);
-        assertEquals(vehiclesList.size(), result.size());
-        Mockito.verify(vehicleRepository, Mockito.times(1)).findByLicensePlate(vehicle.getLicensePlate());
-    }
-
 
     @Test
     void searchAllByCarModelId_Should_ReturnListOfVehicles() {
@@ -197,26 +175,27 @@ public class VehicleServiceTests {
         Mockito.verify(vehicleRepository, Mockito.times(1)).getAllByUserUsername(vehicle.getUser().getUsername());
     }
 
+    @Test
+    void getByVIN_Should_ReturnObject() {
+        Vehicle vehicle = createMockVehicle();
+        Mockito.when(vehicleRepository.getByVIN(vehicle.getVIN())).thenReturn(Optional.of(vehicle));
+
+        Optional<Vehicle> result = vehicleService.getByVIN(vehicle.getVIN());
+
+        assertTrue(result.isPresent());
+        assertEquals(vehicle.getVIN(), result.get().getVIN());
+        Mockito.verify(vehicleRepository, Mockito.times(1)).getByVIN(vehicle.getVIN());
+    }
+
 
     @Test
-    void searchAllByVIN_Should_ReturnListOfVehicles() {
-
-        List<Vehicle> vehiclesList = new ArrayList<>();
+    void getByLicensePlate_Should_ReturnObject() {
         Vehicle vehicle = createMockVehicle();
-        Vehicle vehicle1 = createMockVehicle();
+        Mockito.when(vehicleRepository.getByLicensePlate(vehicle.getLicensePlate())).thenReturn(Optional.of(vehicle));
 
-        vehicle.setVIN("12345678987654321");
-        vehicle1.setVIN(vehicle.getVIN());
-
-        vehiclesList.add(vehicle);
-        vehiclesList.add(vehicle1);
-
-        Mockito.when(vehicleRepository.searchAllByVIN("12345678987654321")).thenReturn(vehiclesList);
-
-        List<Vehicle> result = (vehicleService.searchAllByVIN("12345678987654321"));
-
-        assertNotNull(result);
-        assertEquals(vehiclesList.size(), result.size());
-        Mockito.verify(vehicleRepository, Mockito.times(1)).searchAllByVIN("12345678987654321");
+        Optional<Vehicle> result = vehicleService.findByLicensePlate(vehicle.getLicensePlate());
+        assertTrue(result.isPresent());
+        assertEquals(vehicle.getLicensePlate(), result.get().getLicensePlate());
+        Mockito.verify(vehicleRepository, Mockito.times(1)).getByLicensePlate(vehicle.getLicensePlate());
     }
 }
