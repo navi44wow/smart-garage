@@ -1,5 +1,6 @@
 package com.example.smartgarage.services;
 
+import com.example.smartgarage.exceptions.EntityDuplicateException;
 import com.example.smartgarage.models.dtos.CarModelDto;
 
 import com.example.smartgarage.models.entities.CarModel;
@@ -61,8 +62,11 @@ public class CarModelServiceImpl implements CarModelService {
 
     @Override
     public void save(CarModel carModel) {
+        carModelRepository.findByModelName(carModel.getModelName())
+                .ifPresent(existing -> {
+                    throw new EntityDuplicateException("Car model", "name", carModel.getModelName());
+                });
         carModelRepository.save(carModel);
-
     }
 
     @Override
