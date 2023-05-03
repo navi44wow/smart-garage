@@ -45,7 +45,7 @@ public class CarServiceImpl implements CarServizService {
                 new EntityNotFoundException("User with id ", id.toString(), " was not found!"));
     }
 
-    public void save(CarService carService) {
+    public void create(CarService carService) {
         carServiceRepository.findByName(carService.getName())
                 .ifPresent(existing -> {
                     throw new EntityDuplicateException("CarService", "name", carService.getName());

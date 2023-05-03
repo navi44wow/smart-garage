@@ -83,7 +83,7 @@ public class CarServiceMVCController {
 
         try {
             CarService service = modelMapper.map(serviceDto, CarService.class);
-            carServizService.save(service);
+            carServizService.create(service);
             redirectAttributes.addAttribute("id", service.getId());
             return "redirect:/services";
         } catch (AuthorizationException e) {
@@ -115,7 +115,7 @@ public class CarServiceMVCController {
             CarService service = carServizService.findById(id).orElseThrow(() ->
                     new IllegalArgumentException("Invalid service Id:" + id));
             modelMapper.map(serviceDto, service);
-            carServizService.save(service);
+            carServizService.update(service, serviceDto);
             redirectAttributes.addAttribute("id", id);
             return "redirect:/services";
         } catch (EntityNotFoundException e) {

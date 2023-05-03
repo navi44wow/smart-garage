@@ -19,7 +19,7 @@ public interface CarServizService {
 
     void delete(Long id);
 
-    void save(CarService car);
+    void create(CarService car);
 
 
     <T> List<CarService> getAllGeneric(Optional<T> name, Optional<T> sortBy, Optional<T> sortOrder);

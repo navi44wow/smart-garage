@@ -73,7 +73,7 @@ public class CarServiceRestController {
         try {
             authenticationHelper.checkAuthorization(headers);
             service = modelMapper.map(serviceDto, CarService.class);
-            carService.save(service);
+            carService.create(service);
             return carService.findById(service.getId());
         } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
