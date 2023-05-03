@@ -88,4 +88,16 @@ public class CarModelServiceTests {
         assertEquals(carModel.getModelName(), result.get().getModelName());
         Mockito.verify(carModelRepository, Mockito.times(1)).findByModelName(carModel.getModelName());
     }
+
+
+    @Test
+    void testSave() {
+
+        CarModel carModel = createMockModel();
+
+        carModelService.save(carModel);
+        Mockito.verify(carModelRepository).save(carModel);
+    }
+
+
 }

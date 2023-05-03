@@ -67,4 +67,12 @@ public class BrandServiceTests {
         assertEquals(brand.getBrandName(), result.get().getBrandName());
         Mockito.verify(brandRepository, Mockito.times(1)).findByBrandName(brand.getBrandName());
     }
+
+    @Test
+    void testSave() {
+        Brand brand = createMockBrand();
+
+        brandService.save(brand);
+        Mockito.verify(brandRepository).save(brand);
+    }
 }
