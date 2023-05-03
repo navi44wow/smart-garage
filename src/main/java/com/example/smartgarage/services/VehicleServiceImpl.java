@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -63,11 +64,28 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
-    public Vehicle update(Vehicle vehicle, VehicleDto vehicleDto, CarModel carModel) {
-        vehicle.setVIN(vehicleDto.getVIN());
-        vehicle.setUser(vehicle.getUser());
+    public Vehicle update(Vehicle vehicle, VehicleDto vehicleDto) {
+
+        if (Objects.equals(vehicle.getVIN(), vehicleDto.getVIN())) {
+            vehicle.setVIN(vehicleDto.getVIN());
+        } else if (vehicleRepository.getByVIN(vehicleDto.getVIN()).isPresent() && !Objects.equals(vehicleDto.getVIN(), vehicle.getVIN())) {
+            throw new EntityDuplicateException("Vehicle with ", "VIN", vehicleDto.getVIN());
+        } else {
+            vehicle.setVIN(vehicleDto.getVIN());
+        }
+
+        if (Objects.equals(vehicle.getLicensePlate(), vehicleDto.getLicensePlate())) {
+            vehicle.setLicensePlate(vehicleDto.getLicensePlate());
+        } else if (vehicleRepository.getByLicensePlate(vehicleDto.getLicensePlate()).isPresent() && !Objects.equals(vehicleDto.getLicensePlate(), vehicle.getLicensePlate())) {
+            throw new EntityDuplicateException("Vehicle with ", "license plate", vehicleDto.getLicensePlate());
+        } else {
+            vehicle.setLicensePlate(vehicleDto.getLicensePlate());
+        }
+
+        vehicle.setUser(vehicleDto.getUserId());
         vehicle.setCreationYear(vehicleDto.getCreationYear());
-        vehicle.setLicensePlate(vehicleDto.getLicensePlate());
+        vehicle.setCarModelId(vehicleDto.getCarModelId());
+
         vehicleRepository.save(vehicle);
         return vehicle;
     }
@@ -118,6 +136,7 @@ public class VehicleServiceImpl implements VehicleService {
     public Optional<Vehicle> getByVIN(String VIN) {
         return vehicleRepository.getByVIN(VIN);
     }
+
     private List<Vehicle> filterVehiclesByBrandName(List<Vehicle> vehicles, String brandName) {
         return vehicles.stream().filter(vehicle -> vehicle.getCarModelId().getBrand().getBrandName().
                 equalsIgnoreCase(brandName)).collect(Collectors.toList());

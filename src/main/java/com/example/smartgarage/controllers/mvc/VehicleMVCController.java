@@ -92,13 +92,17 @@ public class VehicleMVCController {
 
 
     @GetMapping("/vehicle-update/{vehicleId}")
-    public String updateVehicle(@PathVariable("vehicleId") Long vehicleId, Model model) {
+    public String updateVehicle(@PathVariable("vehicleId") Long vehicleId, Model model, VehicleDto vehicleDto) {
+
+        Vehicle vehicle = vehicleService.getById(vehicleId);
+
         List<CarModel> carModels = carModelService.getAll();
         List<UserViewModel> users = userService.getAll();
         model.addAttribute("carModels", carModels);
         model.addAttribute("users", users);
-        Vehicle vehicle = vehicleService.getById(vehicleId);
+
         model.addAttribute("vehicle", vehicle);
+        model.addAttribute("vehicleDto", vehicleDto);
         model.addAttribute("vehicleId", vehicleId);
         return "vehicle-update";
     }
@@ -106,12 +110,7 @@ public class VehicleMVCController {
     @PostMapping("/vehicle-update/{vehicleId}")
     public String updateVehicle(@PathVariable("vehicleId") Long vehicleId, @Valid @ModelAttribute("vehicleDto") VehicleDto vehicleDto) {
         Vehicle vehicle = vehicleService.getById(vehicleId);
-        vehicle.setVIN(vehicleDto.getVIN());
-        vehicle.setCreationYear(vehicleDto.getCreationYear());
-        vehicle.setLicensePlate(vehicleDto.getLicensePlate());
-        vehicle.setUser(vehicleDto.getUserId());
-        vehicle.setCarModelId(vehicleDto.getCarModelId());
-        vehicleService.save(vehicle);
+        vehicleService.update(vehicle, vehicleDto);
         return "redirect:/vehicles";
     }
 

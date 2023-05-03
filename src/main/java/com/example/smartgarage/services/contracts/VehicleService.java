@@ -19,7 +19,7 @@ public interface VehicleService {
 
     void save(Vehicle vehicle);
 
-    Vehicle update(Vehicle vehicle, VehicleDto vehicleDto, CarModel carModel);
+    Vehicle update(Vehicle vehicle, VehicleDto vehicleDto );
 
     void deleteVehicleById(Long vehicleId);
 
