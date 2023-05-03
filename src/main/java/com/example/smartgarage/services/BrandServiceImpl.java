@@ -1,5 +1,6 @@
 package com.example.smartgarage.services;
 
+import com.example.smartgarage.exceptions.EntityDuplicateException;
 import com.example.smartgarage.exceptions.EntityNotFoundException;
 import com.example.smartgarage.models.dtos.BrandDto;
 import com.example.smartgarage.models.entities.Brand;
@@ -45,6 +46,10 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public void save(Brand brand) {
+        brandRepository.findByBrandName(brand.getBrandName())
+                .ifPresent(existing -> {
+                    throw new EntityDuplicateException("Brand", "name", brand.getBrandName());
+                });
         brandRepository.save(brand);
     }
 
