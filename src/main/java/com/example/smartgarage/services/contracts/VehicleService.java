@@ -7,6 +7,7 @@ import com.example.smartgarage.models.entities.User;
 import com.example.smartgarage.models.entities.Vehicle;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface VehicleService {
 
@@ -22,20 +23,16 @@ public interface VehicleService {
 
     void deleteVehicleById(Long vehicleId);
 
-     void deleteVehicleByVehicleId(Long vehicleId);
-
     List<Vehicle> getAll();
 
-    int getVehiclesCount();
-
-    List<Vehicle> findByLicensePlate(String licensePlate);
+    Optional<Vehicle> findByLicensePlate(String licensePlate);
 
     List<Vehicle> searchAllByCreationYear(Long creationYear);
-
-    List<Vehicle> searchAllByVIN(String VIN);
 
     List<Vehicle> getByUsername(String username);
 
     List<Vehicle> getAllVehicles(
             VehicleFilterDto vehicleFilterDto);
+
+    Optional<Vehicle> getByVIN(String VIN);
 }

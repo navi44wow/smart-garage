@@ -198,7 +198,7 @@ public class VehicleRestController {
 
 
     @GetMapping("/licensePlate/{licensePlate}")
-    public List<Vehicle> findByLicensePlate(@PathVariable String licensePlate) {
+    public Optional<Vehicle> findByLicensePlate(@PathVariable String licensePlate) {
         return vehicleService.findByLicensePlate(licensePlate);
     }
 
@@ -208,7 +208,7 @@ public class VehicleRestController {
     }
 
     @GetMapping("/VIN/{VIN}")
-    public List<Vehicle> searchAllByVIN(@PathVariable String VIN) {
-        return vehicleService.searchAllByVIN(VIN);
+    public Optional<Vehicle> searchAllByVIN(@PathVariable String VIN) {
+        return vehicleService.getByVIN(VIN);
     }
 }

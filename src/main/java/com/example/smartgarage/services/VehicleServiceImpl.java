@@ -1,5 +1,6 @@
 package com.example.smartgarage.services;
 
+import com.example.smartgarage.exceptions.EntityDuplicateException;
 import com.example.smartgarage.exceptions.EntityNotFoundException;
 import com.example.smartgarage.models.dtos.VehicleDto;
 import com.example.smartgarage.models.dtos.VehicleFilterDto;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,15 +39,9 @@ public class VehicleServiceImpl implements VehicleService {
         return vehicleRepository.findAll();
     }
 
-
     @Override
-    public int getVehiclesCount() {
-        return 0;
-    }
-
-    @Override
-    public List<Vehicle> findByLicensePlate(String licensePlate) {
-        return vehicleRepository.findByLicensePlate(licensePlate);
+    public Optional<Vehicle> findByLicensePlate(String licensePlate) {
+        return vehicleRepository.getByLicensePlate(licensePlate);
     }
 
     @Override
@@ -53,12 +49,16 @@ public class VehicleServiceImpl implements VehicleService {
         return vehicleRepository.searchAllByCreationYear(creationYear);
     }
 
-    @Override
-    public List<Vehicle> searchAllByVIN(String VIN) {
-        return vehicleRepository.searchAllByVIN(VIN);
-    }
 
     public void save(Vehicle vehicle) {
+        vehicleRepository.getByVIN(vehicle.getVIN())
+                .ifPresent(existing -> {
+                    throw new EntityDuplicateException("Vehicle with ", "VIN", vehicle.getVIN());
+                });
+        vehicleRepository.getByLicensePlate(vehicle.getLicensePlate())
+                .ifPresent(existing -> {
+                    throw new EntityDuplicateException("Vehicle with ", "license plate", vehicle.getLicensePlate());
+                });
         vehicleRepository.save(vehicle);
     }
 
@@ -74,10 +74,6 @@ public class VehicleServiceImpl implements VehicleService {
 
     public void deleteVehicleById(Long vehicleId) {
         vehicleRepository.deleteById(vehicleId);
-    }
-
-    public void deleteVehicleByVehicleId(Long vehicleId) {
-        vehicleRepository.deleteVehicleByVehicleId(vehicleId);
     }
 
     public Vehicle getById(Long vehicleId) {
@@ -118,6 +114,10 @@ public class VehicleServiceImpl implements VehicleService {
         return allVehicles;
     }
 
+    @Override
+    public Optional<Vehicle> getByVIN(String VIN) {
+        return vehicleRepository.getByVIN(VIN);
+    }
     private List<Vehicle> filterVehiclesByBrandName(List<Vehicle> vehicles, String brandName) {
         return vehicles.stream().filter(vehicle -> vehicle.getCarModelId().getBrand().getBrandName().
                 equalsIgnoreCase(brandName)).collect(Collectors.toList());

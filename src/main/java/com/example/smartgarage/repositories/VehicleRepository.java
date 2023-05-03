@@ -17,12 +17,11 @@ import java.util.UUID;
 @Repository
 public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
 
-    void deleteVehicleByVehicleId(Long vehicleId);
     List<Vehicle> searchAllByCreationYear(Long creationYear);
 
-    List<Vehicle> findByLicensePlate(String licensePlate);
+    Optional<Vehicle> getByLicensePlate(String licensePlate);
 
-    List<Vehicle> searchAllByVIN(String VIN);
+    Optional<Vehicle> getByVIN(String VIN);
 
     List<Vehicle> findAllByCarModelId(CarModel carModel);
 
