@@ -16,7 +16,7 @@
     <a th:href="@{/vehicles}" class="btn btn-outline-primary">Back to vehicles</a>
 
     <form method="post" th:action="@{/vehicles/vehicle-update/{vehicleId}(vehicleId=${vehicle.vehicleId})}"
-          th:object="${vehicle}">
+          th:object="${vehicleDto}">
 
         <div class="mb-3">
             <label for="carModelId"></label>

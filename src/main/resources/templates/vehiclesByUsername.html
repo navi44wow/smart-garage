@@ -41,7 +41,6 @@
             <td th:text="${vehicle.getCreationYear()}">Creation year</td>
             <td>
                 <a class="h6 m-3" th:href="@{'/vehicles/vehicle-update/' + ${vehicle.vehicleId}}">Edit</a>
-                <a class="h6" th:href="@{'/vehicles/delete/' + ${vehicle.getVehicleId()}}">Delete</a>
             </td>
         </tr>
         </tbody>
