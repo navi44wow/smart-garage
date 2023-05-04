@@ -109,6 +109,27 @@ public class CustomerController {
         return "user-details-page";
     }
 
+    @GetMapping("/detailsPageEmployee/{username}")
+    public String detailsPageForEmployee(@PathVariable String username, Model model){
+        model.addAttribute("forbidden", false);
+        UserRoleEntity userRole = userRoleService.getByUserRole(UserRole.EMPLOYEE);
+        UserViewModel userViewModel = userService.getByUsername(username);
+        model.addAttribute("isEmployee", false);
+        if (loggedInUser().getRoles().contains(userRole)){
+            model.addAttribute("isEmployee", true);
+        }
+        if (!loggedInUser().getUsername().equals(username) && userViewModel.getRoles().contains(userRole)){
+            model.addAttribute("forbidden", true);
+        }
+        if (!loggedInUser().getUsername().equals(username) && !loggedInUser().getRoles().contains(userRole)){
+            return "error";
+        }
+        model.addAttribute("cars", vehicleRepository.findAllByUserId(userViewModel.getId()));
+        model.addAttribute("user", userService.getByUsername(username));
+        model.addAttribute("username", username);
+        return "user-details-page-employee";
+    }
+
 
     @GetMapping("/userInfoUpdate/{username}")
     public String updateUserInfo(@PathVariable String username, Model model){

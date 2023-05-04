@@ -68,17 +68,19 @@
             <th>Username</th>
             <th>Email</th>
             <th>Phone Number</th>
+            <th>Role</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="user : ${allUsers}">
             <td>
-                <a th:href="@{'/detailsPage/' + ${user.getUsername()}}"
+                <a th:href="@{'/detailsPageEmployee/' + ${user.getUsername()}}"
                    th:text="${user.getFirstName()} + ' ' + ${user.getLastName()}">Name</a>
             </td>
             <td th:text="${user.getUsername()}">Username</td>
             <td th:text="${user.getEmail()}">Email</td>
             <td th:text="${user.getPhoneNumber()}">Phone Number</td>
+            <td th:text="${user.getRoles().get(0)}">Role</td>
 
 
         </tbody>
