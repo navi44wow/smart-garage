@@ -10,9 +10,6 @@ import com.example.smartgarage.repositories.UserRepository;
 import com.example.smartgarage.repositories.VisitRepository;
 import com.example.smartgarage.services.contracts.CarServizService;
 import com.example.smartgarage.services.contracts.VisitService;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,8 +29,6 @@ public class VisitServiceImpl implements VisitService {
     @Autowired
     UserRepository userRepository;
 
-    @Autowired
-    private SessionFactory sessionFactory;
 
 
 
@@ -68,10 +63,7 @@ public class VisitServiceImpl implements VisitService {
 
     @Override
     public List<VisitStatus> findAllStatuses() {
-        try (Session session = sessionFactory.openSession()) {
-            Query<VisitStatus> request = session.createNativeQuery("select * from visit_status order by id ", VisitStatus.class);
-            return request.list();
-        }
+        return repository.findAllStatuses();
     }
 
     public Visit toggleArchivedStatus(Visit visit) {

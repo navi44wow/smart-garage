@@ -56,6 +56,9 @@ public class CarServiceImpl implements CarServizService {
     public CarService update(CarService carService, CarServiceDto carServiceDto) {
         carService.setName(carServiceDto.getName());
         carService.setPrice(carServiceDto.getPrice());
+        if (carServiceRepository.findByName(carService.getName()).isPresent()){
+            throw new EntityDuplicateException("Service ", "name", carServiceDto.getName());
+        }
         carServiceRepository.save(carService);
         return carService;
     }

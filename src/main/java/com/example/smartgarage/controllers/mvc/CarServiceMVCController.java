@@ -91,7 +91,8 @@ public class CarServiceMVCController {
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (EntityDuplicateException e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+            redirectAttributes.addFlashAttribute("errorMessage", "Please choose a different name for the service.");
+            return "redirect:/services/service-new";
         }
     }
 
@@ -110,7 +111,6 @@ public class CarServiceMVCController {
         if (result.hasErrors()) {
             return "service-update";
         }
-
         try {
             CarService service = carServizService.findById(id).orElseThrow(() ->
                     new IllegalArgumentException("Invalid service Id:" + id));
@@ -121,7 +121,8 @@ public class CarServiceMVCController {
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (EntityDuplicateException e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+            redirectAttributes.addFlashAttribute("errorMessage", "Please choose a different name for the service.");
+            return "redirect:/services/service-update/"+id;
         }
     }
 

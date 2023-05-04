@@ -15,6 +15,8 @@
             <label for="name">Name of Service</label>
             <input type="text" class="form-control" id="name" name="name"
                    required pattern=".{2,32}" title="Name must be between 2 and 32 symbols">
+            <small th:if="${param.error}" th:text="${errorMessage}"
+                   id="duplicateServiceError" class="text-light form-text bg-danger rounded"></small>
         </div>
         <div class="form-group">
             <label for="price">Price</label>
