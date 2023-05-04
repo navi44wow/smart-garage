@@ -58,7 +58,7 @@ public class CarServizServiceTests {
     @Test
     public void create_Should_returnService_When_Valid() {
 
-        carService.save(createMockCarService());
+        carService.create(createMockCarService());
         Optional<CarService> mockService = Optional.of(createMockCarService());
 
         // Assert

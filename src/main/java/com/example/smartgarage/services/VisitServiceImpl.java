@@ -103,6 +103,14 @@ public class VisitServiceImpl implements VisitService {
         return filteredServices;
     }
 
+    /**
+     * Retrieves all visits based on the given filters and sorting criteria.
+     *
+     * @param onlyArchived   {@code true} to include only archived visits, {@code false} to include only non-archived visits, or {@code null} to include both archived and non-archived visits.
+     * @param includeArchived   {@code true} to include both archived and non-archived visits, {@code false} to include only non-archived visits, or {@code null} to include only archived visits.
+     * @param visitFilterDto   the filters to apply to the visits.
+     * @return a list of visits that match the given filters and sorting criteria.
+     */
     @Override
     public List<Visit> getAllVisits(Boolean onlyArchived, Boolean includeArchived, VisitFilterDto visitFilterDto) {
         List<Visit> allVisits = getAllSorted(visitFilterDto.getSortBy(), visitFilterDto.getSortOrder());

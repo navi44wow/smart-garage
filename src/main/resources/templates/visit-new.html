@@ -8,7 +8,6 @@
 
 <nav th:replace="fragments/navbar :: navbar-employee-logged-in">
 </nav>
-<body>
 <div class="container mt-5">
     <h1>New Visit</h1>
     <form method="post" th:action="@{__${#httpServletRequest.requestURI}__}"
@@ -33,28 +32,5 @@
 <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/js/bootstrap.min.js" integrity="sha512-kK3qKNRs0tJyVfTgTtTqvTQKXhB0ZM7VBsGz8MBjK1sGB0AdJtVgTtHymT2lhG+JAGYfzfVieTHwkcH8djrh1w=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script>
-    const vehicles = [[${#httpServletRequest.getAttribute('vehicles')}]];
-    function populateVehicles() {
-        console.log("populateVehicles() called");
-        const selectedOwner = document.getElementById("owner").value;
-        const vehicleDropdown = document.getElementById("vehicle");
-        const filteredVehicles = vehicles.filter(vehicle => vehicle.user.id.toString() === selectedOwner);
-        console.log("filteredVehicles: " + filteredVehicles);
-
-        // Clear existing options
-        while (vehicleDropdown.options.length > 1) {
-            vehicleDropdown.remove();
-        }
-
-        // Filter vehicles by owner
-        for (let i = 0; i < filteredVehicles.length; i++) {
-            const option = document.createElement("option");
-            option.text = filteredVehicles[i].carModel;
-            option.value = filteredVehicles[i].id;
-            vehicleDropdown.add(option);
-        }
-    }
-</script>
 </body>
 </html>
