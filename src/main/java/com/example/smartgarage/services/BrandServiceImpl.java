@@ -8,6 +8,7 @@ import com.example.smartgarage.repositories.BrandRepository;
 import com.example.smartgarage.services.contracts.BrandService;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.hibernate.SessionFactory;
@@ -55,7 +56,14 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public Brand update(Brand brand, BrandDto brandDto) {
-        brand.setBrandName(brandDto.getBrandName());
+
+        if (Objects.equals(brand.getBrandName(), brandDto.getBrandName())) {
+            brand.setBrandName(brandDto.getBrandName());
+        } else if (brandRepository.findByBrandName(brandDto.getBrandName()).isPresent() && !Objects.equals(brandDto.getBrandName(), brand.getBrandName())) {
+            throw new EntityDuplicateException("Brand with ", "name", brandDto.getBrandName());
+        } else {
+            brand.setBrandName(brandDto.getBrandName());
+        }
         brandRepository.save(brand);
         return brand;
     }

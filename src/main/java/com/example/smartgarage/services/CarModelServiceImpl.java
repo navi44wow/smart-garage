@@ -9,6 +9,7 @@ import com.example.smartgarage.repositories.CarModelRepository;
 import com.example.smartgarage.services.contracts.CarModelService;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import com.example.smartgarage.exceptions.EntityNotFoundException;
@@ -71,7 +72,14 @@ public class CarModelServiceImpl implements CarModelService {
 
     @Override
     public CarModel update(CarModel carModel, CarModelDto carModelDto) {
-        carModel.setModelName(carModelDto.getModelName());
+
+        if (Objects.equals(carModel.getModelName(), carModelDto.getModelName())) {
+            carModel.setModelName(carModelDto.getModelName());
+        } else if (carModelRepository.findByModelName(carModelDto.getModelName()).isPresent() && !Objects.equals(carModelDto.getModelName(), carModel.getModelName())) {
+            throw new EntityDuplicateException("Car Model with ", "name", carModelDto.getModelName());
+        } else {
+            carModel.setModelName(carModelDto.getModelName());
+        }
         carModel.setBrand(carModelDto.getBrand());
         carModelRepository.save(carModel);
         return carModel;
